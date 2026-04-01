@@ -62,7 +62,6 @@ discard			= []
 # currently unused
 
 first		= True
-outOfCards	= False
 keepGoing	= True
 mean = 0
 
@@ -85,6 +84,8 @@ def deckBuilder(x,y,z):
     for l in range(len(z)):
         tarotDeck.append(z[l])
 
+# This functions purpose is to insult the user for writing a
+# nonsensical input, it was surprisingly annoying to make.
 def scold():
     global mean
     if mean == 0:
@@ -96,26 +97,31 @@ def scold():
     else:
         print("Fundamentally broken human being.")
 
-# Stuff that just needs to happen before anything else.
+# This is just rolling attempting to turn it into a numbered answer into one program.
+# ideally, this only triggers if it can trigger and otherwise does nothing.
+def speakAmerican(word):
+    try:
+        word = int(word)
+    except ValueError:
+        pass
+    if isinstance (word, str) and word.lower() in johnSmartass:
+        babble		= word.lower()
+        abababa		= johnSmartass[babble]
+        cardCounter	= int(abababa)
+        word = cardCounter
+    return word
+
+# The initial confirmation of what kind of deck you want.
+# Not written with any intention of it ever retriggering.
 def initialize():    
     global kind
     
     while True:
-        a = input("Playing cards or tarot cards?\n").strip()   
-        try:
-            a = int(a)
-        except ValueError:
-            pass
-        
+        a = input("Playing cards or tarot cards?\n").strip()
+        a = speakAmerican(a)
         if isinstance (a, str) and a.lower() in disagree:
             print("wtfug?? why're you even here?!")
-                
-        elif isinstance(a, str) and a.lower() in johnSmartass:
-            babble		= a.lower()
-            abababa		= johnSmartass[babble]
-            cardCounter	= int(abababa)
-            a = cardCounter
-            
+
         try:
             if a == 1:
                 print("Playing cards it is then.")
@@ -123,17 +129,12 @@ def initialize():
                 c = pSuits
                 while True:
                     d = input("With or without jokers?\n").strip()
-                    if isinstance (d, str) and d.lower() in johnSmartass:
-                        babble		= d.lower()
-                        abababa		= johnSmartass[babble]
-                        cardCounter	= int(abababa)
-                        d = cardCounter
-                    print(d)
-                    if isinstance (d, str) and d in agree or d == 1:
+                    d = speakAmerican(d)
+                    if d in agree or d == 1:
                         print("Alright, with jokers it is.\n")
                         d = jokers
                         break
-                    elif isinstance (d, str) and d in disagree or d == 2:
+                    elif d in disagree or d == 2:
                         print("Alright, without jokers it is.\n")
                         d = empty
                         break
@@ -162,31 +163,30 @@ def initialize():
 # it uses that list to randomly select cards from an orderly list
 # to move them into a disorderly one. 
 #
-# The reason it does it this way so it can't put a card thats already
-# in the deck in the deck twice, but doesn't waste time seeing it again
-#
-# an additional step roll 78 binary values and randomly appends reversed
-# to tarot cards if its a tarot deck, if its not that simply moves them
-# to the finished deck list, which is the one that is actually read
+# apparently an ACTUAL shuffle function exists in random. I didn't know that.
+# but saying I learned how to import random instead of thinking through the logic
+# to shuffle a deck isn't really anywhere near the same achievement, so I'm ignoring
+# that part for now.
 def shuffle():
     global first, masterHand, crazyHand, tarotDeck, coinflips, finishedDeck, discard
     if first == True:
         print("Shuffling cards.")
     else:
         print("Reshuffling cards.")
-
+        
+    # I only found out that random has a shuffle feature after I wrote this code
+    # but also i think using it would trivialize the point of this script.
     masterHand = [i + 1 for i in range (len(tarotDeck))]
     while len(crazyHand) != len(tarotDeck):  
         x = len(masterHand)
-        c = randint (0, x)
-        if c not in crazyHand and c == x and x > 0:
-            continue 
-        elif c not in crazyHand and c != x and x > 0:
+        c = randint (0, x)       
+        if c not in crazyHand and c != x and x > 0:
             d = masterHand[c]
             crazyHand.append(d)
             del masterHand[c]
         else:
             continue
+
 
     if first == True:
         print("Shuffling cards..")
@@ -222,28 +222,16 @@ def shuffle():
     del coinflips[:]
     del discard[:]
 
-# just a check for when you want to stop
-def again():
-    global first, outOfCards, keepGoing, mean
-    while True:
-        answer = input("Do you want to keep going?\n")
-        if answer.lower() in agree:
-            keepGoing = True
-            print("Alright.")
-            break
-        elif answer.lower() in disagree:
-            keepGoing = False
-            print("Alright, later then.")
-            break
-        else:
-            scold()
-
-# This is called whenever you confirm you do
-# want to reshuffle the deck
+# This triggers if you confirm you want to reshuffle
+# the deck, likely redundant, might edit out later.
+# 
+# It stores your cards in a currently useless discard list
+# because I anticipate that being potentially useful if I
+# add more features. the list's values are deleted during
+# shuffle() however, which reset() itself calls.
 def reset():
-    global outOfCards, finishedDeck
+    global finishedDeck
     print("Alright, reshuffling.\n")
-    outOfCards = False
     for d in range(len(finishedDeck)):
         d = finishedDeck[0]
         discard.append(d)
@@ -252,41 +240,54 @@ def reset():
 
 # this is the check that asks if you want
 # to reshuffle the deck
-def exhaust():
-    global outOfCards, keepGoing, mean, finishedDeck
-    while True:
-        c = input("Do you want to reshuffle?\n")
-        if c.lower() in agree:
+def again():
+    global first, keepGoing, finishedDeck
+    
+    while len(finishedDeck) != len(tarotDeck) and len(finishedDeck) > 0:     
+        answer = input ("Do you want to reshuffle?\n") 
+        answer = speakAmerican(answer)
+        
+        if answer.lower() in agree:
+            keepGoing = True
             reset()
-            break
-        elif c.lower() in disagree and len(finishedDeck) > 0:
             print("Alright.")
             break
-        elif c.lower() in disagree:
-            print("Alright, later then.")
+        elif answer.lower() in disagree:
+            print("Alright.")
+            break
+        else:
+            scold()    
+        
+    while len(finishedDeck) != len(tarotDeck):
+        answer = input ("Do you want to keep going?\n")
+        answer = speakAmerican(answer)
+        
+        if isinstance (answer, str) and answer.lower() in agree:
+            keepGoing = True
+            if len(finishedDeck) == 0:
+                reset()
+            print("Alright.")
+            break
+        elif isinstance (answer, str) and answer.lower() in disagree:
             keepGoing = False
+            print("Alright, later then.")
             break
         else:
             scold()
 
-# This is the actual 'drawing cards from a shuffled deck'
-# part of the code, its also a pain in the ass.
+# divine() is basically the actual point of the program.
+# lets you pick how many cards you want to draw, and draw them (waow)
 def divine():
-    global first, outOfCards, keepGoing, kind, mean       
+    global first, keepGoing, kind, mean       
     
-    if len(finishedDeck) != 0 and keepGoing == True:
+    if len(finishedDeck) != 0:
         while True:
             if first == True:
                 a = input(f"How many {kind} cards would you like to draw? \n")
             else:
-                a = input(f"How many {kind} cards? ") 
-                    
-            if isinstance(a, str) and a.lower() in johnSmartass:
-                babble		= a.lower()
-                abababa		= johnSmartass[babble]
-                cardCounter	= abababa
-                cardCounter	= int(cardCounter)
-                a = cardCounter
+                a = input(f"How many {kind} cards? ")
+                
+            a = speakAmerican(a)         
         
             if isinstance(a, str) and a.lower() in disagree:
                 print("wtfug?? mean!")
@@ -305,55 +306,44 @@ def divine():
                 elif a > len(finishedDeck) and len(finishedDeck) < len(tarotDeck):
                     first = False
                     print("There aren't that many cards left in the deck.")
-                    exhaust()
+                    again()
                     continue
                 else:
                     break
             except ValueError:
-                first = False  
-                print("That isn't a number.")
+                first = False
+                if a.lower not in disagree:
+                    print("That isn't a number.")
                 continue
 
-    if keepGoing == True and outOfCards == False and len(finishedDeck) != 0:
-        first = False
-        g=a
-        for g in range(g):
-            print(f"Card {g+1}: {finishedDeck[g]}")
-        g=a
-        for g in range(g):
-            b = finishedDeck[0]
-            discard.append(b)
-            del finishedDeck[0]
+    first = False
+    g=a
+    for g in range(g):
+        print(f"Card {g+1}: {finishedDeck[g]}")
+    g=a
+    for g in range(g):
+        b = finishedDeck[0]
+        discard.append(b)
+        del finishedDeck[0]
+    
+    print(f"\n{len(finishedDeck)} cards remaining.")
+             
+    if a == (len(tarotDeck)) and kind == "Tarot":
+        print("\nGood luck divining the entire deck, smartass.")
         
-        print(f"\n{len(finishedDeck)} cards remaining.")
-                 
-        if a == (len(tarotDeck)) and kind == "Tarot":
-            print("\nGood luck divining the entire deck, smartass.")
-            
-        elif a == (len(tarotDeck)) and kind == "Playing":
-            print(f"\nY'know, {len(tarotDeck)} pickup isn't really playable on pc.")
-        
-    if len(finishedDeck) == 0:
-        outOfCards = True
+    elif a == (len(tarotDeck)) and kind == "Playing":
+        print(f"\nY'know, {len(tarotDeck)} pickup isn't really playable on pc.")
         
 ####################################################################################
 # Everything above here is function definitions
 
 def master():
-    global outOfCards, keepGoing
+    global keepGoing
     initialize()
     shuffle()
-    while True:
-        if outOfCards == True or len(finishedDeck) == 0:
-            exhaust()
-            if keepGoing == False:
-                break
-        elif outOfCards == False and first == False and len(finishedDeck) != 0:
-            again()
-            if keepGoing == False:
-                break
-        else:
-            pass    
+    while True:    
         divine()
-    
+        again()
+        if keepGoing == False:
+            break   
 master()
