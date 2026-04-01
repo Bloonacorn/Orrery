@@ -26,9 +26,11 @@ johnSmartass = {
     "seventy five": 75, "seventy-six": 76, "seventy six": 76, "seventy-seven": 77, "seventy seven": 77,
     "seventy-eight": 78, "seventy eight": 78,
     
-    "zero": 0, "playing": 1, "playing cards":1, "tarot": 2, "tarot cards":2, "w":1, "with":1, "with jokers":1,
-    "without":2, "w/o": 2, "without jokers":2, "secret": 3, "evil": 3, "dark": 3, "sinister": 3, "fucked up": 3,
-    "evil ass rape deck": 3, "evil ass rape cards":3, "evil ass rape": 3
+    "zero": 0, "playing": 1, "playing cards":1, "normal": 1, "normal cards": 1, "regular": 1, "regular cards": 1,
+    "tarot": 2, "tarot cards":2, "w":1, "with":1, "with jokers":1, "without":2, "w/o": 2, "without jokers":2,
+    "secret": 3, "evil": 3, "dark": 3, "sinister": 3, "fucked up": 3, "spooky": 3, "scary": 3, "scary cards": 3,
+    "evil ass rape deck": 3, "evil ass rape cards":3, "evil ass rape": 3, "evil cards": 3, "dark cards": 3,
+    "sinister cards": 3, "fucked up cards": 3,  "spooky cards": 3
 }
 
 majorArcana = ["0 - The Fool", "I - The Magician", "II - The High Priestess", "III - The Empress", "IV - The Emperor", "V - The Hierophant",
