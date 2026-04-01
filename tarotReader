@@ -208,7 +208,7 @@ def decide():
                 makeDeck(b,c,d)
                 break 
             
-            elif a == 3:
+            elif a == 3 or a == 666:
                 print("A secret, more sinister third thing...\n")
                 b = pRanks
                 c = pSuits
