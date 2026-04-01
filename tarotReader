@@ -26,6 +26,9 @@ johnSmartass = {
     "seventy five": 75, "seventy-six": 76, "seventy six": 76, "seventy-seven": 77, "seventy seven": 77,
     "seventy-eight": 78, "seventy eight": 78,
     
+    "zero": 0, "secret": 3, "evil": 3, "dark": 3, "sinister": 3, "fucked up": 3,
+    "evil ass rape deck": 3, "evil ass rape cards":3,
+    
     "playing": 1, "playing cards":1, "tarot": 2, "tarot cards":2, "w":1, "with":1, "with jokers":1, "without":2,
     "w/o": 2, "without jokers":2
 }
@@ -194,7 +197,7 @@ def decide():
                     else:
                         scold()
                         continue
-                kind = "Playing"
+                kind = "playing"
                 makeDeck(b,c,d)
                 break
                 
@@ -203,12 +206,23 @@ def decide():
                 b = ranks
                 c = suits
                 d = majorArcana
-                kind = "Tarot"
+                kind = "tarot"
                 makeDeck(b,c,d)
                 break 
+            
+            elif a == 3:
+                print("A secret, more sinister third thing...\n")
+                b = pRanks
+                c = pSuits
+                d = jokers
+                kind = "secret"
+                makeDeck(b,c,d)
+                break
+            
             else:
                 scold()
                 continue
+                
         except:
             continue
 
@@ -256,7 +270,9 @@ def reset():
         x = randint (0, 1)
         coinflips.append(x)           
         if coinflips[i] == 1 and kind ==  "Tarot":
-            finishedDeck.append(f"{masterHand[i]} - (Reversed)")
+            finishedDeck.append(f"{masterHand[i]} - (Reversed)")    
+        elif kind == "secret":
+            finishedDeck.append(f"Evil {masterHand[i]}")
         else:
             finishedDeck.append(masterHand[i])
     
@@ -375,9 +391,7 @@ def divine():
                 if a.lower not in disagree:
                     print("That isn't a number.")
                 continue
-
-    first = False
-    forgive()
+            
     g = a
     
     for g in range(g):
@@ -391,6 +405,9 @@ def divine():
         discard.append(b)
         del finishedDeck[0]
     
+    if kind == "secret" and first == True:
+        print("\nWelcome to my dark and twisted reality...")
+    
     print(f"\n{len(finishedDeck)} cards remaining.")
              
     if a == (len(tarotDeck)) and kind == "Tarot":
@@ -398,6 +415,9 @@ def divine():
         
     elif a == (len(tarotDeck)) and kind == "Playing":
         print(f"Y'know, {len(tarotDeck)} pickup isn't really playable on pc.\n")
+        
+    first = False
+    forgive()
         
 ####################################################################################
 # Everything above here is function definitions
