@@ -47,10 +47,9 @@ jokers = ["Joker", "Jester"]
 
 easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", '"Evil Ass" Rape',
              "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening",
-             "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel", "Undead", 
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "ARG", "Phantom", "Haunted", "Unfunny",
-             "Woke", "British", "John", "Green", "Political", "Scary", "Okay there's nothing actually wrong with this",
-]
+             "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful",
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted", "Unfunny",
+             "Woke", "British", "John", "Political", "Scary", "Okay there's nothing actually wrong with this"]
 
 consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
 capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
@@ -312,7 +311,7 @@ def reset():
             finishedDeck.append(f"{masterHand[i]} - (Reversed)")
             
         elif kind == "secret":
-            bad = randint (0, len(easterEgg)-2)
+            bad = randint (0, len(easterEgg)-1)
             if bad == 0:
                 
                 card		= masterHand[i]
