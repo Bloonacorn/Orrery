@@ -134,6 +134,9 @@ def scold():
     elif mean == 6:
         print("Fundamentally broken human being.")
         mean = mean +1
+    elif mean == 7 and cursed== True:
+        print("Wtfug you're already cursed why are you even still doing this?!")
+        mean = mean +1
     elif mean == 7:
         print("That's it, if your foolishness continues, I'll CURSE you with my wicked hex!")
         mean = mean +1
