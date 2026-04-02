@@ -45,11 +45,11 @@ pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"
 pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
 jokers = ["Joker", "Jester"]
 
-easterEgg = ["Misspelled", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky", "Scary", "Dark", '"Evil Ass" Rape',
-             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening"
+easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", '"Evil Ass" Rape',
+             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening",
              "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel", "Undead", 
              "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "ARG", "Phantom", "Haunted", "Unfunny",
-             "Woke", "British", "John", "Green", "Political", "Censored", "Okay there's nothing actually wrong with this",
+             "Woke", "British", "John", "Green", "Political", "Scary", "Okay there's nothing actually wrong with this",
 ]
 
 consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
@@ -319,11 +319,11 @@ def reset():
                 evilCard	= list(card)
                 
                 while True:
-                    x	= randint (0, len(evilCard))
-                    a	= randint (0, len(consonants))
-                    b	= randint (0, len(capsCons))
-                    c	= randint (0, len(vowels))
-                    d	= randint (0, len(capsVowels))
+                    x = randint (0, len(evilCard))
+                    a = randint (0, len(consonants))
+                    b = randint (0, len(capsCons))
+                    c = randint (0, len(vowels))
+                    d = randint (0, len(capsVowels))
 
                     try:
                         if evilCard[x] in consonants and evilCard[x] != consonants[a]:
@@ -341,6 +341,22 @@ def reset():
                         else:
                             continue
                     except:
+                        continue
+                moreEvilCard = "".join(evilCard)
+                masterHand[i] = moreEvilCard
+                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
+            elif bad == 1:
+                card		= masterHand[i]
+                evilCard	= list(card)
+                for cycle in range(len(evilCard)):   
+                    if evilCard[cycle-1] == " " and evilCard[cycle] == "o":
+                        continue
+                    elif evilCard[cycle] == "f" and evilCard[cycle+1] == " ":
+                        continue
+                    elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
+                        evilCard[cycle] = "*"
+                        continue
+                    else:
                         continue
                 moreEvilCard = "".join(evilCard)
                 masterHand[i] = moreEvilCard
@@ -434,7 +450,7 @@ def again():
 # lets you pick how many cards you want to draw, and draw them (waow)
 def divine():
     global first      
-    
+
     if len(finishedDeck) != 0:
         while True:
             if first == True:
@@ -460,7 +476,7 @@ def divine():
                     continue
                 elif a > len(finishedDeck) and len(finishedDeck) == 1:
                     first = False
-                    print(f"Theres only one {kind} card left!")
+                    print(f"There's only one {kind} card left!")
                     continue
                 elif a > len(finishedDeck) and len(finishedDeck) < len(tarotDeck):
                     first = False
