@@ -351,7 +351,7 @@ def reset():
                 card		= masterHand[i]
                 evilCard	= list(card)
                 for cycle in range(len(evilCard)):
-                    if evilCard[cycle-1] == "F":
+                    if evilCard[cycle-1] == "F" or evilCard[cycle-1] == "T":
                         continue
                     elif evilCard[cycle-1] == " " and evilCard[cycle] == "o":
                         continue
