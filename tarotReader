@@ -12,6 +12,7 @@ pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
 jokers = ["Joker", "Jester"]
 empty = []
 
+# Required for corrupt()
 consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
 capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
 vowels		= ["a", "e", "i", "o", "u", "y"]
@@ -21,11 +22,11 @@ agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", 
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 nonspecific = ["card", "cards"]
 
-easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", "Heretical", "Scary",
-             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous",
-             "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful", "Nefarious",
+easterEgg = ["Misspelled", "Censored", "Inconvienient", "Evil", "Fucked up", "Sinister",  "Spooky", "Dark", "Scary",
+             "Rude", "Kind of mean", "Villainous", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous",
+             "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful", "Nefarious", "Heretical",
              "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted",  "Sinful", "Tretcherous",
-             "Deceitful", "Unholy", "Black", "Murderous", "Dust", "Fell", "ARG",  "Horror", "Bloody", "Hyper-realistic",
+             "Deceitful", "Unholy", "Black", "Murderous", "Dust", "Fell", "ARG",  "Horror", "Bloody", "Hyper-realistic", "Satanic",
              '"Evil Ass" Rape', "Woke", "British", "John", "Political", "Unfunny", "Okay there's nothing actually wrong with this"]
 
 # There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
@@ -510,7 +511,7 @@ def divine():
         discard.append(b)
         del finishedDeck[0]
     
-    if kind == "secret" and first == True:
+    if kind == "secret" and first == True or kind == "secret" and cursed == True:
         print("\nWelcome to my dark and twisted reality...")
     
     print(f"\n{len(finishedDeck)} cards remaining.")
