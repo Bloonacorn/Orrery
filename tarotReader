@@ -351,11 +351,12 @@ def reset():
                 card		= masterHand[i]
                 evilCard	= list(card)
                 for cycle in range(len(evilCard)):
-                    if evilCard[cycle-1] == "F" or evilCard[cycle-1] == "T":
+                    if evilCard[cycle-1] == "F" or evilCard[cycle-1] == "T" or evilCard[cycle-1] == " " and evilCard[cycle] == "o" or evilCard[cycle] == "f" and evilCard[cycle+1] == " ":
                         continue
-                    elif evilCard[cycle-1] == " " and evilCard[cycle] == "o":
+                    elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
+                        evilCard[cycle] = "*"
                         continue
-                    elif evilCard[cycle] == "f" and evilCard[cycle+1] == " ":
+                    else:
                         continue
                     elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
                         evilCard[cycle] = "*"
