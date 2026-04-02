@@ -48,7 +48,7 @@ jokers = ["Joker", "Jester"]
 easterEgg = ["Misspelled", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky", "Scary", "Dark", '"Evil Ass" Rape',
              "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening"
              "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel", "Undead", 
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "ARG", "Phantom", "Haunted"
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "ARG", "Phantom", "Haunted", "Unfunny",
              "Woke", "British", "John", "Green", "Political", "Censored", "Okay there's nothing actually wrong with this",
 ]
 
