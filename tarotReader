@@ -46,9 +46,11 @@ pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
 jokers = ["Joker", "Jester"]
 
 easterEgg = ["Misspelled", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky", "Scary", "Dark", '"Evil Ass" Rape',
-             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Okay there's nothing actually wrong with this",
-             "Political", "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel",
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Ghostly", "John", "Green", "Frightening"]
+             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening"
+             "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel", "Undead", 
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "ARG", "Phantom", "Haunted"
+             "Woke", "British", "John", "Green", "Political", "Censored", "Okay there's nothing actually wrong with this",
+]
 
 consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
 capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
