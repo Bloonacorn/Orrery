@@ -273,10 +273,6 @@ def reset():
     elif silencer == False:
         print("Reshuffling cards.")
         
-    print(f"kind: {kind}")
-    print(f"len(tarotDeck): {len(tarotDeck)}")
-    print(f"len(finishedDeck): {len(finishedDeck)}")
-        
     # I only found out that random has a shuffle feature after I wrote this code
     # but also i think using it would make this less of an achievement compare
     # to me figuring out the logic required to do it this way.
