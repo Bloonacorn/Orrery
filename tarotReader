@@ -24,7 +24,7 @@ nonspecific = ["card", "cards"]
 easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", '"Evil Ass" Rape',
              "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous",
              "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful", "Nefarious",
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted", "Unfunny",
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted", "Unfunny", "Sinful",
              "Woke", "British", "John", "Political", "Scary", "Okay there's nothing actually wrong with this"]
 
 # There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
