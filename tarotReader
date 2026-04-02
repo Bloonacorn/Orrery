@@ -44,6 +44,17 @@ suits = ["Wands", "Cups", "Swords", "Pentacles"]
 pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"] 
 pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
 jokers = ["Joker", "Jester"]
+
+easterEgg = ["Misspelled", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky", "Scary", "Dark", '"Evil Ass" Rape',
+             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Okay there's nothing actually wrong with this",
+             "Political", "Killer", "Slightly bent", "Slightly torn", "Dog-eared", "Malicious", "Wicked", "Cruel",
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Ghostly", "John", "Green"]
+
+consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
+vowels		= ["a", "e", "i", "o", "u", "y"]
+capsVowels	= ["A", "E", "I", "O", "U", "Y"]
+
 empty = []
 # in some games it matters which joker you have, which is why they have different names here.
 
@@ -69,6 +80,8 @@ discard			= []
 first		= True
 keepGoing	= True
 teasing		= False
+cursed		= False
+silencer	= False
 mean = 0
 
 ###############################################################
@@ -81,7 +94,7 @@ mean = 0
 # In theory, this could basically allow you to make new decks pretty much
 # arbitrarily. As long as it has the 3 lists its asking for.
 def makeDeck(x,y,z):
-    global minorArcana, tarotDeck
+    global tarotDeck
     for i in range(len(x)):
         for j in range(len(y)):
             minorArcana.append(x[i] + ' of ' + y[j])
@@ -93,7 +106,7 @@ def makeDeck(x,y,z):
 # This functions purpose is to insult the user for writing a
 # nonsensical input, it was surprisingly annoying to make.
 def scold():
-    global mean, teasing, first
+    global mean, teasing, kind, tarotDeck, cursed
     
     if mean == 0:
         print("That's not one of the options.")
@@ -121,13 +134,40 @@ def scold():
         print("Fundamentally broken human being.")
         mean = mean +1
     elif mean == 7:
-        print("That's it, no more unique error dialogue after this!")
+        print("That's it, if your foolishness continues, I'll CURSE you with my wicked hex!")
+        mean = mean +1
+    elif mean == 8 and cursed == True:
+        print("Man...")
+        mean = mean +1
+    elif mean == 8:
+        print("Wtfug I warned you about my wicked hex and everything! >:(")
+        print("You've forced my hand, I'm going to have to go all out, just this once...\n")
+        mean = mean +1
+        cursed = True
+    elif mean == 9:
+        print(":(")
+        mean = mean +1
+    elif mean == 10:
+        print("Y'know what, if you're not going to take this seriously, I'm leaving!")
+        print("No more unique error dialogue until you start taking this seriously again!")
         mean = mean +1
     else:
         print("Invalid input.")
         
+def powerOfDarkness():
+    global kind, silencer
+    purge()
+    b = pRanks
+    c = pSuits
+    d = jokers
+    kind = "secret"
+    makeDeck(b,c,d)
+    silencer = True
+    reset()
+    
 def forgive():
-    global mean
+    global mean, cursed
+    cursed = False
     mean = 0
 
 # This is just rolling attempting to turn it into a numbered answer into one program.
@@ -146,16 +186,16 @@ def speakAmerican(word):
 
 # resets all values to empty
 def purge():
-    global minorArcana, tarotDeck, masterHand, crazyHand, coinflips, discard
     del minorArcana[:]
     del tarotDeck[:]
     del masterHand[:]
     del crazyHand[:]
     del coinflips[:]
+    del finishedDeck[:]
     del discard[:]
 
 def decide():    
-    global kind
+    global kind, mean
     
     while True:
         a = input("Playing cards or tarot cards?\n").strip()
@@ -178,37 +218,42 @@ def decide():
         try:
             if a == 1:
                 print("Playing cards it is then.")
-                forgive()
+                b = pRanks
+                c = pSuits
                 while True:
-                    b = input("With or without jokers?\n").strip()
-                    b = speakAmerican(d)
-                    if b in agree or b == 1:
+                    d = input("With or without jokers?\n").strip()
+                    d = speakAmerican(d)
+                    if d in agree or d == 1:
                         print("Alright, with jokers it is.\n")
-                        forgive()
-                        b = jokers
+                        d = jokers
                         break
-                    elif b in disagree or b == 2:
+                    elif d in disagree or d == 2:
                         print("Alright, without jokers it is.\n")
-                        forgive()
-                        b = empty
+                        d = empty
                         break
                     else:
-                        scold()
+                        scold(d)
                         continue
-                kind = "playing"
-                makeDeck(pRanks, pSuits, b)
+                kind = "Playing"
+                makeDeck(b,c,d)
                 break
-                
+
             elif a == 2:
                 print("Tarot cards it is then.\n")
-                kind = "tarot"
-                makeDeck(ranks, suits, majorArcana)
+                b = ranks
+                c = suits
+                d = majorArcana    
+                kind = "Tarot"
+                makeDeck(b,c,d)
                 break 
             
             elif a == 3 or a == 666:
                 print("A secret, more sinister third thing...\n")
+                b = pRanks
+                c = pSuits
+                d = jokers
                 kind = "secret"
-                makeDeck(pRanks, pSuits, jokers)
+                makeDeck(b,c,d)
                 break
             
             else:
@@ -222,11 +267,15 @@ def decide():
 # it uses that list to randomly select cards from an orderly list
 # to move them into a disorderly one. 
 def reset():
-    global first, masterHand, crazyHand, tarotDeck, coinflips, finishedDeck, discard
-    if first == True:
+    global masterHand, silencer
+    if first == True and silencer == False:
         print("Shuffling cards.")
-    else:
+    elif silencer == False:
         print("Reshuffling cards.")
+        
+    print(f"kind: {kind}")
+    print(f"len(tarotDeck): {len(tarotDeck)}")
+    print(f"len(finishedDeck): {len(finishedDeck)}")
         
     # I only found out that random has a shuffle feature after I wrote this code
     # but also i think using it would make this less of an achievement compare
@@ -242,11 +291,11 @@ def reset():
         else:
             continue
 
-    if first == True:
+    if first == True and silencer == False:
         print("Shuffling cards..")
-    else:
+    elif silencer == False:
         print("Reshuffling cards..")
-    
+
     for a in range (len(tarotDeck)):
         b = crazyHand[a]
         b = b - 1
@@ -262,18 +311,54 @@ def reset():
         x = randint (0, 1)
         coinflips.append(x)           
         if coinflips[i] == 1 and kind ==  "tarot":
-            finishedDeck.append(f"{masterHand[i]} - (Reversed)")    
+            finishedDeck.append(f"{masterHand[i]} - (Reversed)")
+            
         elif kind == "secret":
-            finishedDeck.append(f"Evil {masterHand[i]}")
+            bad = randint (0, len(easterEgg)-2)
+            if bad == 0:
+                
+                card		= masterHand[i]
+                evilCard	= list(card)
+                
+                while True:
+                    x	= randint (0, len(evilCard))
+                    a	= randint (0, len(consonants))
+                    b	= randint (0, len(capsCons))
+                    c	= randint (0, len(vowels))
+                    d	= randint (0, len(capsVowels))
+
+                    try:
+                        if evilCard[x] in consonants and evilCard[x] != consonants[a]:
+                            evilCard[x] = consonants[a]
+                            break
+                        elif evilCard[x] in capsCons and evilCard[x] != capsCons[b]:
+                            evilCard[x] = capsCons[b]
+                            break
+                        elif evilCard[x] in vowels and evilCard[x] != vowels[c]:
+                            evilCard[x] = vowels[c]
+                            break
+                        elif evilCard[x] in capsVowels and evilCard[x] != capsVowels[d]:
+                            evilCard[x] = capsVowels[d]
+                            break
+                        else:
+                            continue
+                    except:
+                        continue
+                moreEvilCard = "".join(evilCard)
+                masterHand[i] = moreEvilCard
+                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
+            else:
+                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
         else:
             finishedDeck.append(masterHand[i])
     
-    if first == True:
+    if first == True and silencer == False:
         print("Shuffling cards...\n") 
-    else:
+    elif silencer == False:
         print("Reshuffling cards...\n")
     
     # These need to be purged before the next time the deck is shuffled.
+    silencer = False
     del masterHand[:]
     del crazyHand[:]
     del coinflips[:]
@@ -284,30 +369,37 @@ def reset():
 def again():
     global first, keepGoing, finishedDeck
     
+    keepGoing = False
+    yesAlready = False
+    
     while len(finishedDeck) != len(tarotDeck) and len(finishedDeck) > 0:     
         answer = input ("Do you want to reshuffle?\n") 
         answer = speakAmerican(answer)
         
-        if answer.lower() in agree:
+        if isinstance(answer, str) and answer.lower() in agree:
             keepGoing = True
+            yesAlready = True
+            del finishedDeck[:]
             print("Alright.")
             forgive()
             reset()
             break
-        elif answer.lower() in disagree:
+        elif isinstance(answer, str) and answer.lower() in disagree:
             print("Alright.")
             forgive()
             break
         else:
             scold()
         
-    while len(finishedDeck) != len(tarotDeck):
+    while len(finishedDeck) != len(tarotDeck) and yesAlready == False:
         answer = input (f"Keep drawing {kind} cards?\n")
         answer = speakAmerican(answer)
         
         if isinstance (answer, str) and answer.lower() in agree:
-            keepGoing = True  
+            keepGoing = True
+            yesAlready = True
             if len(finishedDeck) == 0:
+                del finishedDeck[:]
                 reset()
             print("Alright.")
             forgive()
@@ -318,31 +410,32 @@ def again():
             break
         else:
             scold()
+    
+    if keepGoing == False and yesAlready == False:
+        while len(finishedDeck) != len(tarotDeck):
+            answer = input("Do you want a different deck?\n")
+            answer = speakAmerican(answer)
             
-    while len(finishedDeck) != len(tarotDeck):
-        answer = input("Do you want a different deck?\n")
-        answer = speakAmerican(answer)
-        
-        if answer.lower() in agree:
-            keepGoing = True
-            print("Alright, same as before.")
-            forgive()
-            purge()
-            decide()
-            reset()
-            break
-        elif answer.lower() in disagree:
-            keepGoing = False
-            print("Alright, later then.")
-            forgive()
-            break
-        else:
-            scold()
+            if answer.lower() in agree:
+                keepGoing = True
+                print("Alright, same as before.")
+                forgive()
+                purge()
+                decide()
+                reset()
+                break
+            elif answer.lower() in disagree:
+                keepGoing = False
+                print("Alright, later then.")
+                forgive()
+                break
+            else:
+                scold()
 
 # divine() is basically the actual point of the program.
 # lets you pick how many cards you want to draw, and draw them (waow)
 def divine():
-    global first, keepGoing, kind, mean       
+    global first      
     
     if len(finishedDeck) != 0:
         while True:
@@ -415,21 +508,14 @@ def divine():
 # Everything above here is function definitions
 
 def master():
-    global keepGoing
+    global keepGoing, mean
     decide()
     reset()
-    while True:    
-        divine()
-        again()
-        if keepGoing == False:
-            break   
-master()
-
-def master():
-    global keepGoing
-    decide()
-    reset()
-    while True:    
+    if cursed == True:
+        powerOfDarkness()
+    while True:
+        if cursed == True:
+            powerOfDarkness()
         divine()
         again()
         if keepGoing == False:
