@@ -22,11 +22,11 @@ agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", 
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 nonspecific = ["card", "cards"]
 
-easterEgg = ["Misspelled", "Censored", "Inconvienient", "Evil", "Fucked up", "Sinister",  "Spooky", "Dark", "Scary",
+easterEgg = ["Misspelled", "Censored", "Inconvienient", "Evil", "Fucked up", "Sinister",  "Spooky", "Dark", "Scary", "Ominous",
              "Rude", "Kind of mean", "Villainous", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous",
              "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful", "Nefarious", "Heretical",
              "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted",  "Sinful", "Tretcherous",
-             "Deceitful", "Unholy", "Black", "Murderous", "Dust", "Fell", "ARG",  "Horror", "Bloody", "Hyper-realistic", "Satanic",
+             "Deceitful", "Unholy", "Black", "Murderous", "Horror", "Bloody", "Hyper-realistic", "Satanic", "Terrifying",
              '"Evil Ass" Rape', "Woke", "British", "John", "Political", "Unfunny", "Okay there's nothing actually wrong with this"]
 
 # There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
