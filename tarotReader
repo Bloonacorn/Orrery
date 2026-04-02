@@ -1,5 +1,32 @@
 from random import randint
 
+ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"]
+suits = ["Wands", "Cups", "Swords", "Pentacles"]
+majorArcana = ["0 - The Fool", "I - The Magician", "II - The High Priestess", "III - The Empress", "IV - The Emperor", "V - The Hierophant",
+               "VI - The Lovers", "VII - The Chariot", "VIII - Justice", "IX - The Hermit", "X - Wheel of Fortune", "XI - Strength",
+               "XII - The Hanged Man", "XIII - Death", "XIV - Temperance", "XV - The Devil", "XVI - The Tower", "XVII - The Stars",
+               "XVIII - The Moon", "XIX - The Sun", "XX - Judgement", "XXI - The World"]
+
+pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"] 
+pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
+jokers = ["Joker", "Jester"]
+empty = []
+
+consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
+vowels		= ["a", "e", "i", "o", "u", "y"]
+capsVowels	= ["A", "E", "I", "O", "U", "Y"]
+
+agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
+disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
+nonspecific = ["card", "cards"]
+
+easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", '"Evil Ass" Rape',
+             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening",
+             "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful",
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted", "Unfunny",
+             "Woke", "British", "John", "Political", "Scary", "Okay there's nothing actually wrong with this"]
+
 # There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
 # tbh, can't be fucked right now. Maybe later.
 johnSmartass = {
@@ -32,36 +59,6 @@ johnSmartass = {
     "evil ass rape deck": 3, "evil ass rape cards":3, "evil ass rape": 3, "evil cards": 3, "dark cards": 3,
     "sinister cards": 3, "fucked up cards": 3,  "spooky cards": 3, "secret cards": 3
 }
-
-majorArcana = ["0 - The Fool", "I - The Magician", "II - The High Priestess", "III - The Empress", "IV - The Emperor", "V - The Hierophant",
-               "VI - The Lovers", "VII - The Chariot", "VIII - Justice", "IX - The Hermit", "X - Wheel of Fortune", "XI - Strength",
-               "XII - The Hanged Man", "XIII - Death", "XIV - Temperance", "XV - The Devil", "XVI - The Tower", "XVII - The Stars",
-               "XVIII - The Moon", "XIX - The Sun", "XX - Judgement", "XXI - The World"]
-
-ranks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Page", "Knight", "Queen", "King"]
-suits = ["Wands", "Cups", "Swords", "Pentacles"]
-
-pRanks = ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"] 
-pSuits = ["Spades", "Diamonds", "Clubs", "Hearts"]
-jokers = ["Joker", "Jester"]
-
-easterEgg = ["Misspelled", "Censored", "Evil", "Fucked up", "Sinister", "Villainous", "Spooky",  "Dark", '"Evil Ass" Rape',
-             "Rude", "Kind of mean", "Inconvienient", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening",
-             "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful",
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted", "Unfunny",
-             "Woke", "British", "John", "Political", "Scary", "Okay there's nothing actually wrong with this"]
-
-consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
-capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
-vowels		= ["a", "e", "i", "o", "u", "y"]
-capsVowels	= ["A", "E", "I", "O", "U", "Y"]
-
-empty = []
-# in some games it matters which joker you have, which is why they have different names here.
-
-agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
-disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
-nonspecific = ["card", "cards"]
 
 minorArcana 	= []
 # suits + ranks
@@ -247,7 +244,7 @@ def decide():
                 b = ranks
                 c = suits
                 d = majorArcana    
-                kind = "Tarot"
+                kind = "tarot"
                 makeDeck(b,c,d)
                 break 
             
@@ -266,6 +263,63 @@ def decide():
                 
         except:
             continue
+        
+def corrupt(i):
+    global masterHand, finishedDeck
+    bad = randint (0, len(easterEgg)-1)
+    
+    # Add misspellings
+    if bad == 0:
+        card		= masterHand[i]
+        evilCard	= list(card)
+        
+        while True:
+            x = randint (0, len(evilCard))
+            a = randint (0, len(consonants))
+            b = randint (0, len(capsCons))
+            c = randint (0, len(vowels))
+            d = randint (0, len(capsVowels))
+
+            try:
+                if evilCard[x] in consonants and evilCard[x] != consonants[a]:
+                    evilCard[x] = consonants[a]
+                    break
+                elif evilCard[x] in capsCons and evilCard[x] != capsCons[b]:
+                    evilCard[x] = capsCons[b]
+                    break
+                elif evilCard[x] in vowels and evilCard[x] != vowels[c]:
+                    evilCard[x] = vowels[c]
+                    break
+                elif evilCard[x] in capsVowels and evilCard[x] != capsVowels[d]:
+                    evilCard[x] = capsVowels[d]
+                    break
+                else:
+                    continue
+            except:
+                continue
+        moreEvilCard = "".join(evilCard)
+        masterHand[i] = moreEvilCard
+        finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
+        
+    # Censor card
+    elif bad == 1:
+        card		= masterHand[i]
+        evilCard	= list(card)
+        for cycle in range(len(evilCard)):
+            if evilCard[cycle-1] == "F" or evilCard[cycle-1] == "T" or evilCard[cycle-1] == " " and evilCard[cycle] == "o" or evilCard[cycle] == "f" and evilCard[cycle+1] == " ":
+                continue
+            elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
+                evilCard[cycle] = "*"
+                continue
+            else:
+                continue
+        moreEvilCard = "".join(evilCard)
+        masterHand[i] = moreEvilCard
+        finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
+        
+    # Other evil
+    else:
+        finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
 
 # This creates a list of the numbers 1 - 78 in a random order with no duplicates.
 # it uses that list to randomly select cards from an orderly list
@@ -306,71 +360,17 @@ def reset():
         # this is now actively selecting one random card                
         masterHand.append(c)
         # this is writing this random order to the masterHand list
-
+            
     for i in range(len(tarotDeck)):
         x = randint (0, 1)
         coinflips.append(x)           
         if coinflips[i] == 1 and kind ==  "tarot":
             finishedDeck.append(f"{masterHand[i]} - (Reversed)")
-            
         elif kind == "secret":
-            bad = randint (0, len(easterEgg)-1)
-            if bad == 0:
-                
-                card		= masterHand[i]
-                evilCard	= list(card)
-                
-                while True:
-                    x = randint (0, len(evilCard))
-                    a = randint (0, len(consonants))
-                    b = randint (0, len(capsCons))
-                    c = randint (0, len(vowels))
-                    d = randint (0, len(capsVowels))
-
-                    try:
-                        if evilCard[x] in consonants and evilCard[x] != consonants[a]:
-                            evilCard[x] = consonants[a]
-                            break
-                        elif evilCard[x] in capsCons and evilCard[x] != capsCons[b]:
-                            evilCard[x] = capsCons[b]
-                            break
-                        elif evilCard[x] in vowels and evilCard[x] != vowels[c]:
-                            evilCard[x] = vowels[c]
-                            break
-                        elif evilCard[x] in capsVowels and evilCard[x] != capsVowels[d]:
-                            evilCard[x] = capsVowels[d]
-                            break
-                        else:
-                            continue
-                    except:
-                        continue
-                moreEvilCard = "".join(evilCard)
-                masterHand[i] = moreEvilCard
-                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
-            elif bad == 1:
-                card		= masterHand[i]
-                evilCard	= list(card)
-                for cycle in range(len(evilCard)):
-                    if evilCard[cycle-1] == "F" or evilCard[cycle-1] == "T" or evilCard[cycle-1] == " " and evilCard[cycle] == "o" or evilCard[cycle] == "f" and evilCard[cycle+1] == " ":
-                        continue
-                    elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
-                        evilCard[cycle] = "*"
-                        continue
-                    else:
-                        continue
-                    elif evilCard[cycle] in consonants or evilCard[cycle] in vowels:
-                        evilCard[cycle] = "*"
-                        continue
-                    else:
-                        continue
-                moreEvilCard = "".join(evilCard)
-                masterHand[i] = moreEvilCard
-                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
-            else:
-                finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
+            corrupt(i)
         else:
-            finishedDeck.append(masterHand[i])
-    
+            finishedDeck.append(masterHand[i])       
+     
     if first == True and silencer == False:
         print("Shuffling cards...\n") 
     elif silencer == False:
@@ -495,7 +495,7 @@ def divine():
                 if a.lower not in disagree:
                     print("That isn't a number.")
                 continue
-            
+    
     g = a
     
     for g in range(g):
