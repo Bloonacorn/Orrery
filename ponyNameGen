@@ -114,6 +114,11 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "zephyr",
 ]
 
+consonants	= ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"]
+capsCons	= ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]            
+vowels		= ["a", "e", "i", "o", "u", "y"]
+capsVowels	= ["A", "E", "I", "O", "U", "Y"]
+
 cuteMares = []
 
 ######################################################################
@@ -122,18 +127,27 @@ cuteMares = []
 def poni():
     w = input("How many names do you want?\n")
     w = int(w)
-    twice = randint (1, 100)
 
     for w in range(w):
-        a = randint (0, len(firstNames))
-        b = randint (0, len(lastNames))
-
-        if twice == 100:
-            cuteMares.append(f"{firstNames[a]} {lastNames[b]} but exactly twice-as-big")
+        a = randint (0, len(firstNames) -1)
+        a = firstNames[a]
+        a = a.capitalize()
+        
+        b = randint (0, len(lastNames) -1)
+        b = lastNames[b]
+        b = b.capitalize()
+        
+        c = randint (1, 30)
+        
+        if c == 30:
+            cuteMares.append(f"{a} {b} but exactly twice-as-big")
         else:
-            cuteMares.append(f"{firstNames[a]} {lastNames[b]}")
+            cuteMares.append(f"{a} {b}")
     
     for x in range(len(cuteMares)):
         print(cuteMares[x])
+        
+def master():
+    poni()
     
-poni()
+master()
