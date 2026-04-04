@@ -18,8 +18,8 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "fair", "fancy", "final", "first", "flash", "flawless", "flower", "fluffy",
                 "flustered", "flutter", "free", "friendly", "frosty", "frozen", "funky", "fun",
                 "funny", "fussy", "future",
-                "galena", "ghostly", "giddy", "ginger", "gleaming", "gloria", "golden", "goofy",
-                "grand", "great", "green", "grim",
+                "galaxy", "galena", "ghostly", "giddy", "ginger", "gleaming", "gloria", "golden", 
+                "goofy", "grand", "great", "green", "grim",
                 "happy", "herbal", "hidden", "hip", "honey", "honeycomb", "hot",
                 "ice", "indigo", "inky", "iron", "ivory", "ivy", "izzy",
                 "jade", "jelly", "jolly", "juicy", "june",
@@ -48,8 +48,8 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "sunny", "sunrise", "sunshine", "surprise", "suspicious", "sweetie", "swift",
                 "tangled", "tasty", "tea", "team", "tempest", "thirsty", "ticker", "tidal",
                 "tinder", "tinker", "tracy",
-                "tiny", "torch", "treasure", "tricky", "triple", "true", "trueheart", "tumbled",
-                "twilight", "twinkle",
+                "tiny", "torch", "treasure", "tricky", "triple", "trixie", "true", "trueheart", 
+                "tumbled", "twilight", "twinkle",
                 "umber",
                 "valentine", "vanilla", "velvet", "vesper", "vinyl",
                 "wacky", "wallflower", "warm", "water", "wave", "whale", "wicked", "wild",
@@ -61,8 +61,8 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "aura", "aurora",
                 "banner", "basin", "baskets", "bastion", "battalion", "baux", "bean", "bed",
                 "bee", "bell", "beyond", "bit", "blade", "blades", "blaze", "blazes",
-                "blitz", "bloom", "blossom", "blush", "bonnet", "brambles", "breaker",
-                "breeze", "bubbles", "business", "butter",
+                "blitz", "bloom", "blossom", "blush", "bonnet", "bottom", "brambles", 
+                "breaker", "breeze", "bubbles", "business", "butter",
                 "cage", "cake", "camellia", "candy", "canvas", "cascade", "castle", "catcher",
                 "charge", "charm", "chaser", "cider", "cipher", "circles", "circus", "clop",
                 "clouds", "coco", "compass", "cottage", "cream", "creamer", "creature",
@@ -75,8 +75,8 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "fashion", "fate", "fauna", "feather", "finish", "fire", "fish", "flakes",
                 "flame", "flanks", "flash", "flora", "flower", "flyer", "fool", "force",
                 "forest", "fritter", "front", "fun",
-                "gale", "gallop", "gambit", "gem", "giggle", "glacier", "glimmer", "glory",
-                "glow", "graces", "grape", "graves", "groove", "grounds", "grove",
+                "galaxy", "gale", "gallop", "gambit", "gem", "giggle", "glacier", "glimmer", 
+                "glory", "glow", "graces", "grape", "graves", "groove", "grounds", "grove",
                 "gumdrops",
                 "hammer", "harmony", "haste", "haven", "haze", "heart", "hearth", "heartstrings",
                 "heights", "helix", "hoofler", "hooves", "horse",
@@ -121,12 +121,16 @@ cuteMares = []
 def poni():
     w = input("How many names do you want?\n")
     w = int(w)
+    twice = randint (1, 100)
 
     for w in range(w):
         a = randint (0, len(firstNames))
         b = randint (0, len(lastNames))
-        
-        cuteMares.append(f"{firstNames[a]} {lastNames[b]}")
+
+        if twice == 100:
+            cuteMares.append(f"{firstNames[a]} {lastNames[b]} but exactly twice-as-big")
+        else:
+            cuteMares.append(f"{firstNames[a]} {lastNames[b]}")
     
     for x in range(len(cuteMares)):
         print(cuteMares[x])
