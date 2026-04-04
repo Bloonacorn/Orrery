@@ -114,6 +114,10 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "zephyr",
 ]
 
+titles    = [   "captain", "lady", "nurse", "princess",
+    
+    ]
+
 cuteMares = []
 
 ######################################################################
@@ -133,8 +137,17 @@ def poni():
         b = b.capitalize()
         
         c = randint (1, 30)
+        d = randint (1, 30)
         
-        if c == 30:
+        e = randint (0, len(titles) -1)
+        e = titles[e]
+        e = e.capitalize()
+        
+        if c == 30 and d == 30:
+            cureMare.append(f"{e} {a} {b} but exactly twice-as-big")
+        elif d == 30:
+            cureMare.append(f"{e} {a} {b}")
+        elif c == 30:
             cuteMares.append(f"{a} {b} but exactly twice-as-big")
         else:
             cuteMares.append(f"{a} {b}")
