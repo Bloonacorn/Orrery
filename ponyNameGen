@@ -1,6 +1,7 @@
-import random
+from random import randint
 
-firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "aloe", "amber",
+firstNames = [
+  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "aloe", "amber",
                 "amethyst", "angel", "aniseed", "anonymous", "apple", "apricot", "april", "aqua",
                 "aquatic",
                 "aria", "astral", "autumn",
@@ -11,7 +12,7 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "cheese", "cherry", "chew", "chewy", "chroma", "cinder", "cinnamon", "citrus",
                 "cloudy", "clover", "cobalt", "coco", "coffee", "cold", "cookie", "cosmic", "cotton",
                 "cozy", "crazy", "cream", "creature", "crinkly", "cross", "cryptic", "crystal",
-                "cucumber", "current", "curvy", "cutesy",
+                "cucumber", "cunny", "current", "curvy", "cutesy",
                 "daffy", "daisy", "dancing", "dapple", "daring", "dark", "day", "dazzle",
                 "deary", "deep", "delight", "derpy", "destiny", "diamond", "ditzy", "dizzy",
                 "donut", "double", "dozy",
@@ -32,10 +33,11 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "morning", "mulberry", "mystic", "mythic",
                 "nature", "nether", "nettle", "news", "nifty", "nightmare", "nimble", "north",
                 "ocean", "octavia", "opal", "orange", "orchid", "overcast",
-                "palette", "pancake", "pansy", "parsnip", "pastel", "peach", "peanut", "pear",
-                "pecan", "perfect", "pesky", "photo", "pickle", "pineapple", "pink", "pinkie",
-                "pizza", "platinum", "plum", "plump", "plush", "poison", "ponka", "pony",
-                "popcorn", "poppy", "powerful", "prairie", "pretty", "pumpkin", "pure", "purple",
+                "pacific", "palette", "pancake", "pansy", "parsnip", "pastel", "peach", "peanut", 
+                "pear", "pecan", "perfect", "pesky", "photo", "pickle", "pineapple", "pink", 
+                "pinkie", "pizza", "platinum", "plum", "plump", "plush", "poison", "ponka", 
+                "pony", "popcorn", "poppy", "powerful", "prairie", "pretty", "pumpkin", "pure", 
+                "purple", "purply",
                 "radiant", "rainbow", "rapid", "raspberry", "red", "retro", "risky", "river",
                 "rose", "royal", "ruby", "runic",
                 "sacred", "safe", "salty", "sapphire", "saucy", "scarlet", "scary", "screw",
@@ -56,7 +58,8 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "yellow", "yummy",
             ]
 
-lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "armor",
+lastNames = [
+   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "armor",
                 "aura", "aurora",
                 "banner", "basin", "baskets", "bastion", "battalion", "baux", "bean", "bed",
                 "bee", "bell", "beyond", "bit", "blade", "blades", "blaze", "blazes",
@@ -110,14 +113,22 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "zephyr",
 ]
 
+cuteMares = []
+
 ######################################################################
 # The above is a very long list of components for generating very stupid pony names
 
 def poni():
-    w = input("How many names do you want?")
-    int(w)
-    
-    for x in w:
+    w = input("How many names do you want?\n")
+    w = int(w)
+
+    for w in range(w):
         a = randint (0, len(firstNames))
         b = randint (0, len(lastNames))
-        print(f"{firstNames[a]} {lastNames[b]}")
+        
+        cuteMares.append(f"{firstNames[a+1]} {lastNames[b+1]}")
+    
+    for x in range(len(cuteMares)):
+        print(cuteMares[x])
+    
+poni()
