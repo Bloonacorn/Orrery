@@ -126,7 +126,7 @@ def poni():
         a = randint (0, len(firstNames))
         b = randint (0, len(lastNames))
         
-        cuteMares.append(f"{firstNames[a+1]} {lastNames[b+1]}")
+        cuteMares.append(f"{firstNames[a]} {lastNames[b]}")
     
     for x in range(len(cuteMares)):
         print(cuteMares[x])
