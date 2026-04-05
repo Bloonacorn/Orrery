@@ -42,13 +42,12 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "river", "rose", "rosemary", "royal", "ruby", "runic",
                 "sacred", "safe", "salty", "sapphire", "saucy", "scarlet", "scary", "screw",
                 "scootaloo", "sea", "secret", "sensual", "shadow", "shining", "silent", "silky",
-                "silly", "silver", "simple", "skyline", "sleepy", "smashing", "smutty", "snazzy",
-                "sneaky", "soda", "soft", "soiree", "solar", "sombra", "sonata", "sonic",
-                "sovereign", "speculative", "speedy", "spooky", "spring", "squeaky", "starlight", "starry",
-                "stellar", "sticky", "still", "stormy", "strawberry", "strong", "sugar", "sunburst",
-                "summer",
-                "sunny", "sunrise", "sunshine", "surprise", "suspicious", "sweetie",
-                "swift",
+                "silly", "silver", "simple", "skyline", "sleepy", "smashing", "smutty", "snails",
+                "snazzy", "sneaky", "snips", "soda", "soft", "soiree", "solar", "sombra",
+                "sonata", "sonic", "sovereign", "speculative", "speedy", "spooky", "spring", "squeaky",
+                "starlight", "starry", "stellar", "sticky", "still", "stormy", "strawberry", "strong",
+                "sugar", "sunburst", "summer", "sunny", "sunrise", "sunshine", "surprise", "suspicious",
+                "sweetie", "swift",
                 "tangled", "tasty", "tea", "team", "tempest", "thirsty", "ticker", "tidal",
                 "tender", "tinder", "tinker", "tracy", "tiny", "torch", "treasure", "tricky",
                 "triple", "trixie", "true", "trueheart", "tumbled", "twilight", "twinkle",
@@ -85,7 +84,7 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "ice",
                 "jack", "jam", "jasmine", "jewel", "joke", "joy", "jubilee",
                 "key", "kicker", "kiss", "kisses",
-                "lance", "leaves", "light", "lilac", "loose", "love", "luck", "lullaby", 
+                "lance", "leaves", "light", "lilac", "loose", "love", "luck", "lullaby",
                 "lulamoon",
                 "magnet", "mane", "marbles", "mare", "mash", "meadow", "melody", "memory", 
                 "miasma", "mirror", "moon", "moonbow", "moonlight", "muffin", "munch", "music",
@@ -115,19 +114,28 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "zephyr",
 ]
 
-titles    = [   "captain", "dark", "lady", "nurse", "princess",
-    
-    ]
+titles    = [   "captain", "dark", "lady", "nurse", "princess"]
+
+agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
+disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
 cuteMares = []
+
+keepGoing = True
 
 ######################################################################
 # The above is a very long list of components for generating very stupid pony names
 
-def poni():
-    w = input("How many names do you want?\n")
-    w = int(w)
-
+def makeMares():
+    while True:
+        w = input("How many names do you want?\n")
+        try:
+            w = int(w)
+            break
+        except:
+            print("Only currently accepts whole numbers. 1, 2, 3, etc.")
+            continue
+    
     for w in range(w):
         a = randint (0, len(firstNames) -1)
         a = firstNames[a]
@@ -154,9 +162,34 @@ def poni():
             cuteMares.append(f"{a} {b}")
     
     for x in range(len(cuteMares)):
-        print(cuteMares[x])
+        print(f"Mare {x+1}: {cuteMares[x]}")
         
+# def correction(a):
+    
+
+def dontForget():
+    global keepGoing
+    
+    while True:        
+        a = input("Do you want more mare names? (y/n) \n")
+        if isinstance (a, str) and a.lower() in agree:
+            keepGoing = True
+            del cuteMares[:]
+            break
+        elif isinstance (a, str) and a.lower() in disagree:
+            b = input("Alright, later then.\n(Input any value to close program)")
+            keepGoing = False
+            break
+        else:
+            print("Has to be a yes or no.")
+            continue
+
 def master():
-    poni()
+    while True:
+        if keepGoing == True:
+            makeMares()
+            dontForget()
+        else:
+            break
     
 master()
