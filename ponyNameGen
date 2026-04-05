@@ -8,20 +8,20 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "bronze", "brush", "bubble", "bubblegum", "burning", "button",
                 "cabbage", "cactus", "cadence", "canters", "caramel", "carnival", "carrot", "celestia",
                 "chaser", "cheery", "cheese", "cherry", "chew", "chewy", "chroma", "cinder",
-                "cinnamon", "citrus", "cloudy", "clover", "cobalt", "coco", "coffee", "cold",
-                "cookie", "copper", "cosmic", "cotton", "cozy", "crafty", "crazy", "cream",
-                "creature", "cross", "cryptic", "crystal", "cucumber", "current", "curvy",
-                "cutesy",
+                "cinnamon", "cirrus", "citrus", "cloudy", "clover", "cobalt", "coco", "coffee",
+                "cold", "cookie", "copper", "cosmic", "cotton", "cozy", "crafty", "crazy",
+                "cream", "creature", "cross", "cryptic", "crystal", "cucumber", "current",
+                "curvy", "cutesy",
                 "daffy", "daisy", "dancing", "dapple", "daring", "dark", "day", "dazzle",
                 "deary", "deep", "delight", "derpy", "destiny", "diamond", "ditzy", "dizzy",
                 "donut", "double", "dozy",
                 "echo", "ebony", "electric", "emerald", "empty", "endless", "error", "eternal",
-                "fair", "fancy", "final", "first", "flash", "flawless", "flower", "fluffy",
-                "flustered", "flurry", "flutter", "free", "friendly", "frosty", "frozen", "funky",
-                "fun", "funny", "fussy", "future",
+                "fair", "fancy", "filthy", "final", "first", "flash", "flawless", "flower",
+                "fluffy", "flustered", "flurry", "flutter", "fossil", "free", "friendly", "frosty",
+                "frozen", "funky", "fun", "funny", "fussy", "future",
                 "galaxy", "galena", "gentle", "ghostly", "giddy", "ginger", "gleaming", "gloria",
                 "golden", "goofy", "grand", "great", "green", "grim",
-                "happy", "herbal", "hidden", "hip", "honey", "honeycomb", "hot",
+                "happy", "harvest", "herbal", "hidden", "hip", "honey", "honeycomb", "hot",
                 "ice", "indigo", "inky", "iron", "ivory", "ivy", "izzy",
                 "jade", "jelly", "jolly", "juicy", "june",
                 "keen", "kind", "kindle",
@@ -44,17 +44,18 @@ firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "al
                 "scootaloo", "sea", "secret", "sensual", "shadow", "shining", "silent", "silky",
                 "silly", "silver", "simple", "skyline", "sleepy", "smashing", "smutty", "snails",
                 "snazzy", "sneaky", "snips", "soda", "soft", "soiree", "solar", "sombra",
-                "sonata", "sonic", "sovereign", "speculative", "speedy", "spooky", "spring", "squeaky",
+                "sonata", "sonic", "sovereign", "speculative", "spoiled", "speedy", "spooky", "spring",
+                "squeaky",
                 "starlight", "starry", "stellar", "sticky", "still", "stormy", "strawberry", "strong",
                 "sugar", "sunburst", "summer", "sunny", "sunrise", "sunshine", "surprise", "suspicious",
                 "sweetie", "swift",
-                "tangled", "tasty", "tea", "team", "tempest", "thirsty", "ticker", "tidal",
-                "tender", "tinder", "tinker", "tracy", "tiny", "torch", "treasure", "tricky",
-                "triple", "trixie", "true", "trueheart", "tumbled", "twilight", "twinkle",
+                "tangle", "tangled", "tasty", "tea", "team", "tempest", "thirsty", "ticker",
+                "tidal", "tender", "tinder", "tinker", "tracy", "tiny", "torch", "treasure",
+                "tricky", "triple", "trixie", "true", "trueheart", "tumbled", "twilight", "twinkle",
                 "umber",
                 "valentine", "vanilla", "vela", "velvet", "vesper", "vinyl",
-                "wacky", "wallflower", "warm", "water", "wave", "whale", "wicked", "wild",
-                "windy", "winter", "worry",
+                "wacky", "wallflower", "warm", "water", "wave", "whale", "white", "wicked",
+                "wild", "windy", "winter", "worry",
                 "yellow", "yummy",
             ]
 
@@ -62,8 +63,8 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "aura", "aurora",
                 "banner", "basin", "baskets", "bastion", "battalion", "baux", "bean", "bed",
                 "bee", "bell", "beyond", "bit", "blade", "blades", "blaze", "blazes",
-                "blitz", "bloom", "blossom", "blush", "bonnet", "bottom", "brambles", 
-                "breaker", "breeze", "bubbles", "business", "butter",
+                "bliss", "blitz", "bloom", "blossom", "blush", "bonnet", "bottom", "brambles",
+                "breaker", "breeze", "bubbles", "burger", "business", "butter",
                 "cage", "cake", "camellia", "candy", "canvas", "cascade", "castle", "catcher",
                 "charge", "charm", "chaser", "cider", "cipher", "circles", "circus", "clop",
                 "clouds", "coco", "compass", "cottage", "cream", "creamer", "creature",
@@ -79,42 +80,49 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "galaxy", "gale", "gallop", "gambit", "gem", "giggle", "glacier", "glimmer", 
                 "glory", "glow", "graces", "grape", "graves", "groove", "grounds", "grove",
                 "gumdrops",
-                "hammer", "harmony", "haste", "haven", "haze", "heart", "hearth", "heartstrings",
-                "heights", "herring", "helix", "hoofler", "hooves", "horse",
+                "hammer", "harmony", "harvest", "haste", "haven", "haze", "heart", "hearth",
+                "heartstrings", "heights", "herring", "helix", "hoofler", "hooves", "horse",
                 "ice",
                 "jack", "jam", "jasmine", "jewel", "joke", "joy", "jubilee",
                 "key", "kicker", "kiss", "kisses",
-                "lance", "leaves", "light", "lilac", "loose", "love", "luck", "lullaby",
-                "lulamoon",
+                "lance", "leaf", "leaves", "light", "lilac", "lining", "loose", "love",
+                "luck", "lullaby", "lulamoon",
                 "magnet", "mane", "marbles", "mare", "mash", "meadow", "melody", "memory", 
                 "miasma", "mirror", "moon", "moonbow", "moonlight", "muffin", "munch", "music",
-                "nature", "nebula", "nova",
+                "nature", "nebula", "nova", "nuance",
                 "palace", "party", "passion", "patty", "peach", "pearl", "petal", "petunia",
                 "pie", "plains", "plant", "plum", "pocket", "poe", "point", "poni",
-                "pony", "pool", "pommel", "pop", "poster", "power", "prairie", "prance",
-                "prancer", "precious", "prism", "pudding", "puff", "punch", "puzzle",
-                "question", "quiet", "quill",
-                "rain", "raiser", "redheart", "remedy", "reverie", "ride", "ripple", "river",
-                "road", "roll", "rose", "roses", "roulette", "rush",
+                "pony", "pool", "pommel", "pop", "popper", "poster", "power", "prairie",
+                "prance", "prancer", "precious", "prism", "pudding", "puff", "punch", "puzzle",
+                "quest", "question", "quiet", "quill",
+                "rain", "raiser", "redheart", "remedy", "reverie", "ride", "rich", "ripple",
+                "river", "road", "roll", "rose", "roses", "rotten", "roulette", "rush",
                 "saddles", "safari", "sands", "sandwich", "scratch", "scrolls", "sea", "season",
                 "secret", "seeds", "sense", "sentry", "serenade", "shadow", "shaft", "shambles",
                 "shape", "shard", "shell", "shield", "shimmer", "shine", "shores", "shot",
                 "shoulder", "showers", "shy", "side", "sight", "skies", "sky", "slumber",
                 "smiles", "smith", "smoke", "smoulder", "smooch", "snow", "snowflake", "snowpity",
                 "socks", "song", "sorbet", "sounds", "spade", "spark", "sparkle", "sparklemoon",
-                "spears", "spice", "spinel", "spiral", "spirit", "spot", "squeeze", "star",
+                "spears", "spice", "spinel", "spiral", "spirit", "splash", "spot", "squeeze",
+                "star",
                 "starscout", "steel", "stone", "stream", "strike", "strings", "stroke", "strong", 
                 "study", "swap", "sweet", "swirl", "swords",
                 "tail", "tart", "theme", "thorn", "thread", "tiara", "tired", "toast",
                 "tomb", "top", "trail", "trance", "travel", "trifle", "trot", "tulip",
-                "tundra", "tune", "twirl", "twist", "two",
+                "tundra", "tune", "twirl", "twist",
                 "valley", "valor", "veil", "vine",
                 "wafer", "waffle", "water", "way", "weather", "whisper", "whistles", "wings",
                 "wish", "wishes", "wonder", "wood", "woods", "wreath",
                 "zephyr",
 ]
 
-titles    = [   "captain", "dark", "lady", "nurse", "princess"]
+titles    = [   "captain", "dark", "lady", "nurse", "princess", "queen", "the great and powerful",
+                "saint", "marshal", "doctor",
+    ]
+
+trailing  = [   "but exactly twice-as-big", "two",
+    
+    ]
 
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
@@ -152,12 +160,15 @@ def makeMares():
         e = titles[e]
         e = e.capitalize()
         
+        f = randint (0, len(trailing) -1)
+        f = trailing[f]
+        
         if c == 30 and d == 30:
-            cuteMares.append(f"{e} {a} {b} but exactly twice-as-big")
+            cuteMares.append(f"{e} {a} {b} {f}")
         elif d == 30:
             cuteMares.append(f"{e} {a} {b}")
         elif c == 30:
-            cuteMares.append(f"{a} {b} but exactly twice-as-big")
+            cuteMares.append(f"{a} {b} {f}")
         else:
             cuteMares.append(f"{a} {b}")
     
