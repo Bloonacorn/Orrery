@@ -1,0 +1,261 @@
+from random import randrange
+from random import randint
+
+# def display_board(board):
+# 	print("+-------" * 3,"+", sep="")
+# 	for row in range(3):
+# 		print("|       " * 3,"|", sep="")
+# 		for col in range(3):
+# 			print("|   " + str(board[row][col]) + "   ", end="")
+# 		print("|")
+# 		print("|       " * 3,"|",sep="")
+# 		print("+-------" * 3,"+",sep="")
+
+# 12x12 grid, squares all seperated, randomly either commas or periods
+# for x in range (12):
+#     print("")
+#     print("+---" * 12, "+", sep="")
+#     for y in range (12):
+#         a = randint (0, 1)
+#         if a == 1:
+#             print("| , ", end="")
+#         else:
+#             print("| . ", end="")
+#     print("|", end="")
+# print("")
+# print("+---" * 12, "+", sep="")
+
+###############################################
+
+# # Modular enclosed ascii board
+# 
+# a = 12 # vertical
+# b = 14 # horizontal
+# 
+# print("+", "-" * b, "+", sep="", end="")
+# for x in range (a):
+#     print("")
+#     print("|", end="")
+#     for y in range (b):
+#         z = randint (0, 1)
+#         if z == 1:
+#             print(",", end="")
+#         else:
+#             print(".", end="")
+#     print("|", end="")
+# print("")
+# print("+", "-" * b, "+", sep="")
+
+###############################################
+
+# Modular grid that equalizes spacing of displayed index
+
+a = 7 		# vertical
+b = 9 		# horizontal
+        
+c = 0 		# max array value size
+d = 0		# border adjustment
+        
+board = [ [a * j + i + 1 for i in range(b)] for j in range(a) ]
+ground = [ [" " for i in range(b)] for j in range(a) ]
+
+compass = { "n":0,"e":1,"w":2,"s":3, "north":0,"east":1,"west":2,"south":3, "up":0,"right":1,"left":2,"down":3}
+
+victory = False
+
+respace = []
+you = []
+flag = []
+
+def detectLen(ver, hor):
+    global c,d 
+    for i in range(ver):
+        for j in range(hor):
+            value = board[i][j]
+            value = str(value)
+            list(value)
+            value2 = len(value)
+            if value2 > c:
+                c = value2
+                d = c + 1
+            
+def adjust(ver, hor, area):
+    for h in range(ver):
+        for i in range(hor):
+            value 		= board[h][i]
+            square		= value
+            square = str(square)
+            list(square)
+            space		= area - len(square)
+            square = "".join(square)
+            y = (" " * space, square)
+            y = "".join(y)
+            respace.append(y)
+            squareSpace	= respace[i]
+            board[h][i] = squareSpace
+        del respace[:]
+
+def world(ver, hor, bord):
+    print("+-", "-" * hor * bord, "+", sep="", end="")
+    for x in range (ver):
+        print("")
+        print("| ", end="")
+        for y in range (hor):
+            print(board[x][y], " ", sep="", end="")
+        print("|", end="")
+    print("")
+    print("+-", "-" * hor * bord, "+", sep="")
+    
+def topsoil(ver, hor):
+    for x in range (ver):
+        for y in range (hor):
+            a = randint(0,1)
+            if a == 1:
+                board[x][y] = ","
+                ground[x][y] = ","
+            else:
+                board[x][y] = "."
+                ground[x][y] = "."   
+    
+def spawn(ver, hor):
+    global you, flag
+    a = randint(0,hor-1)
+    b = randint(0,ver-1)
+    board[a][b] = "@"
+    list(you)
+    you.append(a)
+    you.append(b)
+    
+    while True:
+        c = randint(0,hor-1)
+        d = randint(0,ver-1)
+        if c == a and d == b:
+            continue
+        else:
+            board[c][d] = "F"
+            list(flag)
+            flag.append(c)
+            flag.append(d)
+            break
+
+def translate(a):
+    try:
+        a = int(a)
+    except:
+        pass
+    if isinstance(a, str) and a.lower() in compass:
+        babble		= a.lower()
+        evilBabble	= compass[babble]
+        a	= int(evilBabble)
+    return a
+
+
+def rules():
+    print(
+        """
+    +================================+
+    | You are "@". The flag is "F"   |
+    | Acquiring this flag is your    |
+    | reason for being. Input the    |
+    | direction you want to move     |
+    | (n, e, w, s) to reach the end. |
+    +================================+
+          
+          """)
+
+def move():
+    while True:
+        a = input("Which direction? (North, South, East or West)\n")
+        b = you[0]
+        c = you[1]
+        
+        a = translate(a)
+        
+        print(f"you: vert:{you[0]}, hor:{you[1]}")
+        print(f"flag: {flag}")
+        print(f"a = int?: {isinstance(a, int)}")
+        print(f"a: {a}")
+        
+        try:
+            # north
+            if a == 0:
+                if 0 <= b-1 < len(board) and 0 <= c < len(board[0]):
+                    
+                    me = you[0]
+                    me = me - 1
+                    you[0] = me
+                    
+                    x = ground[b][c]
+                    board[b][c] = x
+                    board[b-1][c] = "@"
+                    
+                    break
+            # east
+            elif a == 1:
+                if 0 <= b < len(board) and 0 <= c+1 < len(board[0]):
+                    
+                    me = you[1]
+                    me = me + 1
+                    you[1] = me
+                    
+                    x = ground[b][c]
+                    board[b][c] = x
+                    board[b][c+1] = "@"
+                    
+                    break
+            # west
+            elif a == 2:
+                if 0 <= b < len(board) and 0 <= c-1 < len(board[0]):
+                    
+                    me = you[1]
+                    me = me - 1
+                    you[1] = me
+                    
+                    x = ground[b][c]
+                    board[b][c] = x
+                    board[b][c-1] = "@"
+                    
+                    break
+            #south
+            elif a == 3:
+                if 0 <= b+1 < len(board) and 0 <= c < len(board[0]):
+                    
+                    me = you[0]
+                    me = me + 1
+                    you[0] = me
+                    
+                    x = ground[b][c]
+                    board[b][c] = x
+                    board[b+1][c] = "@"
+                    
+                    break
+        except:
+            print("Invalid move, try again.")
+
+            
+def win():
+    global victory
+    a = you[0]
+    b = you[1]
+    c = flag[0]
+    d = flag[1]
+    if a == c and b == d:
+        victory = True
+
+def master():
+    topsoil(a,b)
+    detectLen(a,b)
+    adjust(a,b,c)
+    spawn(a,b)
+    rules()
+    while True:
+        world(a,b,d)
+        move()
+        win()
+        if victory == True:
+            world(a,b,d)
+            print("===YOU WIN===")
+            input("Press enter to close game.")
+            break
+        
+master()
