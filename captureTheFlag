@@ -1,9 +1,8 @@
 from random import randrange
 from random import randint
 
-a = 8 		# vertical
-b = 8		# horizontal
-        
+a = 9		# vertical
+b = 20		# horizontal       
 c = 0 		# max array value size
 d = 0		# border adjustment
 
@@ -77,15 +76,16 @@ def topsoil(ver, hor):
     
 def spawn(ver, hor):
     global you, flag
-    a = randint(0,hor-1)
-    b = randint(0,ver-1)
+    a = randint(0,ver-1)
+    b = randint(0,hor-1)
     board[a][b] = "@"
     you.append(a)
     you.append(b)
     
     while True:
-        c = randint(0,hor-1)
-        d = randint(0,ver-1)
+        c = randint(0,ver-1)
+        d = randint(0,hor-1)
+        
         if c == a and d == b:
             continue
         else:
@@ -96,8 +96,8 @@ def spawn(ver, hor):
 
     t = 0
     while t != trees:
-        c = randint(0,hor-1)
-        d = randint(0,ver-1)
+        c = randint(0,ver-1)
+        d = randint(0,hor-1)
         e = board[c][d]
         
         if e != "@" and e != "F" and e != "T":
