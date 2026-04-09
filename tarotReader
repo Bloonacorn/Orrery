@@ -22,11 +22,11 @@ agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", 
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 nonspecific = ["card", "cards"]
 
-easterEgg = ["Misspelled", "Censored", "Inconvienient", "Evil", "Fucked up", "Sinister",  "Spooky", "Dark", "Scary", "Ominous",
-             "Rude", "Kind of mean", "Villainous", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous",
+easterEgg = ["Misspelled", "Censored", "Inconvienient", "Evil", "Fucked up", "Sinister",  "Spooky", "Dark", "Scary", "Ominous", "Mischievous",
+             "Rude", "Kind of mean", "Villainous", "Monstrous", "Occult", "Ghostly", "Skeletal", "Frightening", "Unscrupulous", "Dastardly",
              "Killer", "Slightly bent", "Slightly torn", "Malicious", "Wicked", "Cruel", "Undead", "Spiteful", "Nefarious", "Heretical",
-             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted",  "Sinful", "Tretcherous",
-             "Deceitful", "Unholy", "Black", "Murderous", "Horror", "Bloody", "Hyper-realistic", "Satanic", "Terrifying",
+             "Fiendish", "Devilish", "Demonic", "Cursed", "Hexxed", "Spectral", "Phantom", "Haunted",  "Sinful", "Treacherous",
+             "Deceitful", "Unholy", "Black", "Murderous", "Horror", "Bloody", "Hyper-realistic", "Satanic", "Terrifying", "Corrupted",
              '"Evil Ass" Rape', "Woke", "British", "John", "Political", "Unfunny", "Okay there's nothing actually wrong with this"]
 
 # There's definitely a better way to do this, especially given how repetative the words for increasing numbers are
@@ -271,6 +271,10 @@ def corrupt(i):
     bad = randint (0, len(easterEgg)-1)
     
     # Add misspellings
+    # this is designed to only fuck up one letter so you can still tell
+    # what card its supposed to be, with an intentional preference for
+    # lowercase consonants > capital consonants > vowels > capital vowels.
+    # because I feel it keeps the words comphrehensible.
     if bad == 0:
         card		= masterHand[i]
         evilCard	= list(card)
@@ -304,6 +308,8 @@ def corrupt(i):
         finishedDeck.append(f"{easterEgg[bad]} {masterHand[i]}")
         
     # Censor card
+    # this is designed not to censor the capitals, word 'of' or the second letters of the words
+    # 'four', 'five', 'two' and 'ten' so that its always possible to determine the actual card
     elif bad == 1:
         card		= masterHand[i]
         evilCard	= list(card)
