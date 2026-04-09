@@ -199,14 +199,17 @@ def rules():
     print(
         """
     +================================+
-    | You are "@". The flag is "F"   |
-    | Acquiring this flag is your    |
-    | reason for being.              |
-    | However, there are trees "T"   |
+    | "@" is (You).                  |
+    | "F" the flag of the enemy,     |
+    | acquiring it is your reason    |
+    | for being.                     |
+    | "T" are the forest's trees     |
     | blocking your path.            |
+    | "J" are the enemies men, you   |
+    | must avoid them at all costs!  |
     | Input the direction you want   |
     | to move to reach the end.      |
-    |         (awsd works)           |
+    | a=left, w=up, s=down, d=right  |
     +================================+
           """)
 
