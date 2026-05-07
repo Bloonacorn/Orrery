@@ -111,11 +111,6 @@ john_rest = 0 # how long J has been resting
 # Because it is not possible for it to decide to do something that would trigger
 # this as of now, I'm ignoring it unless it becomes a problem.
 #
-# 2. MAJOR BUG - player movement failure
-# Code for player movement stopped working after doppelganger_flank()
-# was implemented. Responds when walking into a tree, unresponsive on
-# attempts to move
-#
 ###############################################################
 # DISCLAIMER:
 #
