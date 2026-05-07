@@ -71,6 +71,15 @@ john_rest = 0 # how long J has been resting
 # 
 # 4. Limit how long John is allowed to be on the players ass.
 #
+# 5. improve softlock check to ensure doppelganger can reach player
+#
+# 6. Break that pathfinding logic down into subfunctions, too many
+# points of goddamn failure that shit is hell
+#
+# 7. switch john b. treyl over to using movementTWO(), 4 different functions
+# just to move? wtf john thats extravagant. There are poor starving african
+# children who can't even afford to know a dedicated left function
+#
 ####################################################################
 # Enemy list:
 #
@@ -78,7 +87,7 @@ john_rest = 0 # how long J has been resting
 # 'YOU ARE BETRAYED!'
 # Walks directly towards the player.
 #
-# Enemy #2: Doppleganger "\033[1;37mA\033[0m" (IN DEVELOPMENT)
+# Enemy #2: Doppleganger "\033[1;37mA\033[0m" (COMPLETE)
 # 'two men'
 # Instead of trying to move towards the player, he tries to move to the
 # nearest space that is in the players shortest path to the flag. If hes
