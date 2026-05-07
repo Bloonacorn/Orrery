@@ -74,11 +74,11 @@ john_rest = 0 # how long J has been resting
 ####################################################################
 # Enemy list:
 #
-# Enemy #1: John B. Treyl "J" (COMPLETE)
+# Enemy #1: John B. Treyl "\033[38;2;40;149;253m♞\033[0m" (COMPLETE)
 # 'YOU ARE BETRAYED!'
 # Walks directly towards the player.
 #
-# Enemy #2: Doppleganger "A" (IN DEVELOPMENT)
+# Enemy #2: Doppleganger "\033[1;37mA\033[0m" (IN DEVELOPMENT)
 # 'two men'
 # Instead of trying to move towards the player, he tries to move to the
 # nearest space that is in the players shortest path to the flag. If hes
@@ -107,6 +107,15 @@ john_rest = 0 # how long J has been resting
 # was implemented. Responds when walking into a tree, unresponsive on
 # attempts to move
 #
+###############################################################
+# DISCLAIMER:
+#
+# I am not actually smart enough to understand the fuckin ANSII format of instructions.
+# Seriously, that formats ancient, noone actually believes I understand that kind of special
+# instruction shit lmfao. I looked that up.
+# I just wanted to make sure the more important symbols stood out better without having to
+# use only symbols that are bold by default. If you quiz me on how ANSII works later I don't
+# fuckin know lmfao. Its good qol tho, just take it as that and nothing more.
 ####################################################################
 
 # This is basically so the size of the board can vary based
@@ -168,8 +177,8 @@ def topsoil(ver, hor):
 def spawn(ver, hor):
     global you, flag, enemy, forest
     
-    symbols = ["♠", "⚑", "J", "@", "B", "C", "A"]
-    flagless = ["♠", "@", "B", "C", "A"] # cannot contain "F" or "J"
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "B", "C", "\033[1;37mA\033[0m"]
+    flagless = ["T", "\033[1;37m@\033[0m", "B", "C", "\033[1;37mA\033[0m"] # cannot contain "F" or "\033[38;2;40;149;253m♞\033[0m"
     
     while True:
         # You
@@ -178,7 +187,7 @@ def spawn(ver, hor):
             b = randint(0,hor-1)
             
             if board[a][b] not in symbols:
-                board[a][b] = "@"
+                board[a][b] = "\033[1;37m@\033[0m"
                 you.append(a)
                 you.append(b)
                 break
@@ -200,8 +209,8 @@ def spawn(ver, hor):
             b = randint(0,hor-1)
             
             if board[a][b] not in symbols:
-                board[a][b] = "♠"
-                ground[a][b] = "♠"
+                board[a][b] = "T"
+                ground[a][b] = "T"
                 forest.append([a,b])
                 t += 1
         # John B. Treyl
@@ -210,7 +219,7 @@ def spawn(ver, hor):
             b = randint(0,hor-1)
             
             if board[a][b] not in symbols:
-                board[a][b] = "J"
+                board[a][b] = "\033[38;2;40;149;253m♞\033[0m"
                 enemy.append(a)
                 enemy.append(b)
                 break
@@ -220,7 +229,7 @@ def spawn(ver, hor):
             b = randint(0,hor-1)
             
             if board[a][b] not in symbols:
-                board[a][b] = "A"
+                board[a][b] = "\033[1;37mA\033[0m"
                 twoman.append(a)
                 twoman.append(b)
                 break
@@ -228,7 +237,7 @@ def spawn(ver, hor):
         #######################################################
         # SOFTLOCK CHECK:
         #
-        # Part 1: Use pathfinding code to detect path from "F" to "@" and from "J" to "@".
+        # Part 1: Use pathfinding code to detect path from "F" to "\033[1;37m@\033[0m" and from "\033[38;2;40;149;253m♞\033[0m" to "\033[1;37m@\033[0m".
         # Part 2: If either path fails to generate, regenerate map and recheck.
         
         pathfinder = [[-1 for _ in range(hor)] for _ in range(ver)] # temp list of lists, used for pathfinding
@@ -308,25 +317,25 @@ def rules():
     ║ being captured by members of the enemy clan, the wicked       ║
     ║ and sinister Treyl Clan!                                      ║
     ║                                                               ║
-    ║ "@" is (You). You can move by typing the direction            ║
+    ║ "\033[1;37m@\033[0m" is (You). You can move by typing the direction            ║
     ║ you want to go.                                               ║
     ║                                                               ║
     ║ "w", "0", "up", or "north" will move up.                      ║
-    ║ "A", "1", "right", or "east" will move right.                 ║
+    ║ "d", "1", "right", or "east" will move right.                 ║
     ║ "a", "2", "left", or "west" will move left.                   ║
     ║ "s", "3", "down", or "south" will move down.                  ║
     ║                                                               ║
     ║ "⚑" is the flag of the enemy,                                 ║
     ║ If you reach the flag safely, you win.                        ║
     ║                                                               ║
-    ║ "♠" are the forests trees, they are harmless but impassable.  ║
+    ║ "T" are the forests trees, they are harmless but impassable.  ║
     ║                                                               ║
-    ║ "J" is John B. Treyl. If he catches you he will slash you     ║
+    ║ "\033[38;2;40;149;253m♞\033[0m" is John B. Treyl. If he catches you he will slash you     ║
     ║ with his magic sabre!!! You must not let this happen!         ║
     ║ Fortunately, he only knows how to go straight for you, and    ║
     ║ may eventually exhaust himself.                               ║
     ║                                                               ║
-    ║ "A" is a Doppelganger, this dubious pretender will tear your  ║
+    ║ "\033[1;37mA\033[0m" is a Doppelganger, this dubious pretender will tear your  ║
     ║ pelt from your bones. Wearing it sloughed over his form as he ║
     ║ takes the flag for himself!                                   ║
     ║ Be careful where you run, this mimic is crafty, and knows     ║
@@ -349,7 +358,7 @@ def move(ver, hor, bord):
         z = you[1]
         q = ground[y][z]
         
-        symbols = ["J", "A", "♠"]
+        symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "T"]
         
         try:
             # north
@@ -360,15 +369,15 @@ def move(ver, hor, bord):
                     me = me - 1
                     you[0] = me
                     board[y][z] = q
-                    board[y-1][z] = "@"
+                    board[y-1][z] = "\033[1;37m@\033[0m"
                     break
                 
-                elif board[y-1][z] == "♠":
+                elif board[y-1][z] == "T":
                     print("A sturdy tree blocks your path.")
-                elif board[y-1][z] == "J":
+                elif board[y-1][z] == "\033[38;2;40;149;253m♞\033[0m":
                     print("Your head was cleaved from your shoulders.")
                     defeat = True
-                elif board[y-1][z] == "A":
+                elif board[y-1][z] == "\033[1;37mA\033[0m":
                     print("Your reflection shatters you.")
                     defeat = True
                 
@@ -380,15 +389,15 @@ def move(ver, hor, bord):
                     me = me + 1
                     you[1] = me
                     board[y][z] = q
-                    board[y][z+1] = "@"
+                    board[y][z+1] = "\033[1;37m@\033[0m"
                     break
                 
-                elif board[y][z+1] == "♠":
+                elif board[y][z+1] == "T":
                     print("A sturdy tree blocks your path.")
-                elif board[y][z+1] == "J":
+                elif board[y][z+1] == "\033[38;2;40;149;253m♞\033[0m":
                     print("Your head was cleaved from your shoulders.")
                     defeat = True
-                elif board[y][z+1] == "A":
+                elif board[y][z+1] == "\033[1;37mA\033[0m":
                     print("Your reflection shatters you.")
                     defeat = True
             
@@ -399,15 +408,15 @@ def move(ver, hor, bord):
                     me = me - 1
                     you[1] = me
                     board[y][z] = q
-                    board[y][z-1] = "@"
+                    board[y][z-1] = "\033[1;37m@\033[0m"
                     break
                 
-                elif board[y][z-1] == "♠":
+                elif board[y][z-1] == "T":
                     print("A sturdy tree blocks your path.")
-                elif board[y][z-1] == "J":
+                elif board[y][z-1] == "\033[38;2;40;149;253m♞\033[0m":
                     print("Your head was cleaved from your shoulders.")
                     defeat = True
-                elif board[y][z-1] == "A":
+                elif board[y][z-1] == "\033[1;37mA\033[0m":
                     print("Your reflection shatters you.")
                     defeat = True
                 
@@ -418,15 +427,15 @@ def move(ver, hor, bord):
                     me = me + 1
                     you[0] = me
                     board[y][z] = q
-                    board[y+1][z] = "@"
+                    board[y+1][z] = "\033[1;37m@\033[0m"
                     break
                 
-                elif board[y+1][z] == "♠":
+                elif board[y+1][z] == "T":
                     print("A sturdy tree blocks your path.")
-                elif board[y+1][z] == "J":
+                elif board[y+1][z] == "\033[38;2;40;149;253m♞\033[0m":
                     print("Your head was cleaved from your shoulders.")
                     defeat = True
-                elif board[y+1][z] == "A":
+                elif board[y+1][z] == "\033[1;37mA\033[0m":
                     print("Your reflection shatters you.")
                     defeat = True
                 
@@ -460,12 +469,12 @@ def enemyNorth(ver, hor, under):
     john = john - 1
     enemy[0] = john    
     board[ver][hor] = under
-    if board[ver-1][hor] == "@":
+    if board[ver-1][hor] == "\033[1;37m@\033[0m":
         print("You have been slain by your pursuer...")
         defeat = True
     else:
         print(f"Your adversary approaches... (N) ({enemy})")
-    board[ver-1][hor] = "J"
+    board[ver-1][hor] = "\033[38;2;40;149;253m♞\033[0m"
     
 def enemyEast(ver, hor, under):
     global enemy, defeat
@@ -473,12 +482,12 @@ def enemyEast(ver, hor, under):
     john = john + 1
     enemy[1] = john
     board[ver][hor] = under
-    if board[ver][hor+1] == "@":
+    if board[ver][hor+1] == "\033[1;37m@\033[0m":
         print("You have been slain by your pursuer...")
         defeat = True
     else:
         print(f"Your adversary approaches... (E) ({enemy})")
-    board[ver][hor+1] = "J"
+    board[ver][hor+1] = "\033[38;2;40;149;253m♞\033[0m"
 
 def enemyWest(ver, hor, under):
     global enemy, defeat
@@ -486,12 +495,12 @@ def enemyWest(ver, hor, under):
     john = john - 1
     enemy[1] = john
     board[ver][hor] = under
-    if board[ver][hor-1] == "@":
+    if board[ver][hor-1] == "\033[1;37m@\033[0m":
         print("You have been slain by your pursuer...")
         defeat = True
     else:
         print(f"Your adversary approaches... (W) ({enemy})")
-    board[ver][hor-1] = "J"
+    board[ver][hor-1] = "\033[38;2;40;149;253m♞\033[0m"
     
 def enemySouth(ver, hor, under):
     global enemy, defeat
@@ -499,12 +508,12 @@ def enemySouth(ver, hor, under):
     john = john + 1
     enemy[0] = john
     board[ver][hor] = under
-    if board[ver+1][hor] == "@":
+    if board[ver+1][hor] == "\033[1;37m@\033[0m":
         print("You have been slain by your pursuer...")
         defeat = True
     else:
         print(f"Your adversary approaches... (S) ({enemy})")
-    board[ver+1][hor] = "J"
+    board[ver+1][hor] = "\033[38;2;40;149;253m♞\033[0m"
     
 # The previous movement code sucks I'm rewriting it
 def movementTWO(nme, sym, way, ver, hor, under):
@@ -517,10 +526,10 @@ def movementTWO(nme, sym, way, ver, hor, under):
     board[ver+row][hor+col] = sym
     nme[0], nme[1] = ver + row, hor + col
     
-    if board[ver+row][hor+col] == "@" and nme == enemy:
+    if board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == enemy:
         print("You have been slain by your pursuer...")
         defeat = True
-    elif board[ver+row][hor+col] == "@" and nme == twoman:
+    elif board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == twoman:
         print("The thing wearing your face will take their flag in your place...")
         defeat = True
     elif way == 0:
@@ -566,12 +575,12 @@ def chase(ver, hor, forest_trees):
             nr = row + d[0] # new row
             nc = col + d[1] # new column
             
-            if (0 <= nr < ver) and (0 <= nc < hor) and pathfinder[nr][nc] == -1 and board[nr][nc] != "♠" and board[nr][nc] != "F":
+            if (0 <= nr < ver) and (0 <= nc < hor) and pathfinder[nr][nc] == -1 and board[nr][nc] != "T" and board[nr][nc] != "F":
                 pathfinder[nr][nc] = rings + 1
                 explore.append([nr,nc])
         
     #####################################################################
-    # Enemy Chasing Behavior - Part 2: Path from "@" to "J"
+    # Enemy Chasing Behavior - Part 2: Path from "\033[1;37m@\033[0m" to "\033[38;2;40;149;253m♞\033[0m"
     # God pathfinding is hell to write
         
     ppos = [] # player position
@@ -592,7 +601,7 @@ def chase(ver, hor, forest_trees):
         col = path[_][1]
         
         for d in directions:
-            symbols = ["♠", "⚑", "J", "A", "B", "C"]
+            symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "B", "C"]
 
             nr = row + d[0] # new row
             nc = col + d[1] # new column
@@ -689,7 +698,7 @@ def doppelganger_flank(ver, hor, forest_trees):
     # Step 6: Execute last move in list.
     
     # Note: This likely requires reviewing the code to get John B. Treyl to move
-    # since that ONLY works for "J". It's likely inefficient anyways.
+    # since that ONLY works for "\033[38;2;40;149;253m♞\033[0m". It's likely inefficient anyways.
     ############################################################################
     # Okay writing this was HELL and this description of how it works is no longer accurate
     # But i dont care right now all I care about is that it works jesus fucking christ
@@ -700,7 +709,7 @@ def doppelganger_flank(ver, hor, forest_trees):
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
     
-    symbols = ["♠", "J", "@", "B", "C"]
+    symbols = ["T", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "B", "C"]
 
     player_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
     player_rings[you[0]][you[1]] = 0
@@ -729,7 +738,7 @@ def doppelganger_flank(ver, hor, forest_trees):
                 player_rings[nr][nc] = p_rings + 1
                 ppos.append([nr,nc])
                 
-    # Part 2: Path from "F" to "@"
+    # Part 2: Path from "F" to "\033[1;37m@\033[0m"
     fpos_to_ppos = [] # path from flag to player
     fpos_to_ppos.append([flag[0], flag[1]])
     p_dist = player_rings[flag[0]][flag[1]]
@@ -773,7 +782,7 @@ def doppelganger_flank(ver, hor, forest_trees):
             best_dist = dist
             best_pos = pos
     
-    # Part 5: Path from best_pos to "A".    
+    # Part 5: Path from best_pos to "\033[1;37mA\033[0m".    
     bpos_to_dpos = []
     bpos_to_dpos.append([twoman[0], twoman[1]])
     d_dist = doppel_rings[best_pos[0]][best_pos[1]]
@@ -792,7 +801,7 @@ def doppelganger_flank(ver, hor, forest_trees):
                     bpos_to_dpos.append([nr, nc])
                     counter += 1
  
-    # Part 6: Path from "@" to "A".
+    # Part 6: Path from "\033[1;37m@\033[0m" to "\033[1;37mA\033[0m".
     ppos_to_dpos = [] # path from player to doppelganger
     ppos_to_dpos.append([twoman[0], twoman[1]])
     p_dist = doppel_rings[twoman[0]][twoman[1]]
@@ -834,7 +843,7 @@ def doppelganger_flank(ver, hor, forest_trees):
     else:
         way = 0  # fallback (should almost never hit)
         
-    movementTWO(twoman, "A", way, current_row, current_col, under)
+    movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
         
 # def bloodyMary_haunt():
 # 
