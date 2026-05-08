@@ -39,6 +39,30 @@ respace = []
 
 # Enemy's current distance from player using shortest possible path.
 j_dist = 0
+bm_dist = 0
+
+###################
+# DELAYS
+# In order to make the game more fair, the enemies have different stamina counters, which once reach certain
+# thresholds, trigger recovery timers before they can move again. Along with chances to hesitate.
+
+
+# John B. Treyl: Moves 5 turns, Recovers 1 turns, 20% chance to hesitate.
+j_stamina = 5
+j_fatigue = 0
+j_recover = 1
+
+# Doppelganger: Moves 3 turns, Recovers 2 turns, 10$ chance to hesitate.
+d_stamina = 2
+j_fatigue = 0
+d_recover = 1
+
+# Bloody Mary: Moves 1 turn, Recovers 1 turn, 5% chance to hesitate.
+bm_stamina = 1
+bm_fatigue = 0
+bm_recover = 1
+
+mary = True
 
 # Current positions of important board symbols.
 you = []		# Player coords
@@ -48,12 +72,8 @@ forest = []		# list of all tree coords
 enemy = []		# John B. Treyl coords
 twoman = []		# Doppelganger coords
 ghost = []		# Bloody Mary coords
-dog = []		# Cerberus coords
 
-# because john tends to eventually end up stuck to the players tail
-# I intend to limit how long hes allowed to do so.
-john_tail = 0 # how long J has been 1 space away from @
-john_rest = 0 # how long J has been resting
+dog = []		# Cerberus coords
 
 ####################################################################
 # To-do list:
@@ -68,13 +88,11 @@ john_rest = 0 # how long J has been resting
 # This is necessary so the game can actually END if player gets cornered
 # (well, it wouldnt be with the pass turn thing, but it'd FEEL better, maybe.
 # Not sure if I've already done this yet.
-# 
-# 4. Limit how long John is allowed to be on the players ass.
 #
 ####################################################################
 # Enemy list:
 #
-# Enemy #1: John B. Treyl "♞" (BUGGED BUT WORKS FOR NOW)
+# Enemy #1: John B. Treyl "♞" (COMPLETE)
 # 'YOU ARE BETRAYED!'
 # Walks directly towards the player.
 # Intended to have an exhaustion meter to prevent him from getting
@@ -90,12 +108,12 @@ john_rest = 0 # how long J has been resting
 # This code was a nightmare to write and likely still has some obscure crashbugs
 # I don't know about yet.
 #
-# Enemy #3: Bloody Mary "B" (UNFINISHED)
+# Enemy #3: Bloody Mary "♛" (COMPLETE)
 # 'Check out how hard I can pee'
 # An enemy that moves directly towards the player, and can move through
 # trees, but can only move every other turn.
 #
-# Enemy #4: Cerberus "C" (UNFINISHED)
+# Enemy #4: Cerberus "C" (UNFINISHED) - honestly I might cut it.
 # 'encounterable'
 # Moves randomly
 # if it's position is more then halfway away from the player,
@@ -118,6 +136,47 @@ john_rest = 0 # how long J has been resting
 # use only symbols that are bold by default. If you quiz me on how ANSII works later I don't
 # fuckin know lmfao. Its good qol tho, just take it as that and nothing more.
 ####################################################################
+
+# Displays initial scenario and rules on game start
+def rules():
+    print(
+        """
+    ╔═══════════════════════════════════════════════════════════════╗
+    ║ You have entered a Dark Forest deep in enemy territory.       ║
+    ║                                                               ║
+    ║ Your objective is to make your way to the flag without        ║
+    ║ being captured by members of the enemy clan, the wicked       ║
+    ║ and sinister Treyl Clan!                                      ║
+    ║                                                               ║
+    ║ "\033[1;37m@\033[0m" is (You). You can move by typing the direction            ║
+    ║ you want to go.                                               ║
+    ║                                                               ║
+    ║ "w", "0", "up", or "north" will move up.                      ║
+    ║ "d", "1", "right", or "east" will move right.                 ║
+    ║ "a", "2", "left", or "west" will move left.                   ║
+    ║ "s", "3", "down", or "south" will move down.                  ║
+    ║                                                               ║
+    ║ "⚑" is the flag of the enemy,                                 ║
+    ║ If you reach the flag safely, you win.                        ║
+    ║                                                               ║
+    ║ "T" are the forests trees, they are harmless but impassable.  ║
+    ║                                                               ║
+    ║ "\033[38;2;40;149;253m♞\033[0m" is John B. Treyl. If he catches you he will slash you     ║
+    ║ with his magic sabre!!! You must not let this happen!         ║
+    ║ Fortunately, he only knows how to go straight for you, and    ║
+    ║ may eventually exhaust himself.                               ║
+    ║                                                               ║
+    ║ "\033[1;37mA\033[0m" is a Doppelganger, this dubious pretender will tear your  ║
+    ║ pelt from your bones. Wearing it sloughed over his form as he ║
+    ║ takes the flag for himself!                                   ║
+    ║ Be careful where you run, this mimic is crafty, and knows     ║
+    ║ about your quest. He may try to predict your chosen path!     ║
+    ║                                                               ║
+    ║ "♛" is Bloody Mary, this haunting apparition is half as fast  ║ 
+    ║ as the living. But her incorporeal nature means the forest    ║
+    ║ trees aren't enough to stop her!                              ║
+    ╚═══════════════════════════════════════════════════════════════╝
+          """)
 
 # This is basically so the size of the board can vary based
 # on a couple preset variables.
@@ -178,35 +237,26 @@ def topsoil(ver, hor):
                 board[x][y] = "."
                 ground[x][y] = "."   
 
-# Populates board with game objects
-def spawn(ver, hor):
-    global you, flag, enemy, forest
-    
-    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "B", "C", "\033[1;37mA\033[0m"]
-    flagless = ["T", "\033[1;37m@\033[0m", "B", "C", "\033[1;37mA\033[0m"] # cannot contain "F" or "\033[38;2;40;149;253m♞\033[0m"
+# A helper function to reduce the size of spawn(), its very repetative.
+def summon(ver, hor, symb, sol):
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m"]
     
     while True:
-        # You
-        while True:
-            a = randint(0,ver-1)
-            b = randint(0,hor-1)
-            
-            if board[a][b] not in symbols:
-                board[a][b] = "\033[1;37m@\033[0m"
-                you.append(a)
-                you.append(b)
+        a = randint(0,ver-1)
+        b = randint(0,hor-1)
+        
+        if board[a][b] not in symbols:
+                board[a][b] = symb
+                sol.append(a)
+                sol.append(b)
                 break
-        # Flag
-        while True:
-            a = randint(0,ver-1)
-            b = randint(0,hor-1)
-            
-            if board[a][b] not in symbols:
-                board[a][b] = "⚑"
-                flag.append(a)
-                flag.append(b)
-                break
-        # Trees
+
+# Populates board with game objects
+def spawn(ver, hor):    
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m"]
+    
+    while True:
+        # Trees - this doesnt use summon() bc theres more then 1.
         t = 0
         while t != trees:
             a = randint(0,ver-1)
@@ -217,27 +267,21 @@ def spawn(ver, hor):
                 ground[a][b] = "T"
                 forest.append([a,b])
                 t += 1
+        
+        # You
+        summon(ver, hor, "\033[1;37m@\033[0m", you)
+        
+        # Flag
+        summon(ver, hor, "⚑", flag)
+ 
         # John B. Treyl
-        while True:
-            a = randint(0,ver-1)
-            b = randint(0,hor-1)
-            
-            if board[a][b] not in symbols:
-                board[a][b] = "\033[38;2;40;149;253m♞\033[0m"
-                enemy.append(a)
-                enemy.append(b)
-                break
+        summon(ver, hor, "\033[38;2;40;149;253m♞\033[0m", enemy)
+        
         # Doppelganger
-        while True:
-            a = randint(0,ver-1)
-            b = randint(0,hor-1)
-            
-            if board[a][b] not in symbols:
-                board[a][b] = "\033[1;37mA\033[0m"
-                twoman.append(a)
-                twoman.append(b)
-                break
+        summon(ver, hor, "\033[1;37mA\033[0m", twoman)
+        
         # Bloody Mary
+        summon(ver, hor, "♛", ghost)
             
         #######################################################
         # SOFTLOCK CHECK:
@@ -245,11 +289,13 @@ def spawn(ver, hor):
         # Part 1: Generate ring map from player.
         # Part 2: Check distance values of John B. Treyl, Doppelganger and Flag.
         # Part 3: If any dist value > 0, regenerate, else, continue
+        #
+        # For obvious reasons, Bloody Mary doesn't need the check.
         
         player_rings = [[-1 for _ in range(hor)] for _ in range(ver)] # temp list of lists, used for pathfinding
         ppos = []
         
-        ring_mapper(ver, hor, ppos, you, player_rings, "\033[1;37m@\033[0m")
+        ring_mapper(ver, hor, ppos, you, player_rings, ["T"])
 
         j_dist = player_rings[enemy[0]][enemy[1]]
         j_dist = int(j_dist)
@@ -270,6 +316,7 @@ def spawn(ver, hor):
             del ground[:][:]
             del forest[:]
             del twoman[:]
+            del ghost[:]
             
             topsoil(a,b)
             detectLen(a,b)
@@ -287,151 +334,52 @@ def translate(a):
         a	= int(evilBabble)
     return a
 
-# Displays initial scenario and rules on game start
-def rules():
-    print(
-        """
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║ You have entered a Dark Forest deep in enemy territory.       ║
-    ║                                                               ║
-    ║ Your objective is to make your way to the flag without        ║
-    ║ being captured by members of the enemy clan, the wicked       ║
-    ║ and sinister Treyl Clan!                                      ║
-    ║                                                               ║
-    ║ "\033[1;37m@\033[0m" is (You). You can move by typing the direction            ║
-    ║ you want to go.                                               ║
-    ║                                                               ║
-    ║ "w", "0", "up", or "north" will move up.                      ║
-    ║ "d", "1", "right", or "east" will move right.                 ║
-    ║ "a", "2", "left", or "west" will move left.                   ║
-    ║ "s", "3", "down", or "south" will move down.                  ║
-    ║                                                               ║
-    ║ "⚑" is the flag of the enemy,                                 ║
-    ║ If you reach the flag safely, you win.                        ║
-    ║                                                               ║
-    ║ "T" are the forests trees, they are harmless but impassable.  ║
-    ║                                                               ║
-    ║ "\033[38;2;40;149;253m♞\033[0m" is John B. Treyl. If he catches you he will slash you     ║
-    ║ with his magic sabre!!! You must not let this happen!         ║
-    ║ Fortunately, he only knows how to go straight for you, and    ║
-    ║ may eventually exhaust himself.                               ║
-    ║                                                               ║
-    ║ "\033[1;37mA\033[0m" is a Doppelganger, this dubious pretender will tear your  ║
-    ║ pelt from your bones. Wearing it sloughed over his form as he ║
-    ║ takes the flag for himself!                                   ║
-    ║ Be careful where you run, this mimic is crafty, and knows     ║
-    ║ about your quest. He may try to predict your chosen path!     ║
-    ╚═══════════════════════════════════════════════════════════════╝
-          """)
-
 # This is what handles player movement.
 # Rewrite this dogshit later lmfao this code sucks ass
 def move(ver, hor, bord):
     global defeat
     while True:
         x = input("    Which direction? (North, South, East or West)\n")      
-        x = translate(x)      
-        y = you[0]
-        z = you[1]
-        q = ground[y][z]
+        x = translate(x)
+        
+        current_row, current_col = you[0], you[1]
+        q = ground[current_row][current_col]
         
         symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "T"]
+        directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
         
         try:
-            # north
-            if x == 0 and 0 <= y-1 < len(board) and 0 <= z < len(board[0]):           
+            if 0 <= x <= 3:
+                dy, dx = directions[x]
+                target_row = current_row + dy
+                target_col = current_col + dx
                 
-                if board[y-1][z] not in symbols:
-                    me = you[0]
-                    me = me - 1
-                    you[0] = me
-                    board[y][z] = q
-                    board[y-1][z] = "\033[1;37m@\033[0m"
-                    break
-                
-                elif board[y-1][z] == "T":
-                    print("    A sturdy tree blocks your path.")
-                elif board[y-1][z] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("    Your head was cleaved from your shoulders.")
-                    defeat = True
-                elif board[y-1][z] == "\033[1;37mA\033[0m":
-                    print("    Your reflection shatters you.")
-                    defeat = True
-                
-            # east
-            elif x == 1 and 0 <= y < len(board) and 0 <= z+1 < len(board[0]):     
-                
-                if board[y][z+1] not in symbols:
-                    me = you[1]
-                    me = me + 1
-                    you[1] = me
-                    board[y][z] = q
-                    board[y][z+1] = "\033[1;37m@\033[0m"
-                    break
-                
-                elif board[y][z+1] == "T":
-                    print("    A sturdy tree blocks your path.")
-                elif board[y][z+1] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("    Your head was cleaved from your shoulders.")
-                    defeat = True
-                elif board[y][z+1] == "\033[1;37mA\033[0m":
-                    print("    Your reflection shatters you.")
-                    defeat = True
-            
-            # west
-            elif x == 2 and 0 <= y < len(board) and 0 <= z-1 < len(board[0]):
-                if board[y][z-1] not in symbols:                
-                    me = you[1]
-                    me = me - 1
-                    you[1] = me
-                    board[y][z] = q
-                    board[y][z-1] = "\033[1;37m@\033[0m"
-                    break
-                
-                elif board[y][z-1] == "T":
-                    print("    A sturdy tree blocks your path.")
-                elif board[y][z-1] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("    Your head was cleaved from your shoulders.")
-                    defeat = True
-                elif board[y][z-1] == "\033[1;37mA\033[0m":
-                    print("    Your reflection shatters you.")
-                    defeat = True
-                
-            #south
-            elif x == 3 and 0 <= y+1 < len(board) and 0 <= z < len(board[0]):         
-                if board[y+1][z] not in symbols:                
-                    me = you[0]
-                    me = me + 1
-                    you[0] = me
-                    board[y][z] = q
-                    board[y+1][z] = "\033[1;37m@\033[0m"
-                    break
-                
-                elif board[y+1][z] == "T":
-                    print("    A sturdy tree blocks your path.")
-                elif board[y+1][z] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("    Your head was cleaved from your shoulders.")
-                    defeat = True
-                elif board[y+1][z] == "\033[1;37mA\033[0m":
-                    print("    Your reflection shatters you.")
-                    defeat = True
-                
-            # North - out of bounds (works)
-            elif x == 0 and y-1 < 0:
-                print("    That would be outside the board.")
-                
-            # South - out of bounds (works)
-            elif x == 3 and y+1 > (len(board)-1):
-                print("    That would be outside the board.")
-                
-            # East - out of bounds (works)
-            elif x == 1 and z+1 > (len(board[0])-1):
-                print("    That would be outside the board.")
-                
-            # West - out of bounds (works)
-            elif x == 2 and z-1 < 0:
-                print("    That would be outside the board.")
-                           
+                if 0 <= target_row < ver and 0 <= target_col < hor:
+                    
+                    if board[target_row][target_col] not in symbols:
+                        you[0] = target_row
+                        you[1] = target_col
+                        board[current_row][current_col] = q
+                        board[target_row][target_col] = "\033[1;37m@\033[0m"
+                        break
+                        
+                    elif board[target_row][target_col] == "T":
+                        print("    A sturdy tree blocks your path.")
+                        
+                    elif board[target_row][target_col] == "\033[38;2;40;149;253m♞\033[0m":
+                        print("    Your head was cleaved from your shoulders.")
+                        defeat = True
+                        break
+                    
+                    elif board[target_row][target_col] == "\033[1;37mA\033[0m":
+                        print("    Your reflection shatters you.")
+                        defeat = True
+                        break
+
+                else:
+                    print("    That would be outside the board.")
+            else:
+                print("    Invalid move, try again.\n")
         except:
             print("    Invalid move, try again.\n")
             
@@ -441,8 +389,8 @@ def move(ver, hor, bord):
     # any better lmfao.
     
 # The previous enemy movement code sucked so I rewrote it
-def movementTWO(nme, sym, way, ver, hor, under):
-    global defeat, enemy, twoman
+def moveTWO(nme, sym, way, ver, hor, under):
+    global defeat, enemy, twoman, ghost
     
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
 
@@ -460,6 +408,12 @@ def movementTWO(nme, sym, way, ver, hor, under):
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
         print("    The thing wearing your face will take their flag in your place...")
+        defeat = True
+        
+    elif board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == ghost:
+        board[ver][hor] = under
+        board[ver+row][hor+col] = sym
+        print("    You collapse to the forest floor with a blood curdling scream...")
         defeat = True
         
     elif way == 0:
@@ -540,15 +494,17 @@ def ring_mapper(ver, hor, _pos, sol, ring_map, symb):
 
 # John B. Treyl's pathfinding and movement.
 def chase(ver, hor, forest_trees):
-    global enemy, defeat, you, j_dist, john_rest, john_tail
+    global enemy, defeat, you, j_dist
 
     # Step 1: Create ring map relative to enemy position.
     # Step 2: Create list of coordinates that lead from player position to enemy position
     # Step 3: Have enemy move to space marked at the end of list of coordinates
+    
+    # To be 100% clear, it is INTENDED BEHAVIOR that the lists are backwards.
 
     #####################################################################
 
-    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "B", "C"]
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C"]
     
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
@@ -584,16 +540,16 @@ def chase(ver, hor, forest_trees):
     
     if target_row < current_row and target_col == current_col:   # North
         way = 0
-        movementTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
     elif target_row == current_row and target_col > current_col:  # East
         way = 1
-        movementTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
     elif target_row == current_row and target_col < current_col:  # West
         way = 2
-        movementTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
     elif target_row > current_row and target_col == current_col:  # South
         way = 3
-        movementTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
     else:
         print('Error: Something has prevented John B. Treyl "\033[38;2;40;149;253m♞\033[0m" from moving.')
 
@@ -624,8 +580,8 @@ def intercept(ver, hor, forest_trees):
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
     
-    player_symbols = ["T", "\033[38;2;40;149;253m♞\033[0m", "B", "C"]
-    doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "B", "C", "T", "⚑"]  
+    player_symbols = ["T", "\033[38;2;40;149;253m♞\033[0m", "♛", "C"]
+    doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C", "T", "⚑"]  
     
     best_dist = 9999 # just a stupid high number
     best_pos = None # Storing which position in fpos_to_ppos is closest to dpos
@@ -656,7 +612,14 @@ def intercept(ver, hor, forest_trees):
     # I wasn't aware you could make for loops this way, maybe it was explained before, I forgor.
         
         row, col = pos[0], pos[1]    
-        dist = doppel_rings[row][col]
+        dist = player_rings[row][col]
+        
+        # Previously, this section used:
+            # dist = doppel_rings[row][col] 
+        # But because that minimizes distance from Doppelganger instead of the Player
+        # it can lead to behavior where the Doppelganger camps the flag. By using
+        # player_rings instead, he focuses on parts of the path closer to the player
+        # making him easier to kite.
         
         if dist < best_dist and dist != -1 and dist != 0 and board[row][col] != "⚑":
             best_dist = dist
@@ -671,7 +634,7 @@ def intercept(ver, hor, forest_trees):
     
     # Chasing player behavior
     if any(twoman == pos for pos in fpos_to_ppos): 
-        target_row, target_col = you[0], you[1]
+        target_row, target_col = best_pos[0], best_pos[1]
         
     # Flanking player behavior
     else:   
@@ -690,37 +653,75 @@ def intercept(ver, hor, forest_trees):
         
         backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
         
-        target_row, target_col = bpos_to_dpos[-2][0], bpos_to_dpos[-2][1]
+        target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
         
         ############################################
     
     if target_row < current_row and target_col == current_col:   # North
         way = 0
-        movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
     elif target_row == current_row and target_col > current_col:  # East
         way = 1
-        movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
     elif target_row == current_row and target_col < current_col:  # West
         way = 2
-        movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
     elif target_row > current_row and target_col == current_col:  # South
         way = 3
-        movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
     else:
         print('Error: Something has prevented Doppelganger "\033[1;37mA\033[0m" from moving.')
 
+# Future function controlling Bloody Mary's pathfinding and movement.
+def haunt(ver, hor):
+    global ghost, mary, bm_dist, defeat
+    
+    # Bloody Mary's ai is alot simpler then Doppelganger's
+    # She gets to move through trees as if they arent there.
+    # But she only gets to move every other turn.
+    # She just moves directly towards the player like John though.
+    
+    # north, east, west, south
+    directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+    symbols = doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "C", "⚑", "♛"]  
 
-
-# # Future function controlling Bloody Mary's pathfinding and movement.
-# def haunt(ver, hor):
-#     
-#     # north, east, west, south
-#     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
-#     
-#     symbols = doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "B", "C", "⚑"]  
-
-
-
+    # I'm very sick of writing pathfinding logic lmfao
+    bloody_ring = [[-1 for _ in range(hor)] for _ in range(ver)]
+    bmpos = []
+    ring_mapper(ver, hor, bmpos, ghost, bloody_ring, symbols)
+    bm_to_u = [] 
+    bm_to_u.append([you[0], you[1]])
+    bm_dist = bloody_ring[you[0]][you[1]] 
+    bm_dist = int(bm_dist)
+    backtracer(ver, hor, bm_dist, bloody_ring, symbols, bm_to_u)
+    
+    if mary == True:
+        print("    A moment of calm.")
+        mary = False
+        
+    elif mary == False:
+        current_row, current_col = ghost[0], ghost[1]
+        under = ground[current_row][current_col]
+        target_row, target_col = bm_to_u[-1][0], bm_to_u[-1][1]
+        
+        if target_row < current_row and target_col == current_col:   # North
+            way = 0
+            moveTWO(ghost, "♛", way, current_row, current_col, under)
+        elif target_row == current_row and target_col > current_col:  # East
+            way = 1
+            moveTWO(ghost, "♛", way, current_row, current_col, under)
+        elif target_row == current_row and target_col < current_col:  # West
+            way = 2
+            moveTWO(ghost, "♛", way, current_row, current_col, under)
+        elif target_row > current_row and target_col == current_col:  # South
+            way = 3
+            moveTWO(ghost, "♛", way, current_row, current_col, under)
+        else:
+            print('Error: Something has prevented Bloody Mary "♛" from moving.')
+        
+        print("    What a horrible night.")
+        mary = True
+        
 # Future function controlling Cerberus's "pathfinding" and movement.
 # def encounter():
         
@@ -757,6 +758,7 @@ def purge():
     del ground[:][:]
     del forest[:]
     del twoman[:]
+    del ghost[:]
     
     topsoil(a,b)
     detectLen(a,b)
@@ -784,6 +786,8 @@ def master():
                 break
             elif replay == True:
                 purge()
+        
+        # John B. Treyl's Turn
         if defeat == False:
             chase(a,b,forest)
             print(f"    John's distance from (You): {j_dist}")
@@ -791,13 +795,24 @@ def master():
             world(a,b,d)
             print("===YOU LOSE===")
             playAgain()
+        
+        # Doppelganger's Turn
         if defeat == False:
             intercept(a,b,forest)
             print(f"    You think you saw something moving through the trees. ({twoman})")
         if defeat == True:
             world(a,b,d)
             print("===YOU LOSE===")
-            playAgain()             
+            playAgain()
+            
+        # Bloody Mary's Turn
+        if defeat == False:
+            haunt(a,b)
+        if defeat == True:
+            world(a,b,d)
+            print("===YOU LOSE===")
+            playAgain()
+            
             if replay == False:
                 input("    Alright, press enter to close game.")
                 break
