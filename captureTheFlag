@@ -3,15 +3,15 @@ from random import randint
 
 # Modular grid that equalizes spacing of displayed index
 
-a = 31		# board length - vertical
-b = 31		# board length - horizontal        
+a = 21		# board length - vertical
+b = 21		# board length - horizontal        
 c = 0 		# max array value size
 d = 0		# border adjustment
 
 # amount of trees to spawn
 
 if a > 20 or b > 20:
-    trees = ((3 * a) // 2) + ((3 * b) // 2) * 4
+    trees = ((3 * a) // 2) + ((3 * b) // 2) * 3
 else:
     trees = ((3 * a) // 2) + ((3 * b) // 2)
 
@@ -237,6 +237,7 @@ def spawn(ver, hor):
                 twoman.append(a)
                 twoman.append(b)
                 break
+        # Bloody Mary
             
         #######################################################
         # SOFTLOCK CHECK:
@@ -328,7 +329,7 @@ def rules():
 def move(ver, hor, bord):
     global defeat
     while True:
-        x = input("Which direction? (North, South, East or West)\n")      
+        x = input("    Which direction? (North, South, East or West)\n")      
         x = translate(x)      
         y = you[0]
         z = you[1]
@@ -349,12 +350,12 @@ def move(ver, hor, bord):
                     break
                 
                 elif board[y-1][z] == "T":
-                    print("A sturdy tree blocks your path.")
+                    print("    A sturdy tree blocks your path.")
                 elif board[y-1][z] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("Your head was cleaved from your shoulders.")
+                    print("    Your head was cleaved from your shoulders.")
                     defeat = True
                 elif board[y-1][z] == "\033[1;37mA\033[0m":
-                    print("Your reflection shatters you.")
+                    print("    Your reflection shatters you.")
                     defeat = True
                 
             # east
@@ -369,12 +370,12 @@ def move(ver, hor, bord):
                     break
                 
                 elif board[y][z+1] == "T":
-                    print("A sturdy tree blocks your path.")
+                    print("    A sturdy tree blocks your path.")
                 elif board[y][z+1] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("Your head was cleaved from your shoulders.")
+                    print("    Your head was cleaved from your shoulders.")
                     defeat = True
                 elif board[y][z+1] == "\033[1;37mA\033[0m":
-                    print("Your reflection shatters you.")
+                    print("    Your reflection shatters you.")
                     defeat = True
             
             # west
@@ -388,12 +389,12 @@ def move(ver, hor, bord):
                     break
                 
                 elif board[y][z-1] == "T":
-                    print("A sturdy tree blocks your path.")
+                    print("    A sturdy tree blocks your path.")
                 elif board[y][z-1] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("Your head was cleaved from your shoulders.")
+                    print("    Your head was cleaved from your shoulders.")
                     defeat = True
                 elif board[y][z-1] == "\033[1;37mA\033[0m":
-                    print("Your reflection shatters you.")
+                    print("    Your reflection shatters you.")
                     defeat = True
                 
             #south
@@ -407,32 +408,32 @@ def move(ver, hor, bord):
                     break
                 
                 elif board[y+1][z] == "T":
-                    print("A sturdy tree blocks your path.")
+                    print("    A sturdy tree blocks your path.")
                 elif board[y+1][z] == "\033[38;2;40;149;253m♞\033[0m":
-                    print("Your head was cleaved from your shoulders.")
+                    print("    Your head was cleaved from your shoulders.")
                     defeat = True
                 elif board[y+1][z] == "\033[1;37mA\033[0m":
-                    print("Your reflection shatters you.")
+                    print("    Your reflection shatters you.")
                     defeat = True
                 
             # North - out of bounds (works)
             elif x == 0 and y-1 < 0:
-                print("That would be outside the board.")
+                print("    That would be outside the board.")
                 
             # South - out of bounds (works)
             elif x == 3 and y+1 > (len(board)-1):
-                print("That would be outside the board.")
+                print("    That would be outside the board.")
                 
             # East - out of bounds (works)
             elif x == 1 and z+1 > (len(board[0])-1):
-                print("That would be outside the board.")
+                print("    That would be outside the board.")
                 
             # West - out of bounds (works)
             elif x == 2 and z-1 < 0:
-                print("That would be outside the board.")
+                print("    That would be outside the board.")
                            
         except:
-            print("Invalid move, try again.\n")
+            print("    Invalid move, try again.\n")
             
     ################################################################
     # I know for a fact that this function is DEFINITELY inefficient (shit)
@@ -452,34 +453,34 @@ def movementTWO(nme, sym, way, ver, hor, under):
     if board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == enemy:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print("You have been cut down by your pursuers blade...")
+        print("    You have been cut down by your pursuers blade...")
         defeat = True
         
     elif board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == twoman:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print("The thing wearing your face will take their flag in your place...")
+        print("    The thing wearing your face will take their flag in your place...")
         defeat = True
         
     elif way == 0:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print(f"An adversary approaches... (N) ({nme})")
+        print(f"    An adversary approaches... ({sym}) (N) ({nme})")
     
     elif way == 1:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print(f"An adversary approaches... (E) ({nme})")
+        print(f"    An adversary approaches... ({sym}) (E) ({nme})")
     
     elif way == 2:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print(f"An adversary approaches... (W) ({nme})")
+        print(f"    An adversary approaches... ({sym}) (W) ({nme})")
     
     elif way == 3:
         board[ver][hor] = under
         board[ver+row][hor+col] = sym
-        print(f"An adversary approaches... (S) ({nme})")
+        print(f"    An adversary approaches... ({sym}) (S) ({nme})")
     
     #############################
     # Realistically, there's gotta be a way to condense these 4 direction elif branches
@@ -529,7 +530,7 @@ def ring_mapper(ver, hor, _pos, sol, ring_map, symb):
         for d in directions:
             nr = row + d[0] # new row
             nc = col + d[1] # new column
-            
+             
             if (0 <= nr < ver) and (0 <= nc < hor) and ring_map[nr][nc] == -1 and board[nr][nc] not in symb:
                 ring_map[nr][nc] = rings + 1
                 _pos.append([nr,nc])
@@ -605,8 +606,10 @@ def intercept(ver, hor, forest_trees):
     global twoman, defeat
     
     # Unlike John B. Treyl, the Doppelganger is supposed to flank the player.
-    # His goal isn't to get to the Player's position, its to get in the way of the players shortest
-    # path to the Flag, only once hes directly in the players way does he chase them.
+    
+    # The intention of intercept() is that "A" will try stand in the way of
+    # the players best possible path to the flag. Then, use that path to move
+    # towards the player.    
     
     # Step 1: Generate Ring Map from Player.
     # Step 2: Generate Path from Flag to Player.
@@ -631,7 +634,7 @@ def intercept(ver, hor, forest_trees):
     player_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
     ppos = [] # player position
     
-    ring_mapper(ver, hor, ppos, you, player_rings, "\033[1;37m@\033[0m")
+    ring_mapper(ver, hor, ppos, you, player_rings, player_symbols)
                 
     # Part 2: Path from "F" to "@"
     fpos_to_ppos = [] # path from flag to player
@@ -646,7 +649,7 @@ def intercept(ver, hor, forest_trees):
     doppel_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
     dpos = [] # doppelganger position
     
-    ring_mapper(ver, hor, dpos, twoman, doppel_rings, "\033[1;37mA\033[0m")
+    ring_mapper(ver, hor, dpos, twoman, doppel_rings, doppel_symbols)
                 
     # Part 4: Finding Closest Position in fpos_to_ppos to dpos.
     for pos in fpos_to_ppos:
@@ -687,7 +690,7 @@ def intercept(ver, hor, forest_trees):
         
         backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
         
-        target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
+        target_row, target_col = bpos_to_dpos[-2][0], bpos_to_dpos[-2][1]
         
         ############################################
     
@@ -705,9 +708,18 @@ def intercept(ver, hor, forest_trees):
         movementTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
     else:
         print('Error: Something has prevented Doppelganger "\033[1;37mA\033[0m" from moving.')
-        
-# Future function controlling Bloody Mary's pathfinding and movement.
-# def haunt():
+
+
+
+# # Future function controlling Bloody Mary's pathfinding and movement.
+# def haunt(ver, hor):
+#     
+#     # north, east, west, south
+#     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+#     
+#     symbols = doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "B", "C", "⚑"]  
+
+
 
 # Future function controlling Cerberus's "pathfinding" and movement.
 # def encounter():
@@ -724,9 +736,9 @@ def win():
 def playAgain():
     global replay, victory, defeat
     while True:
-        a = input("Would you like to play again?\n")
+        a = input("    Would you like to play again?\n")
         if a in agree:
-            print("Alright, regenerating the map.\n")
+            print("    Alright, regenerating the map.\n")
             replay = True
             victory = False
             defeat = False
@@ -735,7 +747,7 @@ def playAgain():
             replay = False
             break
         else:
-            print("Didn't quite catch that.\n")
+            print("    Didn't quite catch that.\n")
             
 def purge():
     del you[:]
@@ -760,34 +772,34 @@ def master():
     rules()
     while True:
         world(a,b,d)
+        print(f"    You are currently standing at {you}")
         move(a,b,d)
-        print(f"You are currently standing at {you}")
         win()
         if victory == True:
             world(a,b,d)
             print("===YOU WIN===")
             playAgain()
             if replay == False:
-                input("Alright, press enter to close game.")
+                input("    Alright, press enter to close game.")
                 break
             elif replay == True:
                 purge()
         if defeat == False:
             chase(a,b,forest)
-            print(f"John's distance from (You): {j_dist}")
+            print(f"    John's distance from (You): {j_dist}")
         if defeat == True:
             world(a,b,d)
             print("===YOU LOSE===")
             playAgain()
         if defeat == False:
             intercept(a,b,forest)
-            print(f"You think you saw something moving through the trees. ({twoman})")
+            print(f"    You think you saw something moving through the trees. ({twoman})")
         if defeat == True:
             world(a,b,d)
             print("===YOU LOSE===")
             playAgain()             
             if replay == False:
-                input("Alright, press enter to close game.")
+                input("    Alright, press enter to close game.")
                 break
             elif replay == True:
                 purge()
