@@ -335,7 +335,6 @@ def translate(a):
     return a
 
 # This is what handles player movement.
-# Rewrite this dogshit later lmfao this code sucks ass
 def move(ver, hor, bord):
     global defeat
     while True:
@@ -382,11 +381,6 @@ def move(ver, hor, bord):
                 print("    Invalid move, try again.\n")
         except:
             print("    Invalid move, try again.\n")
-            
-    ################################################################
-    # I know for a fact that this function is DEFINITELY inefficient (shit)
-    # But I'll worry about rewriting it later when I actually know how to do it
-    # any better lmfao.
     
 # The previous enemy movement code sucked so I rewrote it
 def moveTWO(nme, sym, way, ver, hor, under):
@@ -808,6 +802,7 @@ def master():
         # Bloody Mary's Turn
         if defeat == False:
             haunt(a,b)
+            print(f"    Mary's distance from (You): {bm_dist}")
         if defeat == True:
             world(a,b,d)
             print("===YOU LOSE===")
