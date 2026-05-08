@@ -148,9 +148,9 @@ def rules():
     ║ being captured by members of the enemy clan, the wicked       ║
     ║ and sinister Treyl Clan!                                      ║
     ║                                                               ║
-    ║ "\033[1;37m@\033[0m" is (You). You can move by typing the direction            ║
-    ║ you want to go.                                               ║
+    ║ "\033[1;37m@\033[0m" is (You).                                                 ║
     ║                                                               ║
+    ║ You can move by typing the direction you want to go:          ║
     ║ "w", "0", "up", or "north" will move up.                      ║
     ║ "d", "1", "right", or "east" will move right.                 ║
     ║ "a", "2", "left", or "west" will move left.                   ║
@@ -163,18 +163,17 @@ def rules():
     ║                                                               ║
     ║ "\033[38;2;40;149;253m♞\033[0m" is John B. Treyl. If he catches you he will slash you     ║
     ║ with his magic sabre!!! You must not let this happen!         ║
-    ║ Fortunately, he only knows how to go straight for you, and    ║
-    ║ may eventually exhaust himself.                               ║
+    ║ Fortunately, he only knows how to go straight for you!        ║
+    ║                                                               ║
+    ║ "♛" is Bloody Mary, this haunting apparition slowly stalks    ║ 
+    ║ these cursed grounds. But her incorporeal nature means that   ║
+    ║ the forest's trees aren't enough to stop her!                 ║
     ║                                                               ║
     ║ "\033[1;37mA\033[0m" is a Doppelganger, this dubious pretender will tear your  ║
     ║ pelt from your bones. Wearing it sloughed over his form as he ║
     ║ takes the flag for himself!                                   ║
     ║ Be careful where you run, this mimic is crafty, and knows     ║
     ║ about your quest. He may try to predict your chosen path!     ║
-    ║                                                               ║
-    ║ "♛" is Bloody Mary, this haunting apparition is half as fast  ║ 
-    ║ as the living. But her incorporeal nature means the forest    ║
-    ║ trees aren't enough to stop her!                              ║
     ╚═══════════════════════════════════════════════════════════════╝
           """)
 
@@ -383,52 +382,46 @@ def move(ver, hor, bord):
             print("    Invalid move, try again.\n")
     
 # The previous enemy movement code sucked so I rewrote it
-def moveTWO(nme, sym, way, ver, hor, under):
+def moveTWO(nme, symb, way, ver, hor):
     global defeat, enemy, twoman, ghost
     
+    current_row, current_col = nme[0], nme[1]
+    under = ground[current_row][current_col]
+    
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
-
-    row, col = directions[way][0], directions[way][1]
     
-    nme[0], nme[1] = ver + row, hor + col
+    if 0 <= way <= 3:
+        dy, dx = directions[way]
+        target_row = current_row + dy
+        target_col = current_col + dx
+        
+        nme[0], nme[1] = target_row, target_col
+        board[current_row][current_col] = under
+        board[target_row][target_col] = symb
     
-    if board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == enemy:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
+    if board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == enemy:
         print("    You have been cut down by your pursuers blade...")
         defeat = True
         
-    elif board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == twoman:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
+    elif board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == twoman:
         print("    The thing wearing your face will take their flag in your place...")
         defeat = True
         
-    elif board[ver+row][hor+col] == "\033[1;37m@\033[0m" and nme == ghost:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
+    elif board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == ghost:
         print("    You collapse to the forest floor with a blood curdling scream...")
         defeat = True
         
     elif way == 0:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
-        print(f"    An adversary approaches... ({sym}) (N) ({nme})")
+        print(f"    An adversary approaches... ({symb}) (N) ({nme})")
     
     elif way == 1:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
-        print(f"    An adversary approaches... ({sym}) (E) ({nme})")
+        print(f"    An adversary approaches... ({symb}) (E) ({nme})")
     
     elif way == 2:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
-        print(f"    An adversary approaches... ({sym}) (W) ({nme})")
+        print(f"    An adversary approaches... ({symb}) (W) ({nme})")
     
     elif way == 3:
-        board[ver][hor] = under
-        board[ver+row][hor+col] = sym
-        print(f"    An adversary approaches... ({sym}) (S) ({nme})")
+        print(f"    An adversary approaches... ({symb}) (S) ({nme})")
     
     #############################
     # Realistically, there's gotta be a way to condense these 4 direction elif branches
@@ -527,23 +520,22 @@ def chase(ver, hor, forest_trees):
     # Enemy Chasing Behavior - Part 3: Enemy Movement
     
     current_row, current_col = enemy[0], enemy[1]
-    under = ground[current_row][current_col]
     
     target_row, target_col = player_to_john[-1][0], player_to_john[-1][1]
     # -1 in a list index picks the last entry of the list.
     
     if target_row < current_row and target_col == current_col:   # North
         way = 0
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
     elif target_row == current_row and target_col > current_col:  # East
         way = 1
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
     elif target_row == current_row and target_col < current_col:  # West
         way = 2
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
     elif target_row > current_row and target_col == current_col:  # South
         way = 3
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col, under)
+        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
     else:
         print('Error: Something has prevented John B. Treyl "\033[38;2;40;149;253m♞\033[0m" from moving.')
 
@@ -621,7 +613,6 @@ def intercept(ver, hor, forest_trees):
                     
     # Part 5: Doppelganger Movement
     current_row, current_col = twoman[0], twoman[1]
-    under = ground[current_row][current_col]
     
     # This is where I learned how to use any()
     # any() returns True if at least one element would return True in a list
@@ -653,16 +644,16 @@ def intercept(ver, hor, forest_trees):
     
     if target_row < current_row and target_col == current_col:   # North
         way = 0
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
     elif target_row == current_row and target_col > current_col:  # East
         way = 1
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
     elif target_row == current_row and target_col < current_col:  # West
         way = 2
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
     elif target_row > current_row and target_col == current_col:  # South
         way = 3
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col, under)
+        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
     else:
         print('Error: Something has prevented Doppelganger "\033[1;37mA\033[0m" from moving.')
 
@@ -695,21 +686,20 @@ def haunt(ver, hor):
         
     elif mary == False:
         current_row, current_col = ghost[0], ghost[1]
-        under = ground[current_row][current_col]
         target_row, target_col = bm_to_u[-1][0], bm_to_u[-1][1]
         
         if target_row < current_row and target_col == current_col:   # North
             way = 0
-            moveTWO(ghost, "♛", way, current_row, current_col, under)
+            moveTWO(ghost, "♛", way, current_row, current_col)
         elif target_row == current_row and target_col > current_col:  # East
             way = 1
-            moveTWO(ghost, "♛", way, current_row, current_col, under)
+            moveTWO(ghost, "♛", way, current_row, current_col)
         elif target_row == current_row and target_col < current_col:  # West
             way = 2
-            moveTWO(ghost, "♛", way, current_row, current_col, under)
+            moveTWO(ghost, "♛", way, current_row, current_col)
         elif target_row > current_row and target_col == current_col:  # South
             way = 3
-            moveTWO(ghost, "♛", way, current_row, current_col, under)
+            moveTWO(ghost, "♛", way, current_row, current_col)
         else:
             print('Error: Something has prevented Bloody Mary "♛" from moving.')
         
