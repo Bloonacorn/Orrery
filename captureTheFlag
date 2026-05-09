@@ -12,7 +12,7 @@ d = 0		# border adjustment
 # amount of trees to spawn
 
 if a > 20 or b > 20:
-    trees = ((3 * a) // 2) + ((3 * b) // 2) * 3
+    trees = ((3 * a) // 2) + ((3 * b) // 2) * 2
 else:
     trees = ((3 * a) // 2) + ((3 * b) // 2)
 
@@ -49,24 +49,22 @@ bm_dist = 0
 
 
 # John B. Treyl: Moves 5 turns, Recovers 1 turns, 20% chance to hesitate.
-j_stamina = 5
+# Having the simplest AI, he has the most stamina.
+# However, he also has a chance to skip his own turn.
+# Or even completely fuck up and have to rest at any time.
+j_stamina = 10
 j_fatigue = 0
-
-j_recover = 1
+j_recover = 2
 j_rest    = 0
 
-j_footing = 5 # max bound of potential odds
+# Doppelganger: Moves 3 turns, Recovers 2 turns.
+# In exchange for having smarter ai, he has lower stamina and longer stops.
+d_stamina = 6
+d_fatigue = 0
+d_recover = 3
+d_rest    = 0
 
-# Doppelganger: Moves 3 turns, Recovers 2 turns, 10$ chance to hesitate.
-d_stamina = 2
-j_fatigue = 0
-d_recover = 1
-
-# Bloody Mary: Moves 1 turn, Recovers 1 turn, 5% chance to hesitate.
-bm_stamina = 1
-bm_fatigue = 0
-bm_recover = 1
-
+# Bloody Mary: Moves 1 turn, Recovers 1 turn.
 mary = True
 
 # Compound
@@ -91,6 +89,8 @@ ghost = []		# Bloody Mary coords
 
 dog = []		# Cerberus coords
 
+doorways = [] # All fortress door positions
+
 ####################################################################
 # To-do list:
 #
@@ -110,19 +110,6 @@ dog = []		# Cerberus coords
 # had them all read the global variable right? You only need to declare a global
 # variable in a function if you intend to modify it right? Idk, I need to double
 # check if any of that was necessary.
-#
-# 5. This would be an annoying feature to add, but I'm considering making like, a building spawn?
-# it'd look like
-#
-#    # # ╍ # #
-#    # ▒ ▒ ▒ #
-#    ╏ ▒ ▒ ▒ ╏   
-#    # ▒ ▒ ▒ #
-#    # # ╍ # #
-#
-# Idk, it just might be nice for aesthetics. Not sure how to do it
-# There'd have to be a check to ensure it didn't spawn too closer to the borders of the map.
-# I think I can figure it out.
 #
 ####################################################################
 # Enemy list:
@@ -310,7 +297,6 @@ def spawn(ver, hor):
                         board[c+x][d+y] = fortress[x][y]
                         ground[c+x][d+y] = fortress[x][y]
                         
-                doorways = []
                 while len(doorways) != 3:
                     f = randint(0,3)
                     if f not in doorways:
@@ -349,9 +335,6 @@ def spawn(ver, hor):
         
         # You
         summon(ver, hor, "\033[1;37m@\033[0m", you)
-        
-#         # Flag
-#         summon(ver, hor, "⚑", flag)
  
         # John B. Treyl
         summon(ver, hor, "\033[38;2;40;149;253m♞\033[0m", enemy)
@@ -374,7 +357,7 @@ def spawn(ver, hor):
         player_rings = [[-1 for _ in range(hor)] for _ in range(ver)] # temp list of lists, used for pathfinding
         ppos = []
         
-        ring_mapper(ver, hor, ppos, you, player_rings, ["T"])
+        ring_mapper(ver, hor, ppos, you, player_rings, ["T", "#"])
 
         j_dist = player_rings[enemy[0]][enemy[1]]
         j_dist = int(j_dist)
@@ -383,7 +366,7 @@ def spawn(ver, hor):
         f_dist = int(f_dist)
         
         d_dist = player_rings[twoman[0]][twoman[1]]
-        d_dist = int(d_dist)
+        d_dist = int(d_dist)      
         
         if j_dist > 0 and f_dist > 0 and d_dist > 0:
             break
@@ -396,6 +379,7 @@ def spawn(ver, hor):
             del forest[:]
             del twoman[:]
             del ghost[:]
+            del doorways[:]
             
             topsoil(a,b)
             detectLen(a,b)
@@ -565,7 +549,7 @@ def ring_mapper(ver, hor, _pos, sol, ring_map, symb):
 
 # John B. Treyl's pathfinding and movement.
 def chase(ver, hor, forest_trees):
-    global enemy, defeat, you, j_dist
+    global enemy, defeat, you, j_dist, j_fatigue, j_stamina, j_rest, j_recover
 
     # Step 1: Create ring map relative to enemy position.
     # Step 2: Create list of coordinates that lead from player position to enemy position
@@ -580,65 +564,76 @@ def chase(ver, hor, forest_trees):
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
     
-#     #####################################################################
-#     # Enemy Chasing Behavior - Addon: Staming and Stumbling
-#     #
-#     # With multiple enemies, the game becomes much more difficult, to
-#     # make the game more fair, I'm going to limit how long john can chase the player.
-#     # This code simply isn't fully written.
-#     
-#     if j_fatigue != j_stamina:
-#         j_fatigue += 1
-#         
-#     elif j_fatigue == j_stamina and j_rest != recover:
-#         j_rest += 1
-#         
-#     elif j_fatigue == j_stamina and j_rest == recover:
-#         j_fatigue, j_rest = 0, 0
-    
-
     #####################################################################
-    # Enemy Chasing Behavior - Part 1: Ring Map Generation        
-
-    betray_ring = [[-1 for _ in range(hor)] for _ in range(ver)] # temp list of lists, used for pathfinding
-    jpos = [] # list for holding copy of enemy position
+    # Enemy Chasing Behavior - Addon: Staming and Stumbling
+    #
+    # With multiple enemies, the game becomes much more difficult, to
+    # make the game more fair, I'm going to limit how long john can chase the player.
+    # This code simply isn't fully written.
     
-    ring_mapper(ver, hor, jpos, enemy, betray_ring, symbols)
+    d20 = randint(1,20)
+    
+    if j_fatigue != j_stamina and d20 > 2:
+        j_fatigue += 1
+            
+        #####################################################################
+        # Enemy Chasing Behavior - Part 1: Ring Map Generation        
+
+        betray_ring = [[-1 for _ in range(hor)] for _ in range(ver)] # temp list of lists, used for pathfinding
+        jpos = [] # list for holding copy of enemy position
         
-    #####################################################################
-    # Enemy Chasing Behavior - Part 2: Path from "@" to "♞"
-    # God pathfinding is hell to write
-    
-    player_to_john = [] # pathing from player to enemy
-    player_to_john.append([you[0], you[1]]) # append initial player position (necessary to start loop)
-    
-    j_dist = betray_ring[you[0]][you[1]] # the number that is in this position on pathfinder is what i want
-    j_dist = int(j_dist)
-    
-    backtracer(ver, hor, j_dist, betray_ring, symbols, player_to_john)
-                
-    #####################################################################
-    # Enemy Chasing Behavior - Part 3: Enemy Movement
-    
-    current_row, current_col = enemy[0], enemy[1]
-    
-    target_row, target_col = player_to_john[-1][0], player_to_john[-1][1]
-    # -1 in a list index picks the last entry of the list.
-    
-    if target_row < current_row and target_col == current_col:   # North
-        way = 0
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
-    elif target_row == current_row and target_col > current_col:  # East
-        way = 1
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
-    elif target_row == current_row and target_col < current_col:  # West
-        way = 2
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
-    elif target_row > current_row and target_col == current_col:  # South
-        way = 3
-        moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
-    else:
-        print('Error: Something has prevented John B. Treyl "\033[38;2;40;149;253m♞\033[0m" from moving.')
+        ring_mapper(ver, hor, jpos, enemy, betray_ring, symbols)
+            
+        #####################################################################
+        # Enemy Chasing Behavior - Part 2: Path from "@" to "♞"
+        # God pathfinding is hell to write
+        
+        player_to_john = [] # pathing from player to enemy
+        player_to_john.append([you[0], you[1]]) # append initial player position (necessary to start loop)
+        
+        j_dist = betray_ring[you[0]][you[1]] # the number that is in this position on pathfinder is what i want
+        j_dist = int(j_dist)
+        
+        backtracer(ver, hor, j_dist, betray_ring, symbols, player_to_john)
+                    
+        #####################################################################
+        # Enemy Chasing Behavior - Part 3: Enemy Movement
+        
+        current_row, current_col = enemy[0], enemy[1]
+        
+        target_row, target_col = player_to_john[-1][0], player_to_john[-1][1]
+        # -1 in a list index picks the last entry of the list.
+        
+        if target_row < current_row and target_col == current_col:   # North
+            way = 0
+            moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
+        elif target_row == current_row and target_col > current_col:  # East
+            way = 1
+            moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
+        elif target_row == current_row and target_col < current_col:  # West
+            way = 2
+            moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
+        elif target_row > current_row and target_col == current_col:  # South
+            way = 3
+            moveTWO(enemy, "\033[38;2;40;149;253m♞\033[0m", way, current_row, current_col)
+        else:
+            print('Error: Something has prevented John B. Treyl "\033[38;2;40;149;253m♞\033[0m" from moving.')
+        
+    elif j_fatigue == j_stamina and j_rest != j_recover and d20 > 2:
+        j_rest += 1
+        print(f"    John B. Treyl needs a moment to breath. (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
+        
+    elif j_fatigue == j_stamina and j_rest == j_recover and d20 > 2:
+        j_fatigue, j_rest = 0, 0
+        print(f"    John B. Treyl has recovered his stamina! (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
+        
+    elif d20 == 2 and j_fatigue != j_stamina:
+        print(f"    John B. Treyl trips on a dead branch and loses his footing. (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
+        
+    elif d20 == 1 and j_fatigue != j_stamina:
+        print("    John B. Treyl eats shit and trips face first into the forest floor,")
+        print(f"    narrowly managing not to impale himself on his own sword(\033[38;2;40;149;253m♞\033[0m) ({enemy})")
+        j_fatigue = j_stamina
 
 #     # view ring map for debugging
 #     for row in pathfinder:
@@ -646,7 +641,7 @@ def chase(ver, hor, forest_trees):
 
 # Doppelganger's pathfinding and movement.
 def intercept(ver, hor, forest_trees):
-    global twoman, defeat
+    global twoman, defeat, d_dist, d_fatigue, d_stamina, d_rest, d_recover
     
     # Unlike John B. Treyl, the Doppelganger is supposed to flank the player.
     
@@ -673,103 +668,114 @@ def intercept(ver, hor, forest_trees):
     best_dist = 9999 # just a stupid high number
     best_pos = None # Storing which position in fpos_to_ppos is closest to dpos
     
-    # Part 1: Ring Map Generation (Player)
-    player_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
-    ppos = [] # player position
+    if d_fatigue != d_stamina:
+        d_fatigue += 1
     
-    ring_mapper(ver, hor, ppos, you, player_rings, player_symbols)
-                
-    # Part 2: Path from "F" to "@"
-    fpos_to_ppos = [] # path from flag to player
-    fpos_to_ppos.append([flag[0], flag[1]])
-    
-    p_dist = player_rings[flag[0]][flag[1]]
-    p_dist = int(p_dist)
-    
-    backtracer(ver, hor, p_dist, player_rings, player_symbols, fpos_to_ppos)
-    
-    # Part 3: Ring Map Generation (Doppel)
-    doppel_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
-    dpos = [] # doppelganger position
-    
-    ring_mapper(ver, hor, dpos, twoman, doppel_rings, doppel_symbols)
-                
-    # Part 4: Finding Closest Position in fpos_to_ppos to dpos.
-    for pos in fpos_to_ppos:
-    # I wasn't aware you could make for loops this way, maybe it was explained before, I forgor.
+        # Part 1: Ring Map Generation (Player)
+        player_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
+        ppos = [] # player position
         
-        row, col = pos[0], pos[1]    
-        dist = player_rings[row][col]
-        
-        # Previously, this section used:
-            # dist = doppel_rings[row][col] 
-        # But because that minimizes distance from Doppelganger instead of the Player
-        # it can lead to behavior where the Doppelganger camps the flag. By using
-        # player_rings instead, he focuses on parts of the path closer to the player
-        # making him easier to kite.
-        
-        if dist < best_dist and dist != -1 and dist != 0 and board[row][col] != "⚑":
-            best_dist = dist
-            best_pos = pos
+        ring_mapper(ver, hor, ppos, you, player_rings, player_symbols)
                     
-    # Part 5: Doppelganger Movement
-    current_row, current_col = twoman[0], twoman[1]
-    
-    # This is where I learned how to use any()
-    # any() returns True if at least one element would return True in a list
-    
-    # Chasing player behavior
-    if any(twoman == pos for pos in fpos_to_ppos): 
-        target_row, target_col = best_pos[0], best_pos[1]
+        # Part 2: Path from "F" to "@"
+        fpos_to_ppos = [] # path from flag to player
+        fpos_to_ppos.append([flag[0], flag[1]])
         
-    # Flanking player behavior
-    else:   
-        ############################################
-        # Path from best_pos to "A".
-        # This used to be part 5, but was moved into this else branch because
-        # when the path from player to flag is extremely short (ie: theyre right next to it)
-        # the game would simply crash. So this code should only run conditionally, when
-        # flanking is actually desired.
+        p_dist = player_rings[flag[0]][flag[1]]
+        p_dist = int(p_dist)
         
-        # The most persistent crash bug I haven't been able to fix is best_pos
-        # somehow getting set to None. If the path is very short or theres no valid square
-        # is my current theory, it happens more the closer you get to the flag.
-        #
-        # Until I deal with it. if that occurs, we set it to this so that it just
-        # defaults to chasing instead of flanking.
+        backtracer(ver, hor, p_dist, player_rings, player_symbols, fpos_to_ppos)
         
-        if best_pos is None:
-            # Fallback for edge cases (very short path or no valid square)
-            # This just makes it chase the player anyways instead of flanking.
-            target_row, target_col = you[0], you[1]
+        # Part 3: Ring Map Generation (Doppel)
+        doppel_rings = [[-1 for _ in range(hor)] for _ in range(ver)]
+        dpos = [] # doppelganger position
+        
+        ring_mapper(ver, hor, dpos, twoman, doppel_rings, doppel_symbols)
+                    
+        # Part 4: Finding Closest Position in fpos_to_ppos to dpos.
+        for pos in fpos_to_ppos:
+        # I wasn't aware you could make for loops this way, maybe it was explained before, I forgor.
+            
+            row, col = pos[0], pos[1]    
+            dist = player_rings[row][col]
+            
+            # Previously, this section used:
+                # dist = doppel_rings[row][col] 
+            # But because that minimizes distance from Doppelganger instead of the Player
+            # it can lead to behavior where the Doppelganger camps the flag. By using
+            # player_rings instead, he focuses on parts of the path closer to the player
+            # making him easier to kite.
+            
+            if dist < best_dist and dist != -1 and dist != 0 and board[row][col] != "⚑":
+                best_dist = dist
+                best_pos = pos
+                        
+        # Part 5: Doppelganger Movement
+        current_row, current_col = twoman[0], twoman[1]
+        
+        # This is where I learned how to use any()
+        # any() returns True if at least one element would return True in a list
+        
+        # Chasing player behavior
+        if any(twoman == pos for pos in fpos_to_ppos): 
+            target_row, target_col = best_pos[0], best_pos[1]
+            
+        # Flanking player behavior
+        else:   
+            ############################################
+            # Path from best_pos to "A".
+            # This used to be part 5, but was moved into this else branch because
+            # when the path from player to flag is extremely short (ie: theyre right next to it)
+            # the game would simply crash. So this code should only run conditionally, when
+            # flanking is actually desired.
+            
+            # The most persistent crash bug I haven't been able to fix is best_pos
+            # somehow getting set to None. If the path is very short or theres no valid square
+            # is my current theory, it happens more the closer you get to the flag.
+            #
+            # Until I deal with it. if that occurs, we set it to this so that it just
+            # defaults to chasing instead of flanking.
+            
+            if best_pos is None:
+                # Fallback for edge cases (very short path or no valid square)
+                # This just makes it chase the player anyways instead of flanking.
+                target_row, target_col = you[0], you[1]
+            else:
+                # This is the real flanking code
+                bpos_to_dpos = []
+                bpos_to_dpos.append([best_pos[0], best_pos[1]])
+               
+                d_dist = doppel_rings[best_pos[0]][best_pos[1]]
+                d_dist = int(d_dist)
+                
+                backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
+                
+                target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
+            
+            ############################################
+        
+        if target_row < current_row and target_col == current_col:   # North
+            way = 0
+            moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
+        elif target_row == current_row and target_col > current_col:  # East
+            way = 1
+            moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
+        elif target_row == current_row and target_col < current_col:  # West
+            way = 2
+            moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
+        elif target_row > current_row and target_col == current_col:  # South
+            way = 3
+            moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
         else:
-            # This is the real flanking code
-            bpos_to_dpos = []
-            bpos_to_dpos.append([best_pos[0], best_pos[1]])
-           
-            d_dist = doppel_rings[best_pos[0]][best_pos[1]]
-            d_dist = int(d_dist)
-            
-            backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
-            
-            target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
+            print('Error: Something has prevented Doppelganger "\033[1;37mA\033[0m" from moving.')
         
-        ############################################
-    
-    if target_row < current_row and target_col == current_col:   # North
-        way = 0
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
-    elif target_row == current_row and target_col > current_col:  # East
-        way = 1
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
-    elif target_row == current_row and target_col < current_col:  # West
-        way = 2
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
-    elif target_row > current_row and target_col == current_col:  # South
-        way = 3
-        moveTWO(twoman, "\033[1;37mA\033[0m", way, current_row, current_col)
-    else:
-        print('Error: Something has prevented Doppelganger "\033[1;37mA\033[0m" from moving.')
+    elif j_fatigue == d_stamina and d_rest != d_recover:
+        d_rest += 1
+        print("    Your mirror image is waiting for you to blunder into its trap.")
+        
+    elif j_fatigue == d_stamina and d_rest == d_recover:
+        d_fatigue, d_rest = 0, 0
+        print("    Your mirror image has decided on a better position.")
 
 # Future function controlling Bloody Mary's pathfinding and movement.
 def haunt(ver, hor):
@@ -879,7 +885,7 @@ def master():
         win()
         if victory == True:
             world(a,b,d)
-            print("===YOU WIN===")
+            print("    ===YOU WIN===")
             playAgain()
             if replay == False:
                 input("    Alright, press enter to close game.")
@@ -889,11 +895,11 @@ def master():
         
         # John B. Treyl's Turn
         if defeat == False:
-            chase(a,b,forest)
+            chase(a, b, forest)
             print(f"    John's distance from (You): {j_dist}")
         if defeat == True:
             world(a,b,d)
-            print("===YOU LOSE===")
+            print("    ===YOU LOSE===")
             playAgain()
         
         # Doppelganger's Turn
@@ -902,7 +908,7 @@ def master():
             print(f"    You think you saw something moving through the trees. ({twoman})")
         if defeat == True:
             world(a,b,d)
-            print("===YOU LOSE===")
+            print("    ===YOU LOSE===")
             playAgain()
             
         # Bloody Mary's Turn
@@ -910,7 +916,7 @@ def master():
             haunt(a,b)
         if defeat == True:
             world(a,b,d)
-            print("===YOU LOSE===")
+            print("    ===YOU LOSE===")
             playAgain()
             
             if replay == False:
