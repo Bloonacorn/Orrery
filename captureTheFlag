@@ -47,7 +47,6 @@ bm_dist = 0
 # In order to make the game more fair, the enemies have different stamina counters, which once reach certain
 # thresholds, trigger recovery timers before they can move again. Along with chances to hesitate.
 
-
 # John B. Treyl: Moves 5 turns, Recovers 1 turns, 20% chance to hesitate.
 # Having the simplest AI, he has the most stamina.
 # However, he also has a chance to skip his own turn.
@@ -627,7 +626,7 @@ def chase(ver, hor, forest_trees):
         j_fatigue, j_rest = 0, 0
         print(f"    John B. Treyl has recovered his stamina! (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
         
-    elif and d20 <= 4 and d20 != 1 and j_fatigue != j_stamina:
+    elif d20 <= 4 and d20 != 1 and j_fatigue != j_stamina:
         print(f"    John B. Treyl trips on a dead branch and loses his footing. (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
         
     elif d20 == 1 and j_fatigue != j_stamina:
@@ -788,43 +787,52 @@ def haunt(ver, hor):
     
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
-    symbols = doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "C", "⚑", "♛"]  
-
-    # I'm very sick of writing pathfinding logic lmfao
-    bloody_ring = [[-1 for _ in range(hor)] for _ in range(ver)]
-    bmpos = []
-    ring_mapper(ver, hor, bmpos, ghost, bloody_ring, symbols)
-    bm_to_u = [] 
-    bm_to_u.append([you[0], you[1]])
-    bm_dist = bloody_ring[you[0]][you[1]] 
-    bm_dist = int(bm_dist)
-    backtracer(ver, hor, bm_dist, bloody_ring, symbols, bm_to_u)
+    symbols = doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "C", "⚑", "♛"]
+    d20 = randint(1,20)
     
-    if mary == True:
-        print("    A moment of calm.")
-        print(f"    Mary's distance from (You): {bm_dist}")
-        mary = False
+    if d20 != 1:
+
+        # I'm very sick of writing pathfinding logic lmfao
+        bloody_ring = [[-1 for _ in range(hor)] for _ in range(ver)]
+        bmpos = []
+        ring_mapper(ver, hor, bmpos, ghost, bloody_ring, symbols)
+        bm_to_u = [] 
+        bm_to_u.append([you[0], you[1]])
+        bm_dist = bloody_ring[you[0]][you[1]] 
+        bm_dist = int(bm_dist)
+        backtracer(ver, hor, bm_dist, bloody_ring, symbols, bm_to_u)
         
-    elif mary == False:
-        current_row, current_col = ghost[0], ghost[1]
-        target_row, target_col = bm_to_u[-1][0], bm_to_u[-1][1]
-        
-        if target_row < current_row and target_col == current_col:   # North
-            way = 0
-            moveTWO(ghost, "♛", way, current_row, current_col)
-        elif target_row == current_row and target_col > current_col:  # East
-            way = 1
-            moveTWO(ghost, "♛", way, current_row, current_col)
-        elif target_row == current_row and target_col < current_col:  # West
-            way = 2
-            moveTWO(ghost, "♛", way, current_row, current_col)
-        elif target_row > current_row and target_col == current_col:  # South
-            way = 3
-            moveTWO(ghost, "♛", way, current_row, current_col)
-        else:
-            print('Error: Something has prevented Bloody Mary "♛" from moving.')
-        
-        print("    What a horrible night.")
+        if mary == True:
+            print("    A moment of calm.")
+            print(f"    Mary's distance from (You): {bm_dist}")
+            mary = False
+            
+        elif mary == False:
+            current_row, current_col = ghost[0], ghost[1]
+            target_row, target_col = bm_to_u[-1][0], bm_to_u[-1][1]
+            
+            if target_row < current_row and target_col == current_col:   # North
+                way = 0
+                moveTWO(ghost, "♛", way, current_row, current_col)
+            elif target_row == current_row and target_col > current_col:  # East
+                way = 1
+                moveTWO(ghost, "♛", way, current_row, current_col)
+            elif target_row == current_row and target_col < current_col:  # West
+                way = 2
+                moveTWO(ghost, "♛", way, current_row, current_col)
+            elif target_row > current_row and target_col == current_col:  # South
+                way = 3
+                moveTWO(ghost, "♛", way, current_row, current_col)
+            else:
+                print('Error: Something has prevented Bloody Mary "♛" from moving.')
+            
+            print("    What a horrible night.")
+            print(f"    Mary's distance from (You): {bm_dist}")
+            mary = True
+    
+    elif d20 == 1:
+        print("    Bloody Mary pauses for a moment, remembering something gross")
+        print(f"    and letting out a sigh of dissapointment. (♛) ({ghost})")
         print(f"    Mary's distance from (You): {bm_dist}")
         mary = True
         
