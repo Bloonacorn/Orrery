@@ -48,7 +48,7 @@ bm_dist = 0
 # thresholds, trigger recovery timers before they can move again. Along with chances to hesitate.
 
 
-# John B. Treyl: Moves 10 turns, Recovers 2 turns, 20% chance to hesitate.
+# John B. Treyl: Moves 5 turns, Recovers 1 turns, 20% chance to hesitate.
 # Having the simplest AI, he has the most stamina.
 # However, he also has a chance to skip his own turn.
 # Or even completely fuck up and have to rest at any time.
@@ -57,7 +57,7 @@ j_fatigue = 0
 j_recover = 2
 j_rest    = 0
 
-# Doppelganger: Moves 6 turns, Recovers in 3 turns.
+# Doppelganger: Moves 3 turns, Recovers 2 turns.
 # In exchange for having smarter ai, he has lower stamina and longer stops.
 d_stamina = 6
 d_fatigue = 0
@@ -573,7 +573,7 @@ def chase(ver, hor, forest_trees):
     
     d20 = randint(1,20)
     
-    if j_fatigue != j_stamina and d20 > 2:
+    if j_fatigue != j_stamina and d20 > 4:
         j_fatigue += 1
             
         #####################################################################
@@ -619,15 +619,15 @@ def chase(ver, hor, forest_trees):
         else:
             print('Error: Something has prevented John B. Treyl "\033[38;2;40;149;253m♞\033[0m" from moving.')
         
-    elif j_fatigue == j_stamina and j_rest != j_recover and d20 > 2:
+    elif j_fatigue == j_stamina and j_rest != j_recover and d20 > 4:
         j_rest += 1
         print(f"    John B. Treyl needs a moment to breath. (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
         
-    elif j_fatigue == j_stamina and j_rest == j_recover and d20 > 2:
+    elif j_fatigue == j_stamina and j_rest == j_recover and d20 > 4:
         j_fatigue, j_rest = 0, 0
         print(f"    John B. Treyl has recovered his stamina! (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
         
-    elif d20 == 2 and j_fatigue != j_stamina:
+    elif and d20 <= 4 and d20 != 1 and j_fatigue != j_stamina:
         print(f"    John B. Treyl trips on a dead branch and loses his footing. (\033[38;2;40;149;253m♞\033[0m) ({enemy})")
         
     elif d20 == 1 and j_fatigue != j_stamina:
