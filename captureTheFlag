@@ -2,6 +2,7 @@ from random import randrange
 from random import randint
 
 # Modular grid that equalizes spacing of displayed index
+# IMPORTANT - a and b variables must be ODD NUMBERS
 
 a = 21		# board length - vertical
 b = 21		# board length - horizontal        
@@ -50,7 +51,11 @@ bm_dist = 0
 # John B. Treyl: Moves 5 turns, Recovers 1 turns, 20% chance to hesitate.
 j_stamina = 5
 j_fatigue = 0
+
 j_recover = 1
+j_rest    = 0
+
+j_footing = 5 # max bound of potential odds
 
 # Doppelganger: Moves 3 turns, Recovers 2 turns, 10$ chance to hesitate.
 d_stamina = 2
@@ -63,6 +68,17 @@ bm_fatigue = 0
 bm_recover = 1
 
 mary = True
+
+# Compound
+fortress = [
+    ["#", "#", "#", "#", "#", "#", "#"],
+    ["#", "▒", "▒", "▒", "▒", "▒", "#"],
+    ["#", "▒", "▒", "▒", "▒", "▒", "#"],
+    ["#", "▒", "▒", "⚑", "▒", "▒", "#"],
+    ["#", "▒", "▒", "▒", "▒", "▒", "#"],
+    ["#", "▒", "▒", "▒", "▒", "▒", "#"],
+    ["#", "#", "#", "#", "#", "#", "#"]
+]
 
 # Current positions of important board symbols.
 you = []		# Player coords
@@ -88,6 +104,25 @@ dog = []		# Cerberus coords
 # This is necessary so the game can actually END if player gets cornered
 # (well, it wouldnt be with the pass turn thing, but it'd FEEL better, maybe.
 # Not sure if I've already done this yet.
+#
+# 4. Thinking about it, I'm not sure if there's any benefit at all to most of
+# the functions that call ver and hor doing so? Like, I think I could've just
+# had them all read the global variable right? You only need to declare a global
+# variable in a function if you intend to modify it right? Idk, I need to double
+# check if any of that was necessary.
+#
+# 5. This would be an annoying feature to add, but I'm considering making like, a building spawn?
+# it'd look like
+#
+#    # # ╍ # #
+#    # ▒ ▒ ▒ #
+#    ╏ ▒ ▒ ▒ ╏   
+#    # ▒ ▒ ▒ #
+#    # # ╍ # #
+#
+# Idk, it just might be nice for aesthetics. Not sure how to do it
+# There'd have to be a check to ensure it didn't spawn too closer to the borders of the map.
+# I think I can figure it out.
 #
 ####################################################################
 # Enemy list:
@@ -160,6 +195,8 @@ def rules():
     ║ If you reach the flag safely, you win.                        ║
     ║                                                               ║
     ║ "T" are the forests trees, they are harmless but impassable.  ║
+    ║ "#" are the Treyl Clan's fortresses walls, they are hamless   ║
+    ║ but impassable.                                               ║
     ║                                                               ║
     ║ "\033[38;2;40;149;253m♞\033[0m" is John B. Treyl. If he catches you he will slash you     ║
     ║ with his magic sabre!!! You must not let this happen!         ║
@@ -238,7 +275,7 @@ def topsoil(ver, hor):
 
 # A helper function to reduce the size of spawn(), its very repetative.
 def summon(ver, hor, symb, sol):
-    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m"]
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m", "#", "╍", "▒", "╏"]
     
     while True:
         a = randint(0,ver-1)
@@ -252,16 +289,59 @@ def summon(ver, hor, symb, sol):
 
 # Populates board with game objects
 def spawn(ver, hor):    
-    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m"]
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m", "#",]
+    tree_symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37m@\033[0m", "♛", "C", "\033[1;37mA\033[0m", "#", "╍", "▒", "╏"]
     
     while True:
+        
+        # Compound
+        while True:
+            a = randint(0,ver-1)
+            b = randint(0,hor-1)
+            
+            if board[a][b] not in symbols and 3 < a < ver-4 and 3 < b < hor-4:
+                c,d = a-3,b-3
+                e = randint(2,3)
+                
+                flag.append(a)
+                flag.append(b)
+                for x in range (7):
+                    for y in range (7):
+                        board[c+x][d+y] = fortress[x][y]
+                        ground[c+x][d+y] = fortress[x][y]
+                        
+                doorways = []
+                while len(doorways) != 3:
+                    f = randint(0,3)
+                    if f not in doorways:
+                        doorways.append(f)
+                        
+                for _ in range(2):
+                    if doorways[_] == 0:    
+                        board[a+3][b] = "╍"
+                        ground[a+3][b] = "╍"
+                        
+                    elif doorways[_] == 1:
+                        board[a][b+3] = "╏"
+                        ground[a][b+3] = "╏"
+                    
+                    elif doorways[_] == 2:
+                        board[a][b-3] = "╏"
+                        ground[a][b-3] = "╏"
+                    
+                    elif doorways[_] == 3:    
+                        board[a-3][b] = "╍"
+                        ground[a-3][b] = "╍"
+                        
+                break
+                             
         # Trees - this doesnt use summon() bc theres more then 1.
         t = 0
         while t != trees:
             a = randint(0,ver-1)
             b = randint(0,hor-1)
             
-            if board[a][b] not in symbols:
+            if board[a][b] not in tree_symbols:
                 board[a][b] = "T"
                 ground[a][b] = "T"
                 forest.append([a,b])
@@ -270,8 +350,8 @@ def spawn(ver, hor):
         # You
         summon(ver, hor, "\033[1;37m@\033[0m", you)
         
-        # Flag
-        summon(ver, hor, "⚑", flag)
+#         # Flag
+#         summon(ver, hor, "⚑", flag)
  
         # John B. Treyl
         summon(ver, hor, "\033[38;2;40;149;253m♞\033[0m", enemy)
@@ -343,7 +423,7 @@ def move(ver, hor, bord):
         current_row, current_col = you[0], you[1]
         q = ground[current_row][current_col]
         
-        symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "T"]
+        symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "T", "#"]
         directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
         
         try:
@@ -363,6 +443,9 @@ def move(ver, hor, bord):
                         
                     elif board[target_row][target_col] == "T":
                         print("    A sturdy tree blocks your path.")
+                    
+                    elif board[target_row][target_col] == "#":
+                        print("    A sturdy wall blocks your path.")
                         
                     elif board[target_row][target_col] == "\033[38;2;40;149;253m♞\033[0m":
                         print("    Your head was cleaved from your shoulders.")
@@ -399,29 +482,30 @@ def moveTWO(nme, symb, way, ver, hor):
         board[current_row][current_col] = under
         board[target_row][target_col] = symb
     
-    if board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == enemy:
+    if board[target_row][target_col] == "\033[1;37m@\033[0m" and nme == enemy:
         print("    You have been cut down by your pursuers blade...")
         defeat = True
         
-    elif board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == twoman:
+    elif board[target_row][target_col] == "\033[1;37m@\033[0m" and nme == twoman:
         print("    The thing wearing your face will take their flag in your place...")
         defeat = True
         
-    elif board[ver+dy][hor+dx] == "\033[1;37m@\033[0m" and nme == ghost:
+    elif board[target_row][target_col] == "\033[1;37m@\033[0m" and nme == ghost:
         print("    You collapse to the forest floor with a blood curdling scream...")
         defeat = True
+    else:
+        # Normal movement messages
+        if way == 0:
+            print(f"    An adversary approaches... ({symb}) (N) ({nme})")
         
-    elif way == 0:
-        print(f"    An adversary approaches... ({symb}) (N) ({nme})")
-    
-    elif way == 1:
-        print(f"    An adversary approaches... ({symb}) (E) ({nme})")
-    
-    elif way == 2:
-        print(f"    An adversary approaches... ({symb}) (W) ({nme})")
-    
-    elif way == 3:
-        print(f"    An adversary approaches... ({symb}) (S) ({nme})")
+        elif way == 1:
+            print(f"    An adversary approaches... ({symb}) (E) ({nme})")
+        
+        elif way == 2:
+            print(f"    An adversary approaches... ({symb}) (W) ({nme})")
+        
+        elif way == 3:
+            print(f"    An adversary approaches... ({symb}) (S) ({nme})")
     
     #############################
     # Realistically, there's gotta be a way to condense these 4 direction elif branches
@@ -491,10 +575,27 @@ def chase(ver, hor, forest_trees):
 
     #####################################################################
 
-    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C"]
+    symbols = ["T", "⚑", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C", "#"]
     
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+    
+#     #####################################################################
+#     # Enemy Chasing Behavior - Addon: Staming and Stumbling
+#     #
+#     # With multiple enemies, the game becomes much more difficult, to
+#     # make the game more fair, I'm going to limit how long john can chase the player.
+#     # This code simply isn't fully written.
+#     
+#     if j_fatigue != j_stamina:
+#         j_fatigue += 1
+#         
+#     elif j_fatigue == j_stamina and j_rest != recover:
+#         j_rest += 1
+#         
+#     elif j_fatigue == j_stamina and j_rest == recover:
+#         j_fatigue, j_rest = 0, 0
+    
 
     #####################################################################
     # Enemy Chasing Behavior - Part 1: Ring Map Generation        
@@ -566,8 +667,8 @@ def intercept(ver, hor, forest_trees):
     # north, east, west, south
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
     
-    player_symbols = ["T", "\033[38;2;40;149;253m♞\033[0m", "♛", "C"]
-    doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C", "T", "⚑"]  
+    player_symbols = ["T", "\033[38;2;40;149;253m♞\033[0m", "♛", "C", "#"]
+    doppel_symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "C", "T", "⚑", "#"]  
     
     best_dist = 9999 # just a stupid high number
     best_pos = None # Storing which position in fpos_to_ppos is closest to dpos
@@ -630,15 +731,28 @@ def intercept(ver, hor, forest_trees):
         # the game would simply crash. So this code should only run conditionally, when
         # flanking is actually desired.
         
-        bpos_to_dpos = []
-        bpos_to_dpos.append([best_pos[0], best_pos[1]])
-       
-        d_dist = doppel_rings[best_pos[0]][best_pos[1]]
-        d_dist = int(d_dist)
+        # The most persistent crash bug I haven't been able to fix is best_pos
+        # somehow getting set to None. If the path is very short or theres no valid square
+        # is my current theory, it happens more the closer you get to the flag.
+        #
+        # Until I deal with it. if that occurs, we set it to this so that it just
+        # defaults to chasing instead of flanking.
         
-        backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
-        
-        target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
+        if best_pos is None:
+            # Fallback for edge cases (very short path or no valid square)
+            # This just makes it chase the player anyways instead of flanking.
+            target_row, target_col = you[0], you[1]
+        else:
+            # This is the real flanking code
+            bpos_to_dpos = []
+            bpos_to_dpos.append([best_pos[0], best_pos[1]])
+           
+            d_dist = doppel_rings[best_pos[0]][best_pos[1]]
+            d_dist = int(d_dist)
+            
+            backtracer(ver, hor, d_dist, doppel_rings, doppel_symbols, bpos_to_dpos)
+            
+            target_row, target_col = bpos_to_dpos[-1][0], bpos_to_dpos[-1][1]
         
         ############################################
     
@@ -682,6 +796,7 @@ def haunt(ver, hor):
     
     if mary == True:
         print("    A moment of calm.")
+        print(f"    Mary's distance from (You): {bm_dist}")
         mary = False
         
     elif mary == False:
@@ -704,6 +819,7 @@ def haunt(ver, hor):
             print('Error: Something has prevented Bloody Mary "♛" from moving.')
         
         print("    What a horrible night.")
+        print(f"    Mary's distance from (You): {bm_dist}")
         mary = True
         
 # Future function controlling Cerberus's "pathfinding" and movement.
@@ -792,7 +908,6 @@ def master():
         # Bloody Mary's Turn
         if defeat == False:
             haunt(a,b)
-            print(f"    Mary's distance from (You): {bm_dist}")
         if defeat == True:
             world(a,b,d)
             print("===YOU LOSE===")
