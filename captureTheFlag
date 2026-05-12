@@ -24,7 +24,11 @@ board = [ [a * j + i + 1 for i in range(b)] for j in range(a) ]
 ground = [ [" " for i in range(b)] for j in range(a) ]
 
 # A dictionary to handle different kinds of directional player input.
-compass = { "w":0,"d":1,"a":2,"s":3, "north":0,"east":1,"west":2,"south":3, "up":0,"right":1,"left":2,"down":3}
+compass = { "w":0,"d":1,"a":2,"s":3,
+            "north":0,"east":1,"west":2,"south":3,
+            "up":0,"right":1,"left":2,"down":3,
+            "skip":4, "pass":4, "rest":4, "wait":4, "skip turn":4, "z":4
+            }
 
 # Agree/Disagree lists for when the player is asked if they would like to replay the game.
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
@@ -95,17 +99,13 @@ doors_pos = [] # All fortress door positions
 ####################################################################
 # To-do list:
 #
-# 1. Add ability for player to "pass turn" instead of moving.
-# it could be necessary in some situations and likely wouldn't be hard to
-# implement.
-#
-# 2. Thinking about it, I'm not sure if there's any benefit at all to most of
+# 1. Thinking about it, I'm not sure if there's any benefit at all to most of
 # the functions that call ver and hor doing so? Like, I think I could've just
 # had them all read the global variable right? You only need to declare a global
 # variable in a function if you intend to modify it right? Idk, I need to double
 # check if any of that was necessary.
 #
-# 3. Maze structure. I would like to add a second structure to the map, a small maze.
+# 2. Maze structure. I would like to add a second structure to the map, a small maze.
 # Unfortunately, while I've seen examples of how to do so, I don't currently understand
 # the code involved to be able to meaningfully adapt it to my purposes.
 #
@@ -127,9 +127,6 @@ doors_pos = [] # All fortress door positions
 # Then attempts to get in the way.
 # If he's already in the way, moves towards the player instead.
 #
-# This code was a nightmare to write and likely still has some obscure crashbugs
-# I don't know about yet.
-#
 # Enemy #3: Bloody Mary "♛" (COMPLETE)
 # 'bloody mary bloody mary bloody mary'
 # 'hey check out how hard I can pee'
@@ -138,7 +135,7 @@ doors_pos = [] # All fortress door positions
 # But she can only move every other turn.
 # 1/20 chance to think of something gross and get distracted.
 #
-# Enemy #4: Cerberus "щ" (UNFINISHED) 
+# Enemy #4: Cerberus "щ" (COMPLETE) 
 # 'you encounter a dog, what do you do?'
 #
 # 1 in 10 chance to teleport randomly.
@@ -198,6 +195,8 @@ def rules():
     ║ "d", "1", "right", or "east" will move right.                 ║
     ║ "a", "2", "left", or "west" will move left.                   ║
     ║ "s", "3", "down", or "south" will move down.                  ║
+    ║ "z", "4", "wait", "skip", "pass", or "rest" will skip         ║
+    ║ your turn.                                                    ║
     ║                                                               ║
     ║ "⚑" is the flag of the enemy,                                 ║
     ║ If you reach the flag safely, you win.                        ║
@@ -478,14 +477,14 @@ def purge(ver, hor, area):
 def move(ver, hor, bord):
     global defeat
     while True:
-        x = input("    Which direction? (North, South, East or West)\n")      
+        x = input("    Which direction? (North, South, East, West or Wait?)\n")      
         x = translate(x)
         
         current_row, current_col = you[0], you[1]
         under = ground[current_row][current_col]
         
         symbols = ["T", "#", "\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "♛", "\033[1;37mщ\033[0m"]
-        directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
+        directions = [[-1, 0], [0, 1], [0, -1], [1, 0], [0, 0]]
         
         try:
             if 0 <= x <= 3:
@@ -530,6 +529,11 @@ def move(ver, hor, bord):
                         break
                 else:
                     print("    That would be outside the board.")
+            
+            elif x == 4:
+                print(f"    You take a moment to catch your breath...")
+                break
+            
             else:
                 print("    Invalid move, try again.\n")
         except:
@@ -1044,6 +1048,7 @@ def master():
         print(f"    You are currently standing at {you}")
         move(a,b,d)
         win()
+        
         if victory == True:
             world(a,b,d)
             print("    ===YOU WIN===")
