@@ -996,11 +996,11 @@ def haunt(ver, hor):
         print(f"    Mary's distance from (You): {bm_dist}")
         print()
         mary = True
-        
+
 # Cerberus's "pathfinding" and movement.
 def encounter(ver, hor):
     global dog, defeat, c_dist, wander
-    
+
     directions = [[-1, 0], [0, 1], [0, -1], [1, 0]]
     symbols = ["\033[38;2;40;149;253m♞\033[0m", "\033[1;37mA\033[0m", "\033[1;37mщ\033[0m", "⚑", "\033[1;37m♛\033[0m", "T", "#"]
     
