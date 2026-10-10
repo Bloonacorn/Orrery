@@ -219,8 +219,8 @@ def makeMares():
         b = lastNames[b]
         b = b.capitalize()
         
-        c = randint (1, 30)
-        d = randint (1, 30)
+        c = randint (1, 20)
+        d = randint (1, 20)
         
         e = randint (0, len(titles) -1)
         e = titles[e]
@@ -229,11 +229,11 @@ def makeMares():
         f = randint (0, len(trailing) -1)
         f = trailing[f]
         
-        if c == 30 and d == 30:
+        if c == 20 and d == 20:
             cuteMares.append(f"{e} {a} {b} {f}")
-        elif d == 30:
+        elif d == 20:
             cuteMares.append(f"{e} {a} {b}")
-        elif c == 30:
+        elif c == 20:
             cuteMares.append(f"{a} {b} {f}")
         else:
             cuteMares.append(f"{a} {b}")
