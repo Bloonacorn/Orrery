@@ -186,7 +186,7 @@ titles    = [   "captain", "dark", "discount", "dr.", "evil", "fgt.", "lady", "m
                 "knight", "sir", "major", "clone of",
     ]
 
-trailing  = [   "but exactly twice-as-big", "II", ", esq.", "III", "IV", "the third",
+trailing  = [   "but exactly twice-as-big", "II", "esq.", "III", "IV", "the third",
                 "the raped", "the rapist", "(my version)",
     ]
 
