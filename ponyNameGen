@@ -197,7 +197,7 @@ colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue
                "purple", "magenta", "pink", "white", "light-grey", "dark-grey", "black", "brown",
                ]
 
-sex 		= ["mare", "stallion", "filly", "colt", "futa-mare",]
+sex 		= ["mare", "stallion", "filly", "colt",]
 
 tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "crystal-pony", "moth-pony", 
                "changeling", "zebra", "donkey", "snow-pony", "umbrum",
@@ -249,8 +249,12 @@ def makeMares():
             decideTribe = randint (0, len(tribe) -1)
             decideTribe = tribe[decideTribe]
             
-        decideSex = randint (0, len(sex) -1)
-        decideSex = sex[decideSex]
+        gay2bgay = randint (0, 21)
+        if gay2bgay = 21:
+            decideSex = "futa-mare"
+        else:
+            decideSex = randint (0, len(sex) -1)
+            decideSex = sex[decideSex]
         
         if c == 20 and d == 20:
             cuteMares.append(f"{e} {a} {b} {f}, the {decideColor} {decideTribe} {decideSex}")
