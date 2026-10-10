@@ -187,7 +187,7 @@ titles    = [   "captain", "dark", "discount", "dr.", "evil", "fgt.", "lady", "m
     ]
 
 trailing  = [   "but exactly twice-as-big", "II", "esq.", "III", "IV", "the third",
-                "the raped", "the rapist", "(my version)",
+                "the raped", "the rapist", "(my version)", "(normal size)",
     ]
 
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
