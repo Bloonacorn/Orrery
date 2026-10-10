@@ -242,8 +242,8 @@ def makeMares():
         decideColor = randint (0, len(colors) -1)
         decideColor = colors[decideColor]
         
-        coronate = randint (1, 20)
-        if coronate == 20:
+        coronate = randint (1, 30)
+        if coronate == 30:
             decideTribe = "Alicorn"
         else:
             decideTribe = randint (0, len(tribe) -1)
