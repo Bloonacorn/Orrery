@@ -196,19 +196,24 @@ disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", 
 
 colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue", "blue",
                "purple", "magenta", "pink", "white", "light-grey", "dark-grey", "black", "brown",
-               ]
+                ]
 
 sex 		= ["mare", "stallion", "filly", "colt",]
 
-tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "snow-pony", "zebra",
-               ]
+tribe		= ["earth-pony", "pegasus", "unicorn", "bat-pony", "kirin", "snow-pony", "zebra", "donkey",
+                ]
 
-exoticTribe	= ["changeling", "donkey", "umbrum", "crystal-pony", "moth-pony",
-               ]
+exoticTribe	= ["changeling", "sea-pony", "umbrum", "crystal-pony", "moth-pony",
+                ]
+
+orreryTribe	= ["destrier", "kelpie", "pegasus", "thestral", "unicorn", "kirin", "nightmare", "nixie",
+               "seelie", "zaubernach", "zebra", "donkey",
+                ]
 
 cuteMares = []
 
-keepGoing = True
+keepGoing	= True
+whichTribes	= False 
 
 ######################################################################
 # The above is a very long list of components for generating very stupid pony names
@@ -221,6 +226,18 @@ def makeMares():
             break
         except:
             print("Only currently accepts whole numbers. 1, 2, 3, etc.")
+            continue
+        
+    while True:
+        mlpOrOrr = input("Do you want to use the Orrery's tribes?\n")
+        if isinstance (mlpOrOrr, str) and mlpOrOrr.lower() in agree:
+            whichTribes = True
+            break
+        elif isinstance (mlpOrOrr, str) and mlpOrOrr.lower() in disagree:
+            whichTribes = False
+            break
+        else:
+            print("Has to be a yes or no.")
             continue
     
     for w in range(w):
@@ -248,9 +265,12 @@ def makeMares():
         coronate = randint (1, 30)
         if coronate == 30:
             decideTribe = "alicorn"
-        elif coronate < 30 and coronate >= 25: # I intend this to be 25-29
+        elif coronate < 30 and coronate >= 25 and whichTribes == False: # I intend this to be 25-29
             decideTribe = randint (0, len(exoticTribe) -1)
             decideTribe = exoticTribe[decideTribe]
+        elif coronate < 30 and whichTribes == True:
+            decideTribe = randint (0, len(orreryTribe) -1)
+            decideTribe = orreryTribe[decideTribe]
         else:
             decideTribe = randint (0, len(tribe) -1)
             decideTribe = tribe[decideTribe]
