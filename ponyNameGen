@@ -200,7 +200,7 @@ colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue
 sex 		= ["mare", "stallion", "futa mare", "filly", "colt",]
 
 tribe		= ["earth pony", "pegasus", "unicorn", "zebra", "donkey", "crystal pony", "moth pony", "sea pony",
-               "bat pony", "changeling", "griffon", "kirin",
+               "bat pony", "changeling", "kirin",
                ]
 
 cuteMares = []
