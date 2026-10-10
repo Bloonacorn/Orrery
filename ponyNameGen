@@ -200,10 +200,10 @@ colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue
 
 sex 		= ["mare", "stallion", "filly", "colt",]
 
-tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "snow-pony", 
+tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "snow-pony", "zebra",
                ]
 
-exoticTribe	= ["changeling", "zebra", "donkey", "umbrum", "crystal-pony", "moth-pony",
+exoticTribe	= ["changeling", "donkey", "umbrum", "crystal-pony", "moth-pony",
                ]
 
 cuteMares = []
