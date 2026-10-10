@@ -315,6 +315,7 @@ def dontForget():
             continue
 
 def master():
+    print("Welcome to Print-a-Pony, home of THE ponies of all time!")
     while True:
         if keepGoing == True:
             makeMares()
