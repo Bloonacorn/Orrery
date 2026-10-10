@@ -199,8 +199,10 @@ colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue
 
 sex 		= ["mare", "stallion", "filly", "colt",]
 
-tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "crystal-pony", "moth-pony", 
-               "changeling", "zebra", "donkey", "snow-pony", "umbrum",
+tribe		= ["earth-pony", "sea-pony", "pegasus", "bat-pony", "unicorn", "kirin", "snow-pony", 
+               ]
+
+exoticTribe	= ["changeling", "zebra", "donkey", "umbrum", "crystal-pony", "moth-pony",
                ]
 
 cuteMares = []
@@ -245,12 +247,15 @@ def makeMares():
         coronate = randint (1, 30)
         if coronate == 30:
             decideTribe = "Alicorn"
+        elif coronate < 30 and coronate >= 25: # I intend this to be 25-29
+            decideTribe = randint (0, len(exoticTribe) -1)
+            decideTribe = exoticTribe[decideTribe]
         else:
             decideTribe = randint (0, len(tribe) -1)
             decideTribe = tribe[decideTribe]
             
-        gay2bgay == randint (0, 21)
-        if gay2bgay = 21:
+        gay2bgay = randint (0, 21)
+        if gay2bgay == 21:
             decideSex = "futa-mare"
         else:
             decideSex = randint (0, len(sex) -1)
