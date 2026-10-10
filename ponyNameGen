@@ -182,11 +182,12 @@ lastNames = [   # Colors
 ]
 
 titles    = [   "captain", "dark", "discount", "dr.", "evil", "fgt.", "lady", "mayor",
-                "nurse", "princess", "prof.", "queen", "sgt.", "the great and powerful",         
+                "nurse", "princess", "prof.", "queen", "sgt.", "the great and powerful",
+                "knight", "sir", "major", "clone of",
     ]
 
-trailing  = [   "but exactly twice-as-big", "II",
-    
+trailing  = [   "but exactly twice-as-big", "II", ", esq.", "III", "IV", "the third",
+                "the raped", "the rapist", "(my version)",
     ]
 
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
