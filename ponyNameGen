@@ -292,7 +292,7 @@ def makeMares():
             cuteMares.append(f"{a} {b}, the {decideColor} {decideTribe} {decideSex}")
     
     for x in range(len(cuteMares)):
-        print(f"Pony {x+1}: {cuteMares[x]}")
+        print(f"Pony #{x+1}: {cuteMares[x]}")
         
 # def correction(a):
     
