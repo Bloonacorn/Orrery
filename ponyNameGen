@@ -249,7 +249,7 @@ def makeMares():
             decideTribe = randint (0, len(tribe) -1)
             decideTribe = tribe[decideTribe]
             
-        gay2bgay = randint (0, 21)
+        gay2bgay == randint (0, 21)
         if gay2bgay = 21:
             decideSex = "futa-mare"
         else:
