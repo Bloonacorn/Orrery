@@ -247,7 +247,7 @@ def makeMares():
         
         coronate = randint (1, 30)
         if coronate == 30:
-            decideTribe = "Alicorn"
+            decideTribe = "alicorn"
         elif coronate < 30 and coronate >= 25: # I intend this to be 25-29
             decideTribe = randint (0, len(exoticTribe) -1)
             decideTribe = exoticTribe[decideTribe]
