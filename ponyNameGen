@@ -1,73 +1,123 @@
 from random import randint
 
-firstNames = [  "abyss", "adagio", "adorable", "aerial", "aether", "almond", "aloe", "amber",
-                "amethyst", "angel", "aniseed", "anonymous", "apple", "apricot", "april", "aqua",
-                "aquatic", "aryanne", "aria", "astral", "autumn", "azalea", "azure",
-                "banana", "bean", "berry", "big", "biscuit", "blazing", "bloody", "bloona",
-                "blossom", "blue", "blueberry", "blurry", "bold", "boss", "bouncy", "bristle",
-                "bronze", "brush", "bubble", "bubblegum", "burning", "button",
-                "cabbage", "cactus", "cadence", "canters", "caramel", "carnival", "carrot", "celestia",
-                "chaser", "cheery", "cheese", "cherry", "chew", "chewy", "chroma", "cinder",
-                "cinnamon", "cirrus", "citrus", "cloudy", "clover", "cobalt", "coco", "coffee",
-                "cold", "cookie", "copper", "cosmic", "cotton", "cozy", "crafty", "crazy",
-                "cream", "creature", "cross", "cryptic", "crystal", "cucumber", "current",
-                "curvy", "cutesy",
-                "daffy", "daisy", "dancing", "dapple", "daring", "dark", "day", "dazzle",
-                "deary", "deep", "delight", "derpy", "destiny", "diamond", "ditzy", "dizzy",
-                "donut", "double", "dozy", "dust",
-                "echo", "ebony", "electric", "emerald", "empty", "endless", "error", "eternal",
-                "fair", "fancy", "filthy", "final", "first", "flash", "flawless", "flower",
-                "fluffy", "flustered", "flurry", "flutter", "fossil", "free", "friendly", "frosty",
-                "frozen", "funky", "fun", "funny", "fussy", "future",
-                "galaxy", "galena", "gentle", "ghostly", "giddy", "ginger", "gleaming", "gloria",
-                "golden", "goofy", "grand", "great", "green", "grim",
-                "happy", "harvest", "herbal", "hidden", "hip", "honey", "honeycomb", "hot",
-                "ice", "indigo", "inky", "iron", "ivory", "ivy", "izzy",
-                "jade", "jelly", "jolly", "juicy", "june",
+firstNames = [  # Eventually, I want to segregate the names by themes so they can be weighted
+                # according to race, so we will begin dividing them into categories.
+    
+                # Colors
+                "azure", "blue", "chroma", "ebony", "golden", "green", "indigo", "ivory",
+                "magenta", "palette", "pastel", "pink", "pinkie", "ponka", "purple", "purply",
+                "red", "scarlet", "umber", "white", "yellow", 
+    
+                # Cosmic, space
+                "astral", "aurora", "celestia", "cosmic", "evening", "galaxy", "luna", "lunar",
+                "meteor", "midnight", "morning", "nebula", "nova", "solar", "starlight", "starry",
+                "stellar", "sunburst", "sunrise", "sunset", "sunshine", "twilight", 
+    
+                # Foods
+                "almond", "aniseed", "apple", "apricot", "banana", "bean", "berry", "biscuit",
+                "blueberry", "bubblegum", "cabbage", "caramel", "carrot", "cheese", "cherry", "chew",
+                "chewy", "cinnamon", "citrus", "coffee", "cookie", "cream", "cucumber", "donut",
+                "ginger", "honey", "honeycomb", "jelly", "juicy", "lemon", "lime",
+                "milkshake", "milky", "minty", "mulberry", "pancake", "parsnip", "peach", "peanut",
+                "pear", "pecan", "pickle", "pineapple", "pizza", "plum", "popcorn", 
+                "pumpkin", "raspberry",
+                "soda", "strawberry", "sugar", 
+                "tasty", "tea", "vanilla",
+                
+                # Flora, plants
+                "aloe", "azalea", "blossom", "cactus", "flower", "harvest", "herbal", "ivy",
+                "lily", "lotus", "nettle", "orchid", "pansy", "poppy", "rose", "rosemary",
+                "wallflower", 
+                
+                # Gemstones, metals, stones
+                "amethyst", "amber", "bronze", "cobalt", "copper", "crystal", "diamond", "emerald",
+                "fossil", "galena", "iron", "jade", "limestone", "marble", "opal", "platinum",
+                "ruby", "sapphire", 
+                
+                # Oceanic, aquatic
+                "aqua", "aquatic", "bubble", "ocean", "river", "sea", "seafoam", "tidal",
+                "water", "wave", "whale", 
+    
+                # Ominous, dark,
+                "abyss", "bloody", "cryptic", "dark", "empty", "error", "ghostly", "grim",
+                "hidden", "lost", "macabre", "missing", "nightmare", "poison", "scary", "secret",
+                "shadow", "sneaky", "sombra", "spooky", "suspicious", "wicked",
+                
+                # Snow, winter, arctic
+                "cold", "frosty", "frozen", "ice", "north", "winter", 
+    
+                # Weather, skies
+                "aerial", "cirrus", "cloudy", "lightning", "misty", "overcast", "rainbow", "skyline",
+                "stormy", "tempest", "wind", "windy", 
+                
+                # Multi-category - some words would fit in multiple places at once.
+                "flurry", # a gust of wind or a light snowfall
+                "orange", # The color or the fruit?
+                "silver", # The color or the metal?
+                "sunny", # Is this weather or cosmic
+    
+                "adagio", "adorable", "aether", "angel", "anonymous", "april", 
+                "aryanne", "aria", "autumn", 
+                "big", "blazing", "bloona", "blurry", "bold", "boss", "bouncy",
+                "bristle", "brush", "burning", "button",
+                "cadence", "canters", "carnival", "chaser", "cheery", "cinder",
+                "clover", "coco", "cotton", "cozy", "crafty", "crazy", "creature", "cross",
+                "current", "curvy", "cutesy",
+                
+                "cloppity", "blushing", "venus", "wistful", "jiggly", "reckless", "heather", "thistle",
+                "wobbling", "symphony", "yoinky", "rubber", "carrie",
+                
+                "daffy", "daisy", "dancing", "dapple", "daring", "day", "dazzle", "deary",
+                "deep", "delight", "derpy", "destiny",  "ditzy", "dizzy", "double", "dozy",
+                "dust",
+                "echo", "electric", "endless", "eternal",
+                "fair", "fancy", "filthy", "final", "first", "flash", "flawless", "fluffy",
+                "flustered", "flutter", "free", "friendly", "funky", "fun", "funny", "fussy",
+                "future",
+                "gentle", "giddy", "gleaming", "gloria", "goofy", "grand", "great",  
+                "happy", "hip", "horny", "hot",
+                "inky", "izzy",
+                "jolly", "june",
                 "keen", "kind", "kindle",
-                "lanky", "lasting", "lemon", "leslie", "lightning", "lily", "lime", "limestone",
-                "little", "long", "lost", "lotus", "lovely", "lucid", "lucky", "luna",
-                "lunar", "lyra",
-                "macabre", "mae", "magenta", "magic", "marble", "mare", "matinee", "maud",
-                "may",
-                "meadow", "melody", "merry", "messy", "meteor", "midnight", "milkshake", "milky",
-                "minty", "missing", "misty", "morning", "mulberry", "mystic", "mythic",
-                "nature", "nether", "nettle", "news", "nifty", "nightmare", "nimble", "north",
-                "ocean", "octavia", "opal", "orange", "orchid", "overcast",
-                "pacific", "palette", "pancake", "pansy", "parsnip", "pastel", "peach", "peanut", 
-                "pear", "pecan", "perfect", "pesky", "photo", "pickle", "pineapple", "pink", 
-                "pinkie", "pipp", "pizza", "platinum", "plum", "plump", "plush", "poison",
-                "ponka", "pony", "popcorn", "poppy", "powerful", "prairie", "pretty", "pumpkin",
-                "pure", "purple", "purply",
-                "radiant", "rainbow", "rapid", "rarity", "raspberry", "red", "retro", "risky",
-                "river", "rose", "rosemary", "royal", "ruby", "runic",
-                "sacred", "safe", "salty", "sapphire", "saucy", "scarlet", "scary", "screw",
-                "scootaloo", "sea", "secret", "sensual", "shaded", "shadow", "shining",
-                "silent",
-                "silky",
-                "silly", "silver", "simple", "skyline", "sleepy", "smashing", "smutty",
-                "snails",
-                "snazzy", "sneaky", "snips", "soda", "soft", "soiree", "solar",
-                "sombra",
-                "sonata", "sonic", "sovereign", "speculative", "spoiled", "speedy", "spooky",
-                "spring",
-                "squeaky",
-                "starlight", "starry", "stellar", "sticky", "still", "stormy", "strawberry",
-                "strong",
-                "sugar", "sunburst", "summer", "sunny", "sunrise", "sunset", "sunshine",
-                "surprise",
-                "suspicious", "sweetie", "swift",
-                "tangle", "tangled", "tasty", "tea", "team", "tempest", "thirsty", "ticker",
-                "tidal", "tender", "tinder", "tinker", "tracy", "tiny", "torch", "treasure",
-                "tricky", "triple", "trixie", "true", "trueheart", "tumbled", "twilight", "twinkle",
-                "umber",
-                "valentine", "vanilla", "vela", "velvet", "vesper", "vinyl",
-                "wacky", "wallflower", "warm", "water", "wave", "whale", "white", "wicked",
-                "wild", "wind", "windy", "winter", "worry",
-                "yellow", "yummy",
+                "lanky", "lasting", "leslie", "little", "long", "lovely", "lucid", "lucky",
+                "lyra",
+                "mae",  "magic",  "mare", "matinee", "maud", "may", "meadow", "melody",
+                "merry", "messy", "mystic", "mythic",
+                "nature", "nether", "news", "nifty", "nimble", 
+                "octavia",  
+                "pacific", "perfect", "pesky", "photo", "pipp", "plump", "plush", "pony",
+                "powerful", "prairie", "pretty", "pure", 
+                "radiant", "rapid", "rarity", "retro", "risky", "royal", "runic",
+                "sacred", "safe", "salty", "saucy", "screw", "scootaloo", "sensual", "shaded",
+                "shining", "silent", "silky", "silly", "simple", "sleepy", "smashing", "smutty",
+                "snails", "snazzy",  "snips", "soft", "soiree", "sonata", "sonic", "sovereign",
+                "speculative", "spoiled", "speedy", "spring", "squeaky", "sticky", "still", "strong",
+                "summer", "surprise", "sweetie", "swift",
+                "tangle", "tangled", "team", "thirsty", "ticker", "tender", "tinder", "tinker",
+                "tracy", "tiny", "torch", "treasure", "tricky", "triple", "trixie", "true",
+                "trueheart", "tumbled", "twinkle",
+                "valentine", "vela", "velvet", "vesper", "vinyl",
+                "wacky", "warm", "wild", "worry",
+                "yummy",
             ]
 
-lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "armor",
+# Marmalade Haunches
+
+lastNames = [   # Colors
+                # Cosmic, space
+                # Foods
+                # Flora, plants
+                # Gemstones, metals, stones
+                # Oceanic, aquatic
+                # Ominous, dark,
+                # Snow, winter, arctic
+                # Weather, skies
+                # Multi-category - some words would fit in multiple places at once.
+    
+    
+                "hump", "grind", "sploinky", "withers", "claps", "snuggles", "thicket", "hollow",
+    
+                "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "armor",
                 "aura", "aurora",
                 "banner", "basin", "baskets", "bastion", "battalion", "baux", "bean", "bed",
                 "bee", "bell", "beyond", "bit", "blade", "blades", "blaze", "blazes",
@@ -75,7 +125,9 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "breaker", "breeze", "bubbles", "bunny", "burger", "business", "butter",
                 "cage", "cake", "camellia", "candy", "canvas", "cascade", "castle", "catcher",
                 "charge", "charm", "chaser", "chill", "cider", "cipher", "circles", "circus",
-                "clop", "clouds", "coco", "compass", "cottage", "cream", "creamer", "creature",
+                "clop", "clouds", "coco",
+                "comforts",
+                "compass", "cottage", "cream", "creamer", "creature",
                 "crescent", "cross", "crown", "crumbles", "crunch", "cupcake", "curls",
                 "cushion",
                 "daffodil", "dahlia", "daisy", "dancer", "darkness", "dash", "dawn", "depths",
@@ -93,10 +145,11 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "ice",
                 "jack", "jam", "jasmine", "jewel", "joke", "joy", "jubilee",
                 "key", "kicker", "kiss", "kisses",
-                "lance", "leaf", "leaves", "light", "lilac", "lining", "loose", "love",
-                "luck", "lullaby", "lulamoon",
+                "lance", "leaf", "leaves", "light", "lilac", "lining", "links", "loose",
+                "love", "luck", "lullaby", "lulamoon",
                 "macabre", "magnet", "mane", "marbles", "mare", "mash", "meadow", "melody",
-                "memory", "miasma", "mirror", "moon", "moonbow", "moonlight", "muffin", "munch",
+                "memory", "miasma", "mirror", "moon", "moonbow", "moonlight", "mourn",
+                "muffin", "munch",
                 "music",
                 "nature", "nebula", "noir", "nova", "nuance",
                 "palace", "party", "passion", "patch", "patty", "peach", "pearl", "petal",
@@ -128,11 +181,11 @@ lastNames = [   "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "ar
                 "zephyr",
 ]
 
-titles    = [   "captain", "dark", "lady", "nurse", "princess", "queen", "the great and powerful",
-                "saint", "marshal", "doctor",
+titles    = [   "captain", "dark", "discount", "dr.", "evil", "fgt.", "lady", "mayor",
+                "nurse", "princess", "prof.", "queen", "sgt.", "the great and powerful",         
     ]
 
-trailing  = [   "but exactly twice-as-big", "two",
+trailing  = [   "but exactly twice-as-big", "II",
     
     ]
 
