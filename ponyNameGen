@@ -193,6 +193,16 @@ trailing  = [   "but exactly twice-as-big", "II", "esq.", "III", "IV", "the thir
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
 disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", "disagree", "object", "protest"]
 
+colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue", "blue",
+               "purple", "magenta", "pink", "white", "light-grey", "dark-grey", "black", "brown",
+               ]
+
+sex 		= ["mare", "stallion", "futa mare", "filly", "colt",]
+
+tribe		= ["earth pony", "pegasus", "unicorn", "zebra", "donkey", "crystal pony", "moth pony", "sea pony",
+               "bat pony", "changeling", "griffon", "kirin",
+               ]
+
 cuteMares = []
 
 keepGoing = True
@@ -229,14 +239,27 @@ def makeMares():
         f = randint (0, len(trailing) -1)
         f = trailing[f]
         
-        if c == 20 and d == 20:
-            cuteMares.append(f"{e} {a} {b} {f}")
-        elif d == 20:
-            cuteMares.append(f"{e} {a} {b}")
-        elif c == 20:
-            cuteMares.append(f"{a} {b} {f}")
+        decideColor = randint (0, len(colors) -1)
+        decideColor = colors[decideColor]
+        
+        coronate = randint (1, 20)
+        if coronate == 20:
+            decideTribe = "Alicorn"
         else:
-            cuteMares.append(f"{a} {b}")
+            decideTribe = randint (0, len(tribe) -1)
+            decideTribe = tribe[decideTribe]
+            
+        decideSex = randint (0, len(sex) -1)
+        decideSex = sex[decideSex]
+        
+        if c == 20 and d == 20:
+            cuteMares.append(f"{e} {a} {b} {f}, the {decideColor} {decideTribe} {decideSex}")
+        elif d == 20:
+            cuteMares.append(f"{e} {a} {b}, the {decideColor} {decideTribe} {decideSex}")
+        elif c == 20:
+            cuteMares.append(f"{a} {b} {f}, the {decideColor} {decideTribe} {decideSex}")
+        else:
+            cuteMares.append(f"{a} {b}, the {decideColor} {decideTribe} {decideSex}")
     
     for x in range(len(cuteMares)):
         print(f"Mare {x+1}: {cuteMares[x]}")
