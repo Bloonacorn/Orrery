@@ -104,81 +104,98 @@ firstNames = [  # Eventually, I want to segregate the names by themes so they ca
 # Marmalade Haunches
 
 lastNames = [   # Colors
+                "scarlet",
+    
                 # Cosmic, space
+                "aurora", "galaxy", "moon", "moonbow", "moonlight", "nebula", "nova", "star",
+    
                 # Foods
+                "bean", "burger", "butter", "cake", "candy", "cider", "cream", "creamer",
+                "cupcake", "donut", "egg", "fish", "flakes", "fritter", "grape", "gumdrops",
+                "muffin", "pudding",
+    
                 # Flora, plants
+                "bloom", "blossom", "daffodil", "daisy", "flora", "flower", "leaf", "leaves",
+                "lilac", "lily", "plant", "rose", "roses", "thicket", "wood", "woods",
+                
                 # Gemstones, metals, stones
+                "jewel", 
+                
                 # Oceanic, aquatic
+                "bubbles", "shores", "wave", "waves", 
+                
                 # Ominous, dark,
+                "darkness", "graves", "macabre", "mourn", "shambles",
+                
                 # Snow, winter, arctic
+                "chill", "ice", "tundra",
+                
                 # Weather, skies
+                
+                
                 # Multi-category - some words would fit in multiple places at once.
     
     
-                "hump", "grind", "sploinky", "withers", "claps", "snuggles", "thicket", "hollow",
+                "hump", "grind", "sploinky", "withers", "claps", "snuggles", "hollow",
     
                 "abyss", "ace", "act", "anemone", "anvil", "arcana", "aria", "armor",
-                "aura", "aurora",
-                "banner", "basin", "baskets", "bastion", "battalion", "baux", "bean", "bed",
+                "aura", 
+                "banner", "basin", "baskets", "bastion", "battalion", "baux", "bed",
                 "bee", "bell", "beyond", "bit", "blade", "blades", "blaze", "blazes",
-                "bliss", "blitz", "bloom", "blossom", "blush", "bonnet", "bottom", "brambles",
-                "breaker", "breeze", "bubbles", "bunny", "burger", "business", "butter",
-                "cage", "cake", "camellia", "candy", "canvas", "cascade", "castle", "catcher",
-                "charge", "charm", "chaser", "chill", "cider", "cipher", "circles", "circus",
+                "bliss", "blitz", "blush", "bonnet", "bottom", "brambles",
+                "breaker", "breeze", "bunny", "business",
+                "cage", "camellia", "canvas", "cascade", "castle", "catcher",
+                "charge", "charm", "chaser", "cipher", "circles", "circus",
                 "clop", "clouds", "coco",
                 "comforts",
-                "compass", "cottage", "cream", "creamer", "creature",
-                "crescent", "cross", "crown", "crumbles", "crunch", "cupcake", "curls",
+                "compass", "cottage", "creature",
+                "crescent", "cross", "crown", "crumbles", "crunch", "curls",
                 "cushion",
-                "daffodil", "dahlia", "daisy", "dancer", "darkness", "dash", "dawn", "depths",
-                "destiny", "dew", "dice", "dip", "dive", "doll", "donut", "down", 
+                "dahlia", "dancer", "dash", "dawn", "depths",
+                "destiny", "dew", "dice", "dip", "dive", "doll", "down", 
                 "dream", "dreams", "drift", "drops", "dusk", "dust",
-                "edge", "egg", "embers",  "event", "eyes",
-                "fashion", "fate", "fauna", "feather", "finish", "fire", "fish", "flakes",
-                "flame", "flanks", "flash", "flora", "flower", "flyer", "fool", "force",
-                "forest", "fritter", "front", "fun",
-                "galaxy", "gale", "gallop", "gallows", "gambit", "gem", "giggle", "glacier",
-                "glimmer", "glory", "glow", "graces", "grape", "graves", "groove", "grounds",
-                "grove", "gumdrops",
+                "edge", "embers",  "event", "eyes",
+                "fashion", "fate", "fauna", "feather", "finish", "fire",
+                "flame", "flanks", "flash", "flyer", "fool", "force",
+                "forest", "front", "fun",
+                "gale", "gallop", "gallows", "gambit", "gem", "giggle", "glacier",
+                "glimmer", "glory", "glow", "graces", "groove", "grounds",
+                "grove",
                 "hammer", "harmony", "harvest", "haste", "haven", "haze", "heart", "hearth",
                 "heartstrings", "heights", "herring", "helix", "hoofler", "hooves", "horse",
-                "ice",
-                "jack", "jam", "jasmine", "jewel", "joke", "joy", "jubilee",
+                "jack", "jam", "jasmine", "joke", "joy", "jubilee",
                 "key", "kicker", "kiss", "kisses",
-                "lance", "leaf", "leaves", "light", "lilac", "lily", "lining", "links",
+                "lance", "light", "lining", "links",
                 "loose", "love", "luck", "lullaby", "lulamoon",
-                "macabre", "magnet", "mane", "marbles", "mare", "mash", "meadow", "melody",
-                "memory", "miasma", "mirror", "moon", "moonbow", "moonlight", "mourn",
-                "muffin", "munch",
-                "music",
-                "nature", "nebula", "noir", "nova", "nuance",
+                "magnet", "mane", "marbles", "mare", "mash", "meadow", "melody",
+                "memory", "miasma", "mirror", "munch", "music",
+                "nature", "noir", "nuance",
                 "palace", "party", "passion", "patch", "patty", "peach", "pearl", "petal",
-                "petunia", "pie", "plains", "plant", "plum", "pocket", "poe", "point",
+                "petunia", "pie", "plains", "plum", "pocket", "poe", "point",
                 "poni", "pony", "pool", "pommel", "pop", "popper", "poster", "power",
-                "prairie", "prance", "prancer", "precious", "prism", "pudding", "puff", "punch",
+                "prairie", "prance", "prancer", "precious", "prism", "puff", "punch",
                 "puzzle",
                 "quest", "question", "quiet", "quill",
                 "rain", "raiser", "redheart", "remedy", "reverie", "ride", "rich", "ripple",
-                "river", "road", "roll", "rook", "rose", "roses", "rotten", "roulette",
+                "river", "road", "roll", "rook", "rotten", "roulette",
                 "rush",
-                "saddles", "safari", "sands", "sandwich", "scarlet", "scratch", "scrolls", "sea",
+                "saddles", "safari", "sands", "sandwich", "scratch", "scrolls", "sea",
                 "season",
-                "secret", "seeds", "sense", "sentry", "serenade", "shadow", "shaft", "shambles",
-                "shape", "shard", "shell", "shield", "shimmer", "shine", "shores", "shot",
+                "secret", "seeds", "sense", "sentry", "serenade", "shadow", "shaft",
+                "shape", "shard", "shell", "shield", "shimmer", "shine", "shot",
                 "shoulder", "showers", "shy", "side", "sight", "skies", "sky", "slumber",
                 "smiles", "smith", "smoke", "smoulder", "smooch", "snow", "snowflake", "snowpity",
                 "socks", "song", "sorbet", "sounds", "spade", "spark", "sparkle", "sparklemoon",
                 "spears", "spice", "spinel", "spiral", "spirit", "splash", "spot", "squeeze",
-                "star",
                 "starscout", "steel", "stone", "stream", "strike", "strings", "stroke", "strong", 
                 "study", "sunrise", "sunset", "swap", "sweet", "swirl", "swords",
                 "tail", "tale", "tart", "theme", "thorn", "thread", "tiara", "tired",
                 "toast", "tomb", "top", "trail", "trance", "travel", "trifle", "trot",
-                "tulip", "tundra", "tune", "twirl", "twist",
+                "tulip", "tune", "twirl", "twist",
                 "valley", "valor", "veil", "vine",
-                "wafer", "waffle", "water", "way", "wave", "waves", "weather", "whisper",
+                "wafer", "waffle", "water", "way", "weather", "whisper",
                 "whistles", "wings",
-                "wish", "wishes", "wonder", "wood", "woods", "wreath",
+                "wish", "wishes", "wonder", "wreath",
                 "zephyr",
 ]
 
@@ -188,7 +205,7 @@ titles    = [   "captain", "dark", "discount", "dr.", "evil", "fgt.", "lady", "m
     ]
 
 trailing  = [   "but exactly twice-as-big", "esq.", "II", "III", "IV", "the third",
-                "(my version)", "(AU)", "(FoE)",
+                "the raped", "the rapist", "(my version)", "(AU)", "(FoE)",
     ]
 
 agree		= ["y", "yes", "okay", "ok", "sure", "alright", "agree", "accept", "do", "yeah", "ok fine", "okay fine", "fine"]
@@ -196,6 +213,12 @@ disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", 
 
 colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue", "blue",
                "purple", "magenta", "pink", "white", "light-grey", "dark-grey", "black", "brown",
+               "indigo", "scarlet", "canary-yellow", "sangria-red", "wasabi-green", "sky-blue", "lavender",
+               "blurple", "rose-red", "coral-orange", "sacremento-blue", "periwinkle", "hot-pink", "green-yellow",
+               "apricot", "blue-green", "blue-violet", "carnation-pink", "cerulean", "dandelion-yellow", "red-orange", "red-violet",
+               "purple-red", "yellow-orange", "chestnut", "tan", "wisteria", "melon-pink", "timberwolf-grey", "gold",
+               "silver", "flesh-color", "tan", "cadet-blue", "chestnut-brown", "dark-blue", "lemon-yellow", "dark-brown",
+               "creamy-brown", "fern-green", "charcoal-black", "emerald-green", "mint-green", "lilac-purple", "olive-green", "brick-red",
                 ]
 
 sex 		= ["mare", "stallion", "filly", "colt",]
@@ -293,9 +316,6 @@ def makeMares():
     
     for x in range(len(cuteMares)):
         print(f"Pony #{x+1}: {cuteMares[x]}")
-        
-# def correction(a):
-    
 
 def dontForget():
     global keepGoing
