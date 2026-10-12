@@ -214,11 +214,13 @@ disagree	= ["n", "no", "nope", "nah", "never", "stop", "quit", "exit", "don't", 
 colors		= ["red", "orange", "yellow", "lime-green", "green", "cyan", "light-blue", "blue",
                "purple", "magenta", "pink", "white", "light-grey", "dark-grey", "black", "brown",
                "indigo", "scarlet", "canary-yellow", "sangria-red", "wasabi-green", "sky-blue", "lavender",
-               "blurple", "rose-red", "coral-orange", "sacremento-blue", "periwinkle", "hot-pink", "green-yellow",
+               "blurple", "rose-red", "coral", "sacremento-blue", "periwinkle", "hot-pink", "green-yellow",
                "apricot", "blue-green", "blue-violet", "carnation-pink", "cerulean", "dandelion-yellow", "red-orange", "red-violet",
-               "purple-red", "yellow-orange", "chestnut", "tan", "wisteria", "melon-pink", "timberwolf-grey", "gold",
-               "silver", "flesh-color", "tan", "cadet-blue", "chestnut-brown", "dark-blue", "lemon-yellow", "dark-brown",
+               "purple-red", "yellow-orange", "chestnut", "tan", "wisteria", "melon-pink", "timberwolf-grey","ivory",
+               "butter-yellow", "tan", "cadet-blue", "chestnut-brown", "dark-blue", "lemon-yellow", "dark-brown", "salmon-pink",
                "creamy-brown", "fern-green", "charcoal-black", "emerald-green", "mint-green", "lilac-purple", "olive-green", "brick-red",
+               "gold", "silver", "bronze", "rainbow", "flesh-color", "vantablack", "racist", "stupid", "#ffaec9",
+               "vomit-green", "stygian-blue", "golden-brown",
                 ]
 
 sex 		= ["mare", "stallion", "filly", "colt",]
