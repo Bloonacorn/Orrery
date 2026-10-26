@@ -254,7 +254,7 @@ def makeMares():
             continue
         
     while True:
-        mlpOrOrr = input("Do you want to use the Orrery's tribes?\n")
+        mlpOrOrr = input("Do you want to use the Orrery's tribes?\nIf you don't know what that is, refer to https://rentry.org/The-Orrery\n")
         if isinstance (mlpOrOrr, str) and mlpOrOrr.lower() in agree:
             whichTribes = True
             break
